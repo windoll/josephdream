@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const fs=require\\('fs'\\);let h=fs.readFileSync\\('約瑟的夢.html','utf8'\\);let m=h.match\\(/<script>\\([\\\\s\\\\S]*\\)<\\\\/script>/\\);fs.writeFileSync\\('check.js',m[1]\\);\")",
+      "Bash(node --check check.js)",
+      "Bash(rm -f check.js)",
+      "Bash(node -e ' *)"
+    ]
+  }
+}
