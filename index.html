@@ -34,12 +34,19 @@
   header h1{font-size:24px; letter-spacing:.18em; color:var(--gold); font-weight:700;}
   header .sub{font-size:12.5px; color:var(--ink-dim); letter-spacing:.25em; margin-top:4px;}
   .stats{display:flex; gap:14px; margin-top:14px; flex-wrap:wrap;}
-  .stat{font-size:12px; color:var(--ink-dim); letter-spacing:.08em; display:flex; align-items:center; gap:7px;}
+  .stat{font-size:12px; color:var(--ink-dim); letter-spacing:.08em; display:flex; align-items:center; gap:7px; position:relative;}
   .bar{width:74px; height:7px; border-radius:6px; background:#1c150e; overflow:hidden; border:1px solid #3a2c1d;}
   .bar > i{display:block; height:100%; border-radius:6px; transition:width .5s ease}
   .bar.faith > i{background:linear-gradient(90deg,#caa44e,#f0d488)}
   .bar.wisdom > i{background:linear-gradient(90deg,#5d8ab0,#8fc1e0)}
   .bar.hate > i{background:linear-gradient(90deg,#9c4038,#d3675c)}
+  .bar.flash{animation:barflash .5s ease}
+  @keyframes barflash{0%,100%{box-shadow:none}40%{box-shadow:0 0 10px 2px currentColor}}
+  .floatup{
+    position:absolute; right:-6px; top:-14px; font-size:13px; font-weight:700;
+    pointer-events:none; animation:floatup .9s ease forwards;
+  }
+  @keyframes floatup{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-16px)}}
 
   main{padding:24px 30px 10px}
   .art{
@@ -48,9 +55,14 @@
     box-shadow:inset 0 0 40px rgba(0,0,0,.5);
   }
   .art svg{display:block; width:100%; height:100%}
-  .scene-title{color:var(--gold-soft); font-size:13px; letter-spacing:.3em; margin-bottom:12px; text-transform:uppercase;}
-  .text{font-size:17.5px; color:var(--ink); white-space:pre-wrap; min-height:80px;}
+  .scene-title{color:var(--gold-soft); font-size:13px; letter-spacing:.3em; margin-bottom:6px; text-transform:uppercase;}
+  .ref{font-size:11.5px; color:#7c8aa0; letter-spacing:.05em; margin-bottom:14px}
+  .ref.fiction{color:#9a7e5a}
+  .text{font-size:17.5px; color:var(--ink); white-space:pre-wrap; min-height:80px; cursor:default;}
+  .text.typing{cursor:pointer}
   .text p{margin-bottom:14px}
+  .caret{color:var(--gold); animation:blink .8s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
 
   .choices{padding:8px 30px 30px; display:flex; flex-direction:column; gap:12px}
   button.choice{
@@ -66,21 +78,23 @@
   }
   button.choice .tag.whatif{background:var(--accent)}
   button.choice .tag.bible{background:#3a5a8c; color:#eaf2ff}
-  .ending .canon{
-    margin-top:14px; font-size:13px; color:#9cc0ee; letter-spacing:.12em;
-    border:1px solid #3a5a8c; border-radius:20px; padding:6px 14px; display:inline-block;
-  }
   .effs{display:flex; gap:7px; margin-top:9px; flex-wrap:wrap}
-  .eff{
-    font-size:11.5px; letter-spacing:.05em; padding:2px 9px; border-radius:20px;
-    border:1px solid; background:rgba(0,0,0,.25); font-weight:600;
-  }
+  .eff{font-size:11.5px; letter-spacing:.05em; padding:2px 9px; border-radius:20px; border:1px solid; background:rgba(0,0,0,.25); font-weight:600;}
 
   .ending{text-align:center; padding:6px 0 4px}
   .ending .badge{font-size:13px; letter-spacing:.3em; color:var(--gold)}
   .ending h2{font-size:26px; margin:10px 0; color:#fff; letter-spacing:.06em}
   .ending .kind{font-size:13px; color:var(--ink-dim); letter-spacing:.2em}
   .ending .kind.good{color:var(--good)} .ending .kind.bad{color:var(--bad)}
+  .ending .canon{margin-top:14px; font-size:13px; color:#9cc0ee; letter-spacing:.12em; border:1px solid #3a5a8c; border-radius:20px; padding:6px 14px; display:inline-block;}
+  .reflect{margin-top:18px; background:#1e160e; border:1px solid #4a3826; border-radius:10px; padding:14px 16px; font-size:14px; color:var(--ink-dim);}
+  .reflect b{color:var(--gold-soft); letter-spacing:.1em; display:block; margin-bottom:6px; font-size:12px}
+  .journey{margin-top:18px; border-top:1px solid #3a2c1d; padding-top:14px}
+  .journey > b{color:var(--gold-soft); letter-spacing:.18em; font-size:12px}
+  .jrow{display:flex; gap:8px; align-items:flex-start; font-size:13px; padding:6px 0; border-bottom:1px dashed #33271a; color:var(--ink-dim)}
+  .jrow .jt{color:var(--gold-soft); min-width:84px}
+  .jrow .jc{flex:1; color:var(--ink)}
+  .jrow .je{font-size:11px; font-weight:700}
 
   footer{display:flex; justify-content:space-between; align-items:center; padding:14px 26px 18px; border-top:1px solid #3a2c1d; font-size:12px; color:var(--ink-dim);}
   .links{display:flex; gap:16px}
@@ -113,14 +127,15 @@
     <h1>約 瑟 的 夢</h1>
     <div class="sub">創世記 · 文字冒險 · 三屬性抉擇</div>
     <div class="stats" id="stats">
-      <div class="stat" style="color:var(--faith)">信心 <span class="bar faith"><i></i></span></div>
-      <div class="stat" style="color:var(--wisdom)">智慧 <span class="bar wisdom"><i></i></span></div>
-      <div class="stat" style="color:var(--hate)">怨恨 <span class="bar hate"><i></i></span></div>
+      <div class="stat statRow" data-k="faith" style="color:var(--faith)">信心 <span class="bar faith"><i></i></span></div>
+      <div class="stat statRow" data-k="wisdom" style="color:var(--wisdom)">智慧 <span class="bar wisdom"><i></i></span></div>
+      <div class="stat statRow" data-k="hate" style="color:var(--hate)">怨恨 <span class="bar hate"><i></i></span></div>
     </div>
   </header>
   <main>
     <div class="art" id="art"></div>
     <div class="scene-title" id="sceneTitle"></div>
+    <div class="ref" id="ref"></div>
     <div class="text" id="text"></div>
   </main>
   <div class="choices" id="choices"></div>
@@ -128,6 +143,7 @@
     <div class="links">
       <a id="restart">↻ 重新開始</a>
       <a id="gallery">📜 結局圖鑑</a>
+      <a id="mute"></a>
     </div>
     <div id="progress"></div>
   </footer>
@@ -146,7 +162,6 @@
 /* ============================================================
    約瑟的夢 — 劇情引擎
    數值: faith 信心 / wisdom 智慧 / hate 怨恨 (0–100)
-   設計: 每個抉擇為三選一，分別對應三種屬性
    ============================================================ */
 
 /* ---------- 場景插畫 (內嵌 SVG，離線可用) ---------- */
@@ -226,11 +241,16 @@ function artSVG(key){
 
 /* ---------- 結局 (共 5 種) ---------- */
 const ENDINGS = {
-  reconcile:  {name:"飽足之地", kind:"good", canonical:true, desc:"寬恕了哥哥,全家在歌珊團聚。這是聖經創世記中約瑟真實的結局。"},
-  faith_crown:{name:"夢的應驗", kind:"good", desc:"自始至終信靠那位賜夢的神,信心極高而毫無怨恨,夢完全應驗。隱藏結局。"},
-  revenge:    {name:"復仇的筵席", kind:"bad",  desc:"當哥哥跪下時,讓怨恨主導了你,選擇了報復。"},
-  fallen:     {name:"墜落的奴隸", kind:"bad",  desc:"在波提乏家屈服於試探,聲名與性命一同墜落。"},
-  shepherd:   {name:"平凡的牧人", kind:"neutral",desc:"婉拒了命運的呼召,回鄉守著羊群終老。"},
+  reconcile:  {name:"飽足之地", kind:"good", canonical:true, desc:"寬恕了哥哥,全家在歌珊團聚。這是聖經創世記中約瑟真實的結局。",
+    reflect:"約瑟說:「從前你們的意思是要害我,但 神的意思原是好的。」回頭看你的難處,是否也曾在其中發現未曾預料的恩典?"},
+  faith_crown:{name:"夢的應驗", kind:"good", desc:"自始至終信靠那位賜夢的神,信心極高而毫無怨恨,夢完全應驗。隱藏結局。",
+    reflect:"在看不見出路的兩年牢獄裡,是什麼讓約瑟仍然信靠?換作是你,會如何持守?"},
+  revenge:    {name:"復仇的筵席", kind:"bad",  desc:"當哥哥跪下時,讓怨恨主導了你,選擇了報復。",
+    reflect:"報復似乎能討回公道,卻為何往往讓人更不自由?寬恕與軟弱有什麼不同?"},
+  fallen:     {name:"墜落的奴隸", kind:"bad",  desc:"在波提乏家屈服於試探,聲名與性命一同墜落。",
+    reflect:"一時的妥協,如何可能毀掉長久的呼召?約瑟說「我怎能得罪神」時,他在守護的是什麼?"},
+  shepherd:   {name:"平凡的牧人", kind:"neutral",desc:"婉拒了命運的呼召,回鄉守著羊群終老。",
+    reflect:"安穩與呼召之間,你會怎麼選?把恩賜埋藏起來,也是一種損失嗎?"},
 };
 let unlocked = JSON.parse(localStorage.getItem("joseph_endings")||"[]");
 
@@ -239,10 +259,10 @@ const S = {};
 function scene(id, def){ S[id]=def; }
 const e = (faith=0,wisdom=0,hate=0)=>({faith,wisdom,hate});
 
-/* 每個抉擇 = 三選一，對應 信心 / 智慧 / 怨恨 */
+/* 每個抉擇 = 三選一，對應 信心 / 智慧 / 怨恨；bible:true 表示符合聖經記載 */
 
 scene("start",{
-  title:"第一幕 · 希伯崙的帳棚", art:"coat",
+  title:"第一幕 · 希伯崙的帳棚", art:"coat", ref:"創世記 37:3–9",
   text:`你是約瑟,雅各最疼愛的兒子。父親給了你一件彩衣,在烈日下閃著光。十個哥哥在曠野牧羊,眼神裡的寒意你裝作沒看見。
 
 昨夜你又做了那個夢——田裡的禾捆,哥哥們的捆向你的捆下拜。今早,夢還在你舌尖打轉。你要怎麼面對它?`,
@@ -255,7 +275,7 @@ scene("start",{
 });
 
 scene("dothan",{
-  title:"第一幕 · 多坍的曠野", art:"desert",
+  title:"第一幕 · 多坍的曠野", art:"desert", ref:"創世記 37:12–24",
   text:`父親差你去探望哥哥們。你尋到多坍,遠遠地,他們認出那件彩衣。
 
 「來吧,我們把他殺了,丟在坑裡!」密謀順著風飄來。大哥流便想攔阻,口氣卻軟弱。危機當前,你——`,
@@ -267,7 +287,7 @@ scene("dothan",{
 });
 
 scene("the_pit",{
-  title:"第一幕 · 枯井", art:"pit",
+  title:"第一幕 · 枯井", art:"pit", ref:"創世記 37:25–28",
   text:`他們剝了你的彩衣,把你丟進乾涸的枯井。頭頂只剩一圈天光,哥哥們卻在井邊坐下吃飯。
 
 不久,一隊以實瑪利商人經過,猶大說:「賣了他吧。」繩子垂下,二十塊銀子易了主。在被拉上去的那一刻,你心裡——`,
@@ -275,12 +295,24 @@ scene("the_pit",{
   choices:[
     {text:"向神呼求,相信這一切自有安排。", next:"egypt_arrive", eff:e(13,0,0), bible:true},
     {text:"冷靜盤算,在異邦該如何活下去。", next:"egypt_arrive", eff:e(0,13,0)},
-    {text:"暗記每張臉,發誓有朝一日報復。", next:"egypt_arrive", eff:e(0,0,16)},
+    {text:"暗記每張臉,在途中暗自謀劃報復。", next:"caravan_scheme", eff:e(0,0,16)},
+  ]
+});
+
+/* 獨家支線：怨恨路線 */
+scene("caravan_scheme",{
+  title:"第一幕 · 駱駝商隊", art:"desert", ref:"虛構支線 · 非聖經記載", fiction:true,
+  text:`綁在駝隊尾端,你一路盤算。你記下每個哥哥的名字、每一句嘲笑,把仇恨煉成一塊冷硬的鐵,藏進心底最深處。
+
+「總有一天。」你對自己說。沙漠的風灌進口鼻,你卻覺得那團火能讓你活下去。但你沒料到——這團火日後也會燒到你自己。`,
+  verse:"懷恨的人,連自己都一起鎖住了。",
+  choices:[
+    {text:"帶著這份恨,踏進埃及的城門。", next:"egypt_arrive", eff:e(0,0,8)},
   ]
 });
 
 scene("egypt_arrive",{
-  title:"第二幕 · 埃及", art:"pyramid",
+  title:"第二幕 · 埃及", art:"pyramid", ref:"創世記 39:1–4",
   text:`尼羅河的水汽撲面而來。法老的護衛長波提乏買下了你。你不懂他們的語言,卻把每件事做到極致。主人很快發現:這希伯來少年手中,凡事都順利。
 
 你決定怎麼在這異邦立足?`,
@@ -293,19 +325,31 @@ scene("egypt_arrive",{
 });
 
 scene("steward",{
-  title:"第二幕 · 波提乏家的試探", art:"house",
+  title:"第二幕 · 波提乏家的試探", art:"house", ref:"創世記 39:5–12",
   text:`你成了總管全家的家宰。你樣貌俊美,而主人的妻子目光日復一日黏在你身上。
 
 某個午後,僕人都不在。她抓住你的衣襟:「你與我同寢吧。」你會——`,
   choices:[
     {text:"「我怎能得罪神?」撇下外衣奪門而逃。", next:"prison", eff:e(14,0,0), bible:true},
-    {text:"不卑不亢,以言語冷靜地勸退她。", next:"prison", eff:e(0,13,0)},
+    {text:"不卑不亢,以智慧勸退她。", next:"reason_wife", eff:e(0,14,0)},
     {text:"屈服於慾望與權勢,越過那條線。", next:"end_fallen", eff:e(0,0,0)},
   ]
 });
 
+/* 獨家支線：智慧路線 */
+scene("reason_wife",{
+  title:"第二幕 · 智取主母", art:"house", ref:"虛構支線 · 非聖經記載", fiction:true,
+  text:`你沒有逃,也沒有屈服。你冷靜地提起波提乏的恩情、家族的名譽、埃及律法的嚴酷,一句句替她設想後果。她的手鬆開了。
+
+接下來數月,你更謹慎地走動,刻意不與她獨處,反而把家業打理得更出色,連波提乏都對你另眼相看。但被拒絕的羞怒沒有消失——它只是在等一個機會。終於,她趁你不備,當眾誣告了你。`,
+  verse:"智慧能拖延災禍,卻未必能免去十架。",
+  choices:[
+    {text:"縱使百口莫辯,你坦然走進牢門。", next:"prison", eff:e(2,8,0)},
+  ]
+});
+
 scene("end_fallen",{
-  title:"結局 · 墜落", art:"bad",
+  title:"結局 · 墜落", art:"bad", ref:"What-if · 非聖經結局",
   text:`你越過了那條線。一段時間裡你嚐到禁果的甜,直到流言四起。波提乏歸來,真相無從掩蓋——一個觸犯主母的奴隸,只有一個下場。
 
 聲名與性命,在同一個黃昏裡一起斷送。那賜夢的神並未離棄你,是你先鬆開了祂的手。`,
@@ -313,7 +357,7 @@ scene("end_fallen",{
 });
 
 scene("prison",{
-  title:"第三幕 · 王室監牢", art:"prison",
+  title:"第三幕 · 王室監牢", art:"prison", ref:"創世記 39:20–40:8",
   text:`你被誣陷下監,典獄長卻又把獄務交在你手中。一日,法老的酒政與膳長同被下在這裡,各做了一個無人能解的夢。
 
 你看著他們愁苦的臉,決定——`,
@@ -325,7 +369,7 @@ scene("prison",{
 });
 
 scene("pharaoh",{
-  title:"第四幕 · 法老的夢", art:"pharaoh",
+  title:"第四幕 · 法老的夢", art:"pharaoh", ref:"創世記 41:14–40",
   text:`兩年後,法老連做兩夢:七隻瘦牛吞吃七隻肥牛,七個焦穗吞沒七個飽穗。術士無人能解,酒政終於想起了你。
 
 你站在埃及至高者面前,解明:七個豐年之後必有七個荒年。法老大喜:「像你這樣有 神的靈的,還能找到誰呢?」你會——`,
@@ -338,7 +382,7 @@ scene("pharaoh",{
 });
 
 scene("end_shepherd",{
-  title:"結局 · 歸鄉", art:"neutral",
+  title:"結局 · 歸鄉", art:"neutral", ref:"What-if · 非聖經結局",
   text:`你謝絕了印戒,法老厚賜遣你還鄉。荒年來時,埃及在別人手裡勉強撐過,死傷無數;你救了自己一家,卻錯過了拯救萬民的位分。
 
 你是個好人,一個好牧人。只是每逢星夜,你總覺得有什麼宏大的東西,從指間靜靜溜走了。那個夢,終究只是個夢。`,
@@ -347,7 +391,7 @@ scene("end_shepherd",{
 });
 
 scene("vizier",{
-  title:"第四幕 · 埃及宰相", art:"grain",
+  title:"第四幕 · 埃及宰相", art:"grain", ref:"創世記 41:41–57",
   text:`法老摘下印戒戴在你指間。你年三十,一人之下,萬人之上。七個豐年積糧如海沙,然後饑荒照夢而至,連迦南也哀鴻遍野。
 
 各地的人湧來糴糧,你掌握著無數人的生死。你會如何運用這權柄?`,
@@ -359,7 +403,7 @@ scene("vizier",{
 });
 
 scene("brothers_come",{
-  title:"第五幕 · 似曾相識的臉", art:"reunion",
+  title:"第五幕 · 似曾相識的臉", art:"reunion", ref:"創世記 42:6–9",
   text:`一天,十個風塵僕僕的迦南人俯伏在你階前求糴糧。你一眼認出他們——當年丟你入井、賣你為奴的哥哥。他們卻認不出這位埃及宰相,就是那個彩衣少年。
 
 禾捆的夢正在你眼前下拜。你會——`,
@@ -372,7 +416,7 @@ scene("brothers_come",{
 });
 
 scene("test_brothers",{
-  title:"第五幕 · 試探", art:"reunion",
+  title:"第五幕 · 試探", art:"reunion", ref:"創世記 44:14–34",
   text:`你佯稱他們是奸細,又把銀杯藏進么弟便雅憫的袋裡,要將他扣為奴。
 
 就在這時,當年提議賣你的猶大越眾而出:「求你容僕人替這孩子作奴僕!我不忍見父親遭難。」他願以自己換弟弟——他們,真的變了。你會——`,
@@ -383,7 +427,7 @@ scene("test_brothers",{
 });
 
 scene("end_revenge",{
-  title:"結局 · 復仇的筵席", art:"bad",
+  title:"結局 · 復仇的筵席", art:"bad", ref:"What-if · 非聖經結局",
   text:`你把他們投入大牢,看著當年的恐懼爬上他們的臉。你設下筵席,卻在杯中嚐不出半點滋味。
 
 便雅憫被你扣下,老父雅各的死訊隨後傳來。你贏了,你讓他們嚐盡了你嚐過的苦。可是夜裡,坑底那圈天光又出現在夢中——而這一次,連神也沉默了。`,
@@ -392,7 +436,7 @@ scene("end_revenge",{
 });
 
 scene("resolve",{
-  title:"終幕 · 相認", art:"reunion",
+  title:"終幕 · 相認", art:"reunion", ref:"創世記 45:1–15",
   text:`你屏退左右,放聲大哭。「我是約瑟,你們賣到埃及的兄弟。不要憂愁自恨——是 神差我在你們以先來,為要保全你們的性命。」
 
 你伏在便雅憫頸上哭,又與眾兄弟親嘴。法老聽聞大為歡喜,賜下歌珊美地。你接父親雅各下埃及團聚。`,
@@ -403,7 +447,7 @@ scene("resolve",{
 });
 
 scene("final_judge",{
-  title:"終幕 · 飽足之地", art:"good",
+  title:"終幕 · 飽足之地", art:"good", ref:"創世記 45:25–47:12",
   text:`雅各見到你,抱住你久久說不出話:「我既見你的面,知道你還在,就是死我也甘心。」
 
 七個荒年裡,你用積存的糧食餵養了埃及,也餵養了從列國湧來的萬民。彩衣少年的夢終於完全應驗——不是為了被人下拜,而是為了讓人存活。`,
@@ -411,10 +455,43 @@ scene("final_judge",{
 });
 
 /* ============================================================
+   音效 (Web Audio，無外部檔案)
+   ============================================================ */
+let audioCtx=null, muted = localStorage.getItem("joseph_mute")==="1";
+function ac(){ if(!audioCtx){ try{ const W=window.AudioContext||window.webkitAudioContext; audioCtx=new W(); }catch(_){ } } return audioCtx; }
+function tone(freq,dur,type,vol,delay){
+  if(muted) return;
+  const c=ac(); if(!c) return;
+  if(c.state==="suspended") c.resume();
+  const o=c.createOscillator(), g=c.createGain();
+  o.type=type||"sine"; o.frequency.value=freq;
+  o.connect(g); g.connect(c.destination);
+  const t=c.currentTime+(delay||0);
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(vol||0.13,t+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.start(t); o.stop(t+dur+0.02);
+}
+function sfxClick(){ tone(440,0.10,"triangle",0.10); }
+function sfxGain(eff){
+  if(!eff) return;
+  if(eff.hate) tone(170,0.20,"sine",0.12);
+  else if(eff.wisdom) tone(520,0.16,"sine",0.11);
+  else if(eff.faith) tone(660,0.18,"sine",0.11);
+}
+function sfxEnd(kind){
+  if(kind==="good"){ [523,659,784,1047].forEach((f,i)=>tone(f,0.5,"sine",0.14,i*0.13)); }
+  else if(kind==="bad"){ [233,196,165].forEach((f,i)=>tone(f,0.55,"sawtooth",0.10,i*0.16)); }
+  else { tone(392,0.5,"sine",0.12); tone(330,0.5,"sine",0.10,0.12); }
+}
+
+/* ============================================================
    引擎
    ============================================================ */
-const stats = {faith:18, wisdom:15, hate:5};
+const START={faith:18, wisdom:15, hate:5};
+const stats = {...START};
 let history = [];
+let journey = [];   // 旅程紀錄
 const $ = id=>document.getElementById(id);
 function clamp(v){return Math.max(0,Math.min(100,v));}
 function applyEff(eff){ if(!eff)return;
@@ -427,8 +504,17 @@ function renderStats(){
   document.querySelector(".wisdom>i").style.width=stats.wisdom+"%";
   document.querySelector(".hate>i").style.width=stats.hate+"%";
 }
-function paragraphs(txt){
-  return txt.split("\n\n").map(p=>`<p>${p.replace(/\n/g,"<br>")}</p>`).join("");
+function floatStat(eff){
+  const colors={faith:"#e8c46a",wisdom:"#8fc1e0",hate:"#d3675c"};
+  ["faith","wisdom","hate"].forEach(k=>{
+    const v=eff&&eff[k]; if(!v) return;
+    const row=document.querySelector('.statRow[data-k="'+k+'"]'); if(!row) return;
+    const s=document.createElement("span");
+    s.className="floatup"; s.style.color=colors[k];
+    s.textContent=(v>0?"+":"−")+Math.abs(v);
+    row.appendChild(s); setTimeout(()=>s.remove(),900);
+    const bar=row.querySelector(".bar"); if(bar){ bar.classList.add("flash"); setTimeout(()=>bar.classList.remove("flash"),500); }
+  });
 }
 function effChips(eff){
   if(!eff) return "";
@@ -436,12 +522,38 @@ function effChips(eff){
   let out="";
   for(const [k,label,color] of map){
     const v=eff[k]||0; if(v===0) continue;
-    const sign=v>0?"+":"−";
-    out+=`<span class="eff" style="color:${color};border-color:${color}66">${sign}${Math.abs(v)} ${label}</span>`;
+    out+=`<span class="eff" style="color:${color};border-color:${color}66">${v>0?"+":"−"}${Math.abs(v)} ${label}</span>`;
   }
   return out?`<div class="effs">${out}</div>`:"";
 }
-function save(curId){ localStorage.setItem("joseph_save", JSON.stringify({curId, stats, history})); }
+function paraHTML(txt){ return txt.split("\n\n").map(p=>`<p>${p.replace(/\n/g,"<br>")}</p>`).join(""); }
+
+/* 打字機 */
+let typer=null;
+function typeWriter(el, text, verse, done){
+  if(typer){ clearInterval(typer); typer=null; }
+  el.classList.add("typing");
+  let i=0; const n=text.length;
+  function paint(){
+    const typed=text.slice(0,i);
+    el.innerHTML=paraHTML(typed)+'<span class="caret">▌</span>';
+  }
+  function finish(){
+    if(typer){ clearInterval(typer); typer=null; }
+    el.classList.remove("typing");
+    el.innerHTML=paraHTML(text)+(verse?`<div class="verse">${verse}</div>`:"");
+    el._skip=null;
+    if(done) done();
+  }
+  el._skip=finish;
+  paint();
+  typer=setInterval(()=>{
+    i+=1; paint();
+    if(i>=n) finish();
+  }, 16);
+}
+
+function save(curId){ localStorage.setItem("joseph_save", JSON.stringify({curId, stats, history, journey})); }
 function loadSave(){ try{return JSON.parse(localStorage.getItem("joseph_save"));}catch(_){return null;} }
 function unlock(endId){
   if(!unlocked.includes(endId)){ unlocked.push(endId); localStorage.setItem("joseph_endings", JSON.stringify(unlocked)); }
@@ -449,6 +561,20 @@ function unlock(endId){
 function pickDynamicEnding(){
   if(stats.faith>=60 && stats.hate<=15) return "faith_crown";
   return "reconcile";
+}
+
+function journeyHTML(){
+  if(!journey.length) return "";
+  const ic={faith:["信心","#e8c46a"],wisdom:["智慧","#8fc1e0"],hate:["怨恨","#d3675c"]};
+  const rows=journey.map(j=>{
+    let chip="";
+    for(const k of ["faith","wisdom","hate"]){
+      const v=j.eff&&j.eff[k]; if(!v) continue;
+      chip+=`<span class="je" style="color:${ic[k][1]}">${v>0?"+":"−"}${Math.abs(v)}${ic[k][0]}</span> `;
+    }
+    return `<div class="jrow"><div class="jt">${j.title}</div><div class="jc">${j.choice}${j.bible?' <span style="color:#9cc0ee">📖</span>':''}</div><div>${chip}</div></div>`;
+  }).join("");
+  return `<div class="journey"><b>— 你 的 旅 程 —</b>${rows}</div>`;
 }
 
 function go(id){
@@ -460,26 +586,33 @@ function go(id){
   if(sc.dynamic) endingId = pickDynamicEnding();
 
   $("sceneTitle").textContent = sc.title||"";
-  $("art").innerHTML = `<svg viewBox="0 0 400 190" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${artSVG(sc.art|| (endingId?ENDINGS[endingId].kind:"coat"))}</svg>`;
+  const refEl=$("ref");
+  refEl.textContent = sc.ref||"";
+  refEl.className = "ref"+(sc.fiction||(sc.ref&&sc.ref.indexOf("What-if")>=0)?" fiction":"");
+
+  const art=$("art");
+  art.classList.remove("fade"); void art.offsetWidth; art.classList.add("fade");
+  art.innerHTML = `<svg viewBox="0 0 400 190" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${artSVG(sc.art|| (endingId?ENDINGS[endingId].kind:"coat"))}</svg>`;
 
   const main = $("text");
-  main.classList.remove("fade"); void main.offsetWidth; main.classList.add("fade");
-  let html = paragraphs(sc.text);
-  if(sc.verse) html += `<div class="verse">${sc.verse}</div>`;
-
   const choicesEl = $("choices");
   choicesEl.innerHTML="";
 
   if(endingId){
     unlock(endingId);
     const E = ENDINGS[endingId];
-    html = `<div class="ending">
+    sfxEnd(E.kind);
+    main.classList.remove("typing");
+    main.innerHTML = `<div class="ending">
         <div class="badge">— 結 局 —</div>
         <h2>${E.name}</h2>
         <div class="kind ${E.kind}">${E.kind==="good"?"★ 美好結局":E.kind==="bad"?"☠ 悲劇結局":"◇ 中性結局"}</div>
         ${E.canonical?'<div class="canon">📖 這是聖經創世記中約瑟真實的結局</div>':''}
-      </div>` + html;
-    main.innerHTML = html;
+      </div>`
+      + paraHTML(sc.text)
+      + (sc.verse?`<div class="verse">${sc.verse}</div>`:"")
+      + (E.reflect?`<div class="reflect"><b>反思</b>${E.reflect}</div>`:"")
+      + journeyHTML();
     const total=Object.keys(ENDINGS).length;
     choicesEl.append(
       mkChoice("↻ 再玩一次,走不同的路",()=>reset()),
@@ -490,17 +623,27 @@ function go(id){
     renderStats(); return;
   }
 
-  main.innerHTML = html;
-  (sc.choices||[]).forEach(c=>{
-    if(c.cond && !c.cond(stats)) return;
-    const btn=mkChoice("",()=>{ applyEff(c.eff); renderStats(); go(c.next); });
-    const bibleTag = c.bible?`<span class="tag bible">📖 聖經</span>`:"";
-    const tagHtml = c.tag?`<span class="tag ${c.whatif?'whatif':''}">${c.tag}</span>`:"";
-    btn.innerHTML = bibleTag + tagHtml + c.text + effChips(c.eff);
-    choicesEl.append(btn);
-  });
+  // 一般場景：打字機 → 完成後顯示選項
+  typeWriter(main, sc.text, sc.verse, ()=>renderChoices(sc));
   $("progress").textContent = `第 ${history.length} 段`;
   renderStats(); save(id);
+}
+
+function renderChoices(sc){
+  const choicesEl=$("choices");
+  choicesEl.innerHTML="";
+  (sc.choices||[]).forEach(c=>{
+    if(c.cond && !c.cond(stats)) return;
+    const btn=mkChoice("",()=>{
+      sfxClick(); sfxGain(c.eff);
+      applyEff(c.eff); floatStat(c.eff); renderStats();
+      journey.push({title:(sc.title||"").replace(/^第.+· /,""), choice:c.text, eff:c.eff, bible:!!c.bible});
+      go(c.next);
+    });
+    const bibleTag=c.bible?`<span class="tag bible">📖 聖經</span>`:"";
+    btn.innerHTML = bibleTag + c.text + effChips(c.eff);
+    choicesEl.append(btn);
+  });
 }
 
 function mkChoice(txt,fn){
@@ -508,7 +651,7 @@ function mkChoice(txt,fn){
   b.className="choice"; if(txt)b.textContent=txt; b.onclick=fn; return b;
 }
 function reset(){
-  stats.faith=18; stats.wisdom=15; stats.hate=5; history=[];
+  Object.assign(stats,START); history=[]; journey=[];
   localStorage.removeItem("joseph_save"); go("start");
 }
 function openGallery(){
@@ -526,18 +669,28 @@ function openGallery(){
   }
   $("modalBg").classList.add("show");
 }
+function renderMute(){ $("mute").textContent = muted?"🔇 音效關":"🔊 音效開"; }
+
+/* 點擊故事文字可跳過打字機 */
+$("text").addEventListener("click", ()=>{ const el=$("text"); if(el._skip) el._skip(); });
 
 $("restart").onclick=()=>{ if(confirm("確定要從頭開始嗎?目前進度會消失。")) reset(); };
 $("gallery").onclick=openGallery;
+$("mute").onclick=()=>{ muted=!muted; localStorage.setItem("joseph_mute",muted?"1":"0"); renderMute(); if(!muted) sfxClick(); };
 $("closeModal").onclick=()=>$("modalBg").classList.remove("show");
 $("modalBg").onclick=ev=>{ if(ev.target===$("modalBg")) $("modalBg").classList.remove("show"); };
 
 (function init(){
+  renderMute();
   const sv=loadSave();
   if(sv && sv.curId && S[sv.curId]){
     Object.assign(stats, sv.stats||{});
-    history = sv.history||[];
-    renderStats(); go(sv.curId);
+    history = sv.history||[]; journey = sv.journey||[];
+    renderStats();
+    // 續玩時直接顯示，不重播打字機
+    const sc=S[sv.curId];
+    history.pop(); // go 會再 push
+    go(sv.curId);
   }else{ go("start"); }
 })();
 </script>
