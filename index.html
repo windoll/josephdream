@@ -65,6 +65,11 @@
     background:var(--gold-soft); padding:1px 8px; border-radius:20px; margin-right:8px; vertical-align:middle;
   }
   button.choice .tag.whatif{background:var(--accent)}
+  button.choice .tag.bible{background:#3a5a8c; color:#eaf2ff}
+  .ending .canon{
+    margin-top:14px; font-size:13px; color:#9cc0ee; letter-spacing:.12em;
+    border:1px solid #3a5a8c; border-radius:20px; padding:6px 14px; display:inline-block;
+  }
   .effs{display:flex; gap:7px; margin-top:9px; flex-wrap:wrap}
   .eff{
     font-size:11.5px; letter-spacing:.05em; padding:2px 9px; border-radius:20px;
@@ -221,7 +226,7 @@ function artSVG(key){
 
 /* ---------- 結局 (共 5 種) ---------- */
 const ENDINGS = {
-  reconcile:  {name:"飽足之地", kind:"good", desc:"寬恕了哥哥,全家在歌珊團聚。約瑟故事的經典結局。"},
+  reconcile:  {name:"飽足之地", kind:"good", canonical:true, desc:"寬恕了哥哥,全家在歌珊團聚。這是聖經創世記中約瑟真實的結局。"},
   faith_crown:{name:"夢的應驗", kind:"good", desc:"自始至終信靠那位賜夢的神,信心極高而毫無怨恨,夢完全應驗。隱藏結局。"},
   revenge:    {name:"復仇的筵席", kind:"bad",  desc:"當哥哥跪下時,讓怨恨主導了你,選擇了報復。"},
   fallen:     {name:"墜落的奴隸", kind:"bad",  desc:"在波提乏家屈服於試探,聲名與性命一同墜落。"},
@@ -245,7 +250,7 @@ scene("start",{
   choices:[
     {text:"向賜夢的神默禱、交託。", next:"dothan", eff:e(13,0,0)},
     {text:"把夢藏在心裡,靜觀其變。", next:"dothan", eff:e(0,13,0)},
-    {text:"在哥哥面前大方說出夢境。", next:"dothan", eff:e(0,0,15)},
+    {text:"在哥哥面前大方說出夢境。", next:"dothan", eff:e(0,0,15), bible:true},
   ]
 });
 
@@ -255,7 +260,7 @@ scene("dothan",{
 
 「來吧,我們把他殺了,丟在坑裡!」密謀順著風飄來。大哥流便想攔阻,口氣卻軟弱。危機當前,你——`,
   choices:[
-    {text:"坦然面對,把性命交託神手。", next:"the_pit", eff:e(13,0,0)},
+    {text:"坦然面對,把性命交託神手。", next:"the_pit", eff:e(13,0,0), bible:true},
     {text:"機智周旋,冷靜觀察局勢。", next:"the_pit", eff:e(0,13,0)},
     {text:"怒視哥哥,把這筆帳記在心上。", next:"the_pit", eff:e(0,0,15)},
   ]
@@ -268,7 +273,7 @@ scene("the_pit",{
 不久,一隊以實瑪利商人經過,猶大說:「賣了他吧。」繩子垂下,二十塊銀子易了主。在被拉上去的那一刻,你心裡——`,
   verse:"「這是 神的差遣,在你們以先打發我來。」",
   choices:[
-    {text:"向神呼求,相信這一切自有安排。", next:"egypt_arrive", eff:e(13,0,0)},
+    {text:"向神呼求,相信這一切自有安排。", next:"egypt_arrive", eff:e(13,0,0), bible:true},
     {text:"冷靜盤算,在異邦該如何活下去。", next:"egypt_arrive", eff:e(0,13,0)},
     {text:"暗記每張臉,發誓有朝一日報復。", next:"egypt_arrive", eff:e(0,0,16)},
   ]
@@ -281,7 +286,7 @@ scene("egypt_arrive",{
 你決定怎麼在這異邦立足?`,
   verse:"「耶和華與約瑟同在,他就百事順利。」",
   choices:[
-    {text:"敬畏神,以忠心服事主人。", next:"steward", eff:e(13,0,0)},
+    {text:"敬畏神,以忠心服事主人。", next:"steward", eff:e(13,0,0), bible:true},
     {text:"用心鑽研埃及的語言與律法。", next:"steward", eff:e(0,13,0)},
     {text:"怨懟命運,只暗中為自己打算。", next:"steward", eff:e(0,0,12)},
   ]
@@ -293,7 +298,7 @@ scene("steward",{
 
 某個午後,僕人都不在。她抓住你的衣襟:「你與我同寢吧。」你會——`,
   choices:[
-    {text:"「我怎能得罪神?」撇下外衣奪門而逃。", next:"prison", eff:e(14,0,0)},
+    {text:"「我怎能得罪神?」撇下外衣奪門而逃。", next:"prison", eff:e(14,0,0), bible:true},
     {text:"不卑不亢,以言語冷靜地勸退她。", next:"prison", eff:e(0,13,0)},
     {text:"屈服於慾望與權勢,越過那條線。", next:"end_fallen", eff:e(0,0,0)},
   ]
@@ -313,7 +318,7 @@ scene("prison",{
 
 你看著他們愁苦的臉,決定——`,
   choices:[
-    {text:"「解夢豈不出於神?」謙卑為他們解明。", next:"pharaoh", eff:e(13,0,0)},
+    {text:"「解夢豈不出於神?」謙卑為他們解明。", next:"pharaoh", eff:e(13,0,0), bible:true},
     {text:"冷靜分析夢的徵象,展現你的才智。", next:"pharaoh", eff:e(0,13,0)},
     {text:"為自己邀功,心裡盤算如何脫身。", next:"pharaoh", eff:e(0,0,11)},
   ]
@@ -326,7 +331,7 @@ scene("pharaoh",{
 你站在埃及至高者面前,解明:七個豐年之後必有七個荒年。法老大喜:「像你這樣有 神的靈的,還能找到誰呢?」你會——`,
   verse:"「你可以掌管我的家;我的民都必聽從你。」",
   choices:[
-    {text:"領受呼召,把一切榮耀歸給神。", next:"vizier", eff:e(13,0,0)},
+    {text:"領受呼召,把一切榮耀歸給神。", next:"vizier", eff:e(13,0,0), bible:true},
     {text:"獻上積糧治國的良策,證明己能。", next:"vizier", eff:e(0,13,0)},
     {text:"厭倦這權力場,婉拒高位只求歸鄉。", next:"end_shepherd", eff:e(0,0,0)},
   ]
@@ -347,7 +352,7 @@ scene("vizier",{
 
 各地的人湧來糴糧,你掌握著無數人的生死。你會如何運用這權柄?`,
   choices:[
-    {text:"按公義售糧、賑濟貧弱,存留眾民。", next:"brothers_come", eff:e(13,0,0)},
+    {text:"按公義售糧、賑濟貧弱,存留眾民。", next:"brothers_come", eff:e(13,0,0), bible:true},
     {text:"巧設制度,讓國庫與百姓兩全其美。", next:"brothers_come", eff:e(0,13,0)},
     {text:"趁饑荒收盡銀錢田地,使萬民為奴。", next:"brothers_come", eff:e(0,0,12)},
   ]
@@ -361,7 +366,7 @@ scene("brothers_come",{
   verse:"報應在我,還是寬恕由我?",
   choices:[
     {text:"放下一切,當場寬恕、與他們相認。", next:"resolve", eff:e(11,0,-12)},
-    {text:"先設計試探,看他們是否真心悔改。", next:"test_brothers", eff:e(0,12,0)},
+    {text:"先設計試探,看他們是否真心悔改。", next:"test_brothers", eff:e(0,12,0), bible:true},
     {text:"借權勢羞辱、囚禁他們,以牙還牙。", next:"end_revenge", cond:s=>s.hate>=25, eff:e(0,0,16)},
   ]
 });
@@ -372,7 +377,7 @@ scene("test_brothers",{
 
 就在這時,當年提議賣你的猶大越眾而出:「求你容僕人替這孩子作奴僕!我不忍見父親遭難。」他願以自己換弟弟——他們,真的變了。你會——`,
   choices:[
-    {text:"再也忍不住,揭開身分與他們相認。", next:"resolve", eff:e(11,0,-14)},
+    {text:"再也忍不住,揭開身分與他們相認。", next:"resolve", eff:e(11,0,-14), bible:true},
     {text:"仍不肯放下,終究選擇報復。", next:"end_revenge", cond:s=>s.hate>=18, eff:e(0,0,12)},
   ]
 });
@@ -472,6 +477,7 @@ function go(id){
         <div class="badge">— 結 局 —</div>
         <h2>${E.name}</h2>
         <div class="kind ${E.kind}">${E.kind==="good"?"★ 美好結局":E.kind==="bad"?"☠ 悲劇結局":"◇ 中性結局"}</div>
+        ${E.canonical?'<div class="canon">📖 這是聖經創世記中約瑟真實的結局</div>':''}
       </div>` + html;
     main.innerHTML = html;
     const total=Object.keys(ENDINGS).length;
@@ -488,7 +494,9 @@ function go(id){
   (sc.choices||[]).forEach(c=>{
     if(c.cond && !c.cond(stats)) return;
     const btn=mkChoice("",()=>{ applyEff(c.eff); renderStats(); go(c.next); });
-    btn.innerHTML = (c.tag?`<span class="tag ${c.whatif?'whatif':''}">${c.tag}</span>`:"") + c.text + effChips(c.eff);
+    const bibleTag = c.bible?`<span class="tag bible">📖 聖經</span>`:"";
+    const tagHtml = c.tag?`<span class="tag ${c.whatif?'whatif':''}">${c.tag}</span>`:"";
+    btn.innerHTML = bibleTag + tagHtml + c.text + effChips(c.eff);
     choicesEl.append(btn);
   });
   $("progress").textContent = `第 ${history.length} 段`;
@@ -512,7 +520,7 @@ function openGallery(){
     const row=document.createElement("div");
     row.className="endrow"+(got?"":" locked");
     row.innerHTML = got
-      ? `<div><div class="nm">${E.kind==="good"?"★":E.kind==="bad"?"☠":"◇"} ${E.name}</div><div class="ds">${E.desc}</div></div>`
+      ? `<div><div class="nm">${E.kind==="good"?"★":E.kind==="bad"?"☠":"◇"} ${E.name}${E.canonical?' <span style="color:#9cc0ee">📖</span>':''}</div><div class="ds">${E.desc}</div></div>`
       : `<div><div class="nm">？？？</div><div class="ds">尚未解鎖的結局</div></div>`;
     list.append(row);
   }
