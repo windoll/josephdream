@@ -22,6 +22,8 @@
 
 這款遊戲的目標受眾是**青少年**,核心訴求是「**讓選擇真的有後果**」。歷經多次改版後的定案:
 
+**主題層(2026-06 定案)**:遊戲同時承載三個牧養目標——①了解每個人都有原生家庭,影響我們對關係的想法(「父親的故事」場景:偏心與欺騙的三代傳承);②以溫和安全的方式讓青少年看見自己的家庭模式(固定討論題的「三段安全橋」:約瑟家→觀察到的模式→自己[可保留不說]);③從聖經觀點明白最終身份根源在神(「兩個名字」瑪拿西/以法蓮場景 + 各結局的「🌱 身份的根」)。改文案時別破壞這三條線。
+
 1. **三屬性必須是「槓桿」而非「鏡子」** — 屬性不能只是默默累積、最後分類結局而已。它們要**在過程中實際影響可選項與走向**(門檻、取捨、風險)。任何改動都要維持這點。
 2. **語氣 = 中間偏文學** — 青少年聽得懂、不老氣、但仍有質感與意象。別寫成太文言,也別太幼稚或太網路梗。
 3. **聖經淡化為背景** — 保留 📖 標記、章節出處、結局反思,但**故事優先、降低說教感**。經文出處(`ref`)刻意做得小而淡。
@@ -60,16 +62,24 @@
 > **設計重點**:`reconcile` 要求信心+智慧雙高,所以「砍信心換野心」的取捨**會讓你失去最圓滿的結局**——這是取捨「有代價」的關鍵機制,別改回單純比大小。
 
 ### 主要場景流向
-`start → dothan →`(賭智慧:`flee_wild` / `the_pit`,或直接 `the_pit`)`→ egypt →`(賭野心:`egypt_schemed` / `egypt_burned`,或直接)`→ temptation →`(逃離→`prison` / 智取[智≥40]→`outwit1→outwit2→prison` / 屈服→`end_fallen`)`→ prison → pharaoh →`(賭信心📖:成功→`vizier` / 失敗→`pharaoh_doubt→vizier`;或直接 `vizier` / 婉拒→`end_shepherd`)`→ vizier → brothers →`(直接寬恕[信≥50]→`resolve` / 試探→`test_brothers` / 報復→`revenge1`)。`test_brothers →`(相認→`resolve` / 報復→`revenge1`)。`resolve` 為 dynamic 終局。共 20 場景。
+`start → dothan →`(賭智慧:`flee_wild` / `the_pit`,或直接 `the_pit`)`→ memory(父親的故事,主題①,雙路皆經過) → egypt →`(賭野心:`egypt_schemed` / `egypt_burned`,或直接)`→ temptation →`(逃離→`prison` / 智取[智≥40]→`outwit1→outwit2→prison` / 屈服→`end_fallen`)`→ prison → pharaoh →`(賭信心📖:成功→`sons` / 失敗→`pharaoh_doubt→sons`;或直接 `sons` / 婉拒→`end_shepherd`)`→ sons(兩個名字,主題③,創41:50–52) → vizier → brothers →`(直接寬恕[信≥50]→`resolve` / 試探→`test_brothers` / 報復→`revenge1`)。`test_brothers →`(相認→`resolve` / 報復→`revenge1`)。`resolve` 為 dynamic 終局。共 22 場景。
 
 ### 標題畫面與啟動流程
 啟動一律呼叫 `showTitle()`(不在 `S` 裡,DFS 驗證不用管它):標題卡+玩法說明(📖/🎲/🔒),偵測到存檔顯示「繼續上次/從頭開始」。footer 有 ⌂ 封面鈕;「重新開始」走自製 confirm modal(`#confirmBg`),不用原生 confirm()。
 
 ### 結局頁區塊(順序固定)
-結局標頭(name/type「你是【X型】的約瑟」/kind/canonical)→ 正文(`E.overrideText||text+callback`)→ `epilogue` → verse(有 overrideText 時抑制)→ `nearMissHTML`(差一點解鎖提示,取 gap 最小一條)→ `bibleLineHTML`(📖 X/Y 統計)→ reflect → `discHTML`(摺疊式小組討論題+列印鈕,列印走 `@media print`)→ journey 回顧(含 ✦ 虛構標記與「本局行經」經文清單)。按鈕:分享(navigator.share→clipboard fallback)/再玩/圖鑑。
+結局標頭(name/type「你是【X型】的約瑟」/kind/canonical)→ 正文(`E.overrideText||text+callback`)→ `epilogue` → verse(有 overrideText 時抑制)→ `nearMissHTML`(差一點解鎖提示,取 gap 最小一條)→ `bibleLineHTML`(📖 X/Y 統計)→ reflect → `identity`(🌱 身份的根,主題③)→ `discHTML()`(摺疊式討論題+列印鈕)→ journey 回顧(含 ✦ 虛構標記與「本局行經」經文清單)。按鈕:分享(share→clipboard→execCommand 三層 fallback)/再玩/圖鑑。
+
+### 討論題(固定一套,不分結局)——牧養安全規範
+`DISC` 常數 5 題,結構是刻意的「三段安全橋」:第 1–2 題只談約瑟家(第三人稱)→ 第 3 題**第三方例子優先**(戲劇/電影/別人家;「想講自己家也可以,但完全不必」)→ 第 4 題完全私密(「在心裡想就好」+ 條件語「如果有的話」+「將來」)→ 第 5 題身份在神(瑪拿西引文**必須**帶重釋「忘了不是假裝沒發生,而是那些事不再替他做決定」;約1:12 保留「凡接待他的」條件語氣)。**改題目時必須保持這個梯度與保護措辭。**
+
+經創傷知情審查後的固定防線(別刪):
+- 帶領者註三行:全題可 pass / 第4題不點名不追問不書寫回收 / 揭露現行傷害的接應原則 + **「原諒不等於回到會繼續傷害你的關係裡」**(約瑟是在哥哥們真的改變後才相認——這層意義必須說出來)
+- 結局頁 `.helpline`:給獨自遊玩孩子的一行求助指引
+- 壞結局的 identity 必須「診斷+留門」,不可停在絕望或本質化定罪(fallen/revenge 已照此改寫);memory 場景正文結尾必須有反宿命句(「這個故事,還沒有寫完」)
 
 ### ENDINGS 額外欄位
-`hint`(圖鑑未解鎖時的謎語線索)、`disc[]`(4 題小組討論題)、`whatif:true`(圖鑑標 ✦ What-if;fallen/shepherd/revenge)。圖鑑集滿 7 結局顯示「🏆 完整的人」橫幅。
+`hint`(圖鑑未解鎖時的謎語線索)、`identity`(「身份的根」一句解讀:這個約瑟把身份建在哪)、`whatif:true`(圖鑑標 ✦ What-if;fallen/shepherd/revenge)。圖鑑集滿 7 結局顯示「🏆 完整的人」橫幅。
 
 ### egypt_lord 的 overrideText
 高野心玩家會經由「淚崩相認」的 `resolve` 場景觸發 `egypt_lord`,但寬恕團圓的正文與「質疑野心」的尾聲會人格矛盾。解法:結局渲染時 `paraHTML(E.overrideText || sc.text)`,並在有 overrideText 時抑制 `sc.verse`。若日後新增「主導屬性與 resolve 語氣衝突」的結局,沿用此模式。

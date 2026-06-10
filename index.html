@@ -101,6 +101,10 @@
   .bibleline{margin-top:10px; font-size:13px; color:#9cc0ee; text-align:center; letter-spacing:.04em}
   .reflect{margin-top:18px; background:#1e160e; border:1px solid #4a3826; border-radius:10px; padding:13px 16px; font-size:14.5px; color:var(--ink-dim); text-align:center;}
   .reflect b{color:var(--gold-soft); letter-spacing:.1em; display:block; margin-bottom:6px; font-size:12px}
+  .identity{margin-top:12px; background:#18200f; border:1px solid #4a5a36; border-radius:10px; padding:13px 16px; font-size:14px; color:#c5d4b2; text-align:center;}
+  .identity b{color:#9ec27f; letter-spacing:.1em; display:block; margin-bottom:6px; font-size:12px}
+  .leadnote{font-size:12px; color:#8d8268; margin:2px 0 10px}
+  .helpline{margin-top:14px; font-size:12.5px; color:#9a8c70; text-align:center; letter-spacing:.03em}
   .disc{margin-top:14px; background:#1e160e; border:1px solid #3a2c1d; border-radius:10px; padding:4px 16px;}
   .disc summary{cursor:pointer; color:var(--gold-soft); font-size:13.5px; letter-spacing:.08em; padding:9px 0;}
   .disc ol{padding:4px 0 12px 22px; font-size:14px; color:var(--ink-dim)}
@@ -245,71 +249,36 @@ const ENDINGS = {
     hint:"讓信心與智慧並肩走到最後,別讓野心吞掉任何一邊。",
     epilogue:"你沒有讓任何一種東西吞掉你——不是信心,不是聰明,也不是野心。你只是,長成了一個完整的人。荒年裡,你餵飽了埃及,也餵飽了當年丟下你的家。彩衣少年的夢應驗了:不是要人下拜,是要人活下去。",
     reflect:"傷害你的人,有一天落在你手裡——你會怎麼做?",
-    disc:[
-      "約瑟對哥哥說:「從前你們的意思是要害我,但神的意思原是好的。」(創世記50:20) 你覺得,他是怎麼一步步走到能說出這句話的?",
-      "整個故事裡,哪一個選擇對你來說最難選?為什麼?",
-      "你有沒有一段「當下覺得很糟,後來回頭看卻有意義」的經歷?跟大家分享一下。",
-      "讀創世記45:1–15:約瑟相認時,最先說的是什麼?這給你什麼提醒?"
-    ]},
+    identity:"他不再是「被偏愛的兒子」,也不只是「被出賣的弟弟」——他把身份放回神手裡,所以有力氣,把家的故事改寫。"},
   faith_crown:{name:"夢的應驗", type:"堅信型", kind:"good",
     hint:"把信靠推到極致——從井底到王座,一次都不鬆手。",
     epilogue:"一路走來,你抓得最緊的,始終是那雙看不見的手。連在井底、在牢裡,你都沒鬆開。如今回頭看,每一步都早被算在裡面。夢應驗了——而你最清楚,這從來不是你一個人的故事。",
     reflect:"在最看不到出路的時候,你抓著的是什麼?",
-    disc:[
-      "在井底、在牢裡,約瑟看不到任何出路。你覺得他憑什麼繼續相信?",
-      "你的生活裡,哪件事最像「被遺忘的兩年」?",
-      "「信心」和「傻傻等待」差在哪裡?",
-      "讀詩篇105:17–19:「耶和華的話試煉他。」你怎麼理解這句話?"
-    ]},
+    identity:"家給不了的安全感,他在神那裡找到了。身份只有一個來源的人,風浪搖不動他。"},
   wise_savior:{name:"萬民的拯救者", type:"智略型", kind:"good",
     hint:"讓頭腦帶路,把聰明用到底——用在救人身上。",
     epilogue:"你用一顆冷靜的腦袋,接住了整個時代。糧政、賑濟、調度——千萬人因為你的計算而活了下來。原來聰明可以這樣用:不是為了贏過誰,是為了救誰。",
     reflect:"你最擅長的那個能力,現在用在哪裡?",
-    disc:[
-      "約瑟的聰明在哪些時刻救了他?又有哪些時刻,光靠聰明不夠?",
-      "你最擅長的能力是什麼?它現在用在哪裡?",
-      "「聰明用來贏過別人」和「聰明用來救人」,差在哪?",
-      "讀創世記41:38–39:法老看出約瑟的智慧從哪裡來?"
-    ]},
+    identity:"他知道才幹是誰給的——所以聰明沒有變成驕傲,反而成了千萬人的活路。"},
   egypt_lord: {name:"埃及的權臣", type:"雄心型", kind:"neutral",
     hint:"當野心壓過其他一切……你會得到全世界,然後呢?",
     overrideText:"你表明了身分,與哥哥相認。淚水是真的,團圓也是真的——你把全家接到歌珊,給他們最好的地,一切做得無可挑剔。\n\n只是當塵埃落定,你回去的地方不是那座帳棚,而是法老朝堂上那個位子。你和哥哥之間,始終隔著一段你沒能跨過去的距離——那段距離的名字,叫做你這些年拼命爭來的一切。",
     epilogue:"你站上了權力的最高處,連法老都倚重你。夢,以另一種方式應驗了。只是夜深的時候,你偶爾會問自己:這一路拼命往上爬,到頭來我真正握住的,是那個夢,還是只是我自己的名字?",
     reflect:"你拼命在追的那個東西,真的是你要的嗎?",
-    disc:[
-      "約瑟得到了一切,為什麼夜深時還會問自己那個問題?",
-      "「成功」和「呼召」,你分得出來嗎?用什麼分?",
-      "有沒有一個你拼命追、追到了卻覺得空的東西?",
-      "讀馬可福音8:36:「人就是賺得全世界,賠上自己的生命,有什麼益處呢?」"
-    ]},
+    identity:"他把身份建在成就上:爬得越高,離家越遠。位子坐穩了,心卻一直沒有回家。"},
   shepherd:   {name:"平凡的牧人", type:"安穩型", kind:"neutral", whatif:true,
     hint:"在命運之門打開的那一刻,轉身回家。",
     epilogue:"你選了安穩,守著羊群終老。你是個好人,一個好牧人。只是每個星夜抬頭,你總覺得有什麼很大的東西,從指縫間靜靜溜走了。",
     reflect:"安穩,和不負自己的天賦之間,你會怎麼選?",
-    disc:[
-      "約瑟拒絕高位,錯了嗎?有沒有「對的拒絕」和「可惜的拒絕」?",
-      "「安穩」和「呼召」,你的天平偏哪邊?為什麼?",
-      "你有沒有一次「怕麻煩所以沒舉手」的時刻?後來呢?",
-      "讀馬太福音25:14–30(才幹的比喻):那個把銀子埋起來的僕人,錯在哪?"
-    ]},
+    identity:"他用「不去碰」回應了家給的傷——安穩沒有錯,只是連神放在他裡面的那個夢,也一起收進了櫃子。"},
   fallen:     {name:"墜落", type:"失足型", kind:"bad", whatif:true,
     hint:"在沒有人看見的時候,鬆開手。",
     reflect:"沒有人看見的時候,你是誰?",
-    disc:[
-      "「沒人會知道」——這句話騙人的地方在哪?",
-      "約瑟說「我怎能做這大惡,得罪神?」(創世記39:9)——他守住的,其實是什麼?",
-      "你的生活裡,最常出現的「沒人看見的時刻」是什麼?",
-      "一次失足之後,還回得去嗎?聖經裡有誰跌倒後又站起來了?"
-    ]},
+    identity:"沒人看見的時候,他忘了自己是誰的人。但忘了一次,不等於從此不是——故事,隨時可以從認回身份的那一刻,重新開始。"},
   revenge:    {name:"復仇的筵席", type:"復仇型", kind:"bad", whatif:true,
     hint:"讓恨,吃掉那個夢。",
     reflect:"報復讓你贏了,為什麼心裡還是空的?",
-    disc:[
-      "報復成功了,為什麼筵席吃起來沒有味道?",
-      "「原諒」會不會等於「便宜了對方」?約瑟設局試探哥哥(創世記44),說明了什麼?",
-      "你心裡有沒有一張「記下來的臉」?這個結局怎麼挑戰你?",
-      "讀羅馬書12:19:「伸冤在我,我必報應。」把「報應」交出去,難在哪裡?"
-    ]},
+    identity:"他把身份留在傷口裡——傷口替他做了所有決定。可是,傷口說了算的故事,任何一頁,都還來得及換人執筆。"},
 };
 let unlocked = [];
 try{ const v = JSON.parse(localStorage.getItem("joseph_endings")||"[]"); if(Array.isArray(v)) unlocked = v; }catch(_){}
@@ -322,6 +291,8 @@ const e = (faith=0,wisdom=0,ambition=0)=>({faith,wisdom,ambition});
 scene("start",{
   title:"第一幕 · 偏心的代價", art:"coat", ref:"創世記 37:3–9",
   text:`你十七歲。父親給你的彩衣,在哥哥們眼裡比刀還刺眼——他們已經很久不跟你說話,連聲「早」都省了。
+
+在這個家,愛從來沒有平均分過。聽說,爺爺那一代,就已經是這樣了。
 
 而你昨晚又夢見了:田裡的禾捆,他們的捆,全向你的捆彎下腰。
 
@@ -356,7 +327,7 @@ scene("flee_wild",{
 
 方向沒變:埃及。只是這一次,把你賣掉的不是哥哥,是這片不留情面的曠野。`,
   choices:[
-    {text:"戴上鎖鏈,走向尼羅河。", next:"egypt", eff:e(0,10,0), flag:"fled"},
+    {text:"戴上鎖鏈,走向尼羅河。", next:"memory", eff:e(0,10,0), flag:"fled"},
   ]
 });
 
@@ -368,9 +339,27 @@ scene("the_pit",{
 
 繩子垂下來。二十塊銀子,你換了個主人。`,
   choices:[
-    {text:"在井底,你選擇相信:這條路上有人帶著你走。", next:"egypt", eff:e(10,0,0)},
-    {text:"你冷靜記下商隊的路線、買賣的行話。", next:"egypt", eff:e(0,10,0)},
-    {text:"你對商隊頭目誇口本事,讓自己被高價賣進權貴之家。", next:"egypt", eff:e(0,0,10), req:{stat:"ambition", val:40}},
+    {text:"在井底,你選擇相信:這條路上有人帶著你走。", next:"memory", eff:e(10,0,0)},
+    {text:"你冷靜記下商隊的路線、買賣的行話。", next:"memory", eff:e(0,10,0)},
+    {text:"你對商隊頭目誇口本事,讓自己被高價賣進權貴之家。", next:"memory", eff:e(0,0,10), req:{stat:"ambition", val:40}},
+  ]
+});
+
+scene("memory",{
+  title:"第一幕 · 商隊路上 · 父親的故事", art:"desert", ref:"虛構場景 · 家族往事均出自創世記 25、27、29–31", fiction:true,
+  text:`駝鈴搖晃,埃及還很遠。你忽然想起,父親說過的那些往事——
+
+爺爺的家,愛也是分邊的:爺爺疼大伯,奶奶護著父親。後來父親用一碗紅豆湯換走了大伯的長子名分,又披上羊皮騙走了祝福,只能逃命;投奔他自己的舅舅,新婚夜被掉了包,一綁就是十四年——再回頭,二十年的青春,都埋在別人家裡。
+
+逃了一輩子的人,回到家,把愛全押在你一個人身上——然後,輪到了你:哥哥們的恨,把你送上了這條往埃及的路。
+
+同樣的故事,竟然演了三代。
+
+駝鈴還在往前。這個故事,還沒有寫完——下一句,輪到你。`,
+  choices:[
+    {text:"「在某一代,總得有人停下來。也許,就是我。」", next:"egypt", eff:e(10,0,0)},
+    {text:"「這不是命,是模式。看懂的人,就有機會走出去。」", next:"egypt", eff:e(0,10,0)},
+    {text:"「我不要再當這個家的犧牲品。我要活給他們看。」", next:"egypt", eff:e(0,0,10)},
   ]
 });
 
@@ -477,9 +466,9 @@ scene("pharaoh",{
 
 這個夢,你看得懂。問題是,你要怎麼說?`,
   choices:[
-    {text:"「這不在乎我——神必將平安的話回答法老。」當眾宣告七年豐荒,並請法老速設糧官、積糧防荒。", tag:"🎲 賭信心", risk:{stat:"faith", bonus:20, success:"vizier", fail:"pharaoh_doubt", successEff:e(20,0,0), failEff:e(-10,0,0)}, bible:true},
-    {text:"穩紮穩打:解夢,並獻上一套完整的治國方案。", next:"vizier", eff:e(0,10,0)},
-    {text:"趁機開條件,把權力一次抓到滿。", next:"vizier", eff:e(-10,0,20), req:{stat:"ambition", val:50}},
+    {text:"「這不在乎我——神必將平安的話回答法老。」當眾宣告七年豐荒,並請法老速設糧官、積糧防荒。", tag:"🎲 賭信心", risk:{stat:"faith", bonus:20, success:"sons", fail:"pharaoh_doubt", successEff:e(20,0,0), failEff:e(-10,0,0)}, bible:true},
+    {text:"穩紮穩打:解夢,並獻上一套完整的治國方案。", next:"sons", eff:e(0,10,0)},
+    {text:"趁機開條件,把權力一次抓到滿。", next:"sons", eff:e(-10,0,20), req:{stat:"ambition", val:50}},
     {text:"你累了,只想回家,當個普通人。", next:"end_shepherd", eff:e(0,0,0)},
   ]
 });
@@ -492,7 +481,24 @@ scene("pharaoh_doubt",{
 
 第八天,殿門忽然打開——七天裡,沒有任何人能提出第二種解釋,而法老的夢,每夜都回來。他再次召你上殿。這一次,沒有人敢出聲。`,
   choices:[
-    {text:"你站回原處,把同樣的話,再說一次。", next:"vizier", eff:e(10,0,0)},
+    {text:"你站回原處,把同樣的話,再說一次。", next:"sons", eff:e(10,0,0)},
+  ]
+});
+
+scene("sons",{
+  title:"第四幕 · 兩個名字", art:"good", ref:"創世記 41:50–52",
+  text:`豐年裡,你成了家,兩個兒子接連出生。
+
+抱著長子,你給他取名「瑪拿西」——意思是:神使我忘了一切的困苦,和我父的全家。
+
+不是假裝那些事沒發生。是那些事,不再替你做決定了。
+
+次子,你叫他「以法蓮」:神使我在受苦的地方,昌盛。`,
+  verse:"「神使我忘了一切的困苦和我父的全家。」",
+  choices:[
+    {text:"你把過去,輕輕放回神的手裡。", next:"vizier", eff:e(10,0,0), bible:true},
+    {text:"你在心裡記下:這個家的故事,從這兩個名字開始改寫。", next:"vizier", eff:e(0,10,0)},
+    {text:"你發誓,要給他們你沒得到過的一切。", next:"vizier", eff:e(0,0,10)},
   ]
 });
 
@@ -552,7 +558,7 @@ scene("revenge1",{
 
 你扣下了便雅憫;不久,老父親雅各撐不住再一次喪子的打擊,死訊傳來。
 
-你贏了。你讓他們嚐盡了你嚐過的苦。可是夜裡,枯井那圈天光又出現在夢裡——這一次,連神都沉默了。`,
+你贏了。你讓他們嚐盡了你嚐過的苦。可是夜裡,枯井那圈天光又出現在夢裡——這一次,你聽不見那個聲音了。或者,是你不敢聽。`,
   ending:"revenge"
 });
 
@@ -690,11 +696,19 @@ function journeyHTML(){
   return `<div class="journey"><b>— 你 的 旅 程 —</b>${rows}${refsline}</div>`;
 }
 
-function discHTML(E){
-  if(!E.disc) return "";
+/* 固定討論題:三段安全橋（約瑟家 → 觀察到的模式 → 自己,可保留 → 身份在神） */
+const DISC = [
+  "約瑟的家,一代一代重複著同樣的事:爺爺那一代偏心,父親雅各用詭計搶了祝福、又在舅舅家被困了二十年,到了約瑟這一代——還是偏心,還是嫉妒。(創世記 25、27、29–31、37) 你在故事裡,還看到哪些「一代傳一代」的模式?",
+  "哥哥們跪在腳前的那一刻,約瑟其實可以做任何事。他後來做了什麼,跟他的家族「不一樣」的事?",
+  "每個家都有自己的「慣性」——表達愛的方式、吵架的方式、面對錯誤的方式。用戲劇、電影,或你觀察過的別人家來舉例:你看過哪些模式?(想講自己家也可以,但完全不必)",
+  "這一題,在心裡想就好,不用說出來:如果有的話,我的家給過我什麼好東西?有沒有哪一個模式,我希望「將來在我這一代停下來」?——兩問都可以只想一個,或都不想。",
+  "約瑟給長子取名「瑪拿西」——意思是「神使我忘了一切的困苦和我父的全家」(創世記 41:51)。「忘了」不是假裝沒發生,而是那些事不再替他做決定。聖經說,凡接待耶穌的,就有權柄「作神的兒女」(約翰福音 1:12)——身份可以不再由「誰家的孩子」或「被怎麼對待過」決定。如果這是真的,會改變你看自己的方式嗎?",
+];
+function discHTML(){
   return `<details class="disc"><summary>📋 小組討論題（帶大家聊聊）</summary>
     <span class="printlink" id="printSheet">🖨 列印這份討論單</span>
-    <ol>${E.disc.map(q=>`<li>${q}</li>`).join("")}</ol></details>`;
+    <div class="leadnote">給帶領者:①每一題都可以 pass,不需要理由。②第 4 題不點名、不追問、不邀請分享,也不書寫回收。③若有人說出正在發生的傷害:不在小組追問,會後私下陪伴,並連結輔導或專業資源。請向學生說清楚:約瑟是在哥哥們真的改變之後才相認——原諒,不等於回到會繼續傷害你的關係裡。</div>
+    <ol>${DISC.map(q=>`<li>${q}</li>`).join("")}</ol></details>`;
 }
 
 function fallbackCopy(txt, btn){
@@ -759,7 +773,9 @@ function go(id){
       + nearMissHTML(endingId)
       + bibleLineHTML()
       + (E.reflect?`<div class="reflect"><b>想一想</b>${E.reflect}</div>`:"")
-      + discHTML(E)
+      + (E.identity?`<div class="identity"><b>🌱 身份的根</b>${E.identity}</div>`:"")
+      + `<div class="helpline">如果故事裡的某些部分,碰到了你真實的傷——那不是你一個人要扛的。找一個你信任的大人聊聊。</div>`
+      + discHTML()
       + journeyHTML();
     const total=Object.keys(ENDINGS).length;
     const shareBtn=mkChoice("📣 分享我的結局",()=>{
@@ -865,7 +881,7 @@ function showTitle(){
   const main=$("text");
   main.classList.remove("fade"); void main.offsetWidth; main.classList.add("fade");
   main.innerHTML = `<div class="titlecard">
-    <p class="hook">十七歲的約瑟,被親哥哥丟進井裡、賣到埃及。誘惑、冤獄、權力、報復——每一步,都由你決定。</p>
+    <p class="hook">十七歲的約瑟,在一個偏了心的家裡長大——被親哥哥丟進井裡、賣到埃及。誘惑、冤獄、權力、報復——每一步,都由你決定。</p>
     <div class="legend">
       <div class="lead">✦ 每個選擇都有後果 · 7 種結局 · 一輪約 5 分鐘</div>
       <div><span class="tag bible" style="margin-right:6px">📖 聖經</span>聖經記載中約瑟實際的選擇——但不一定是「標準答案」</div>
