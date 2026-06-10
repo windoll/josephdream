@@ -373,27 +373,7 @@ scene("egypt",{
   choices:[
     {text:"誠實、可靠,讓主人完全放心。", next:"temptation", eff:e(10,0,0), bible:true},
     {text:"把埃及的語言、人脈、規矩,摸得透透的。", next:"temptation", eff:e(0,10,0)},
-    {text:"押上全部人脈,賭一條攀進內廷的線。", tag:"🎲 賭野心（成敗都有代價）", risk:{stat:"ambition", bonus:20, success:"egypt_schemed", fail:"egypt_burned", successEff:e(-10,0,20), failEff:e(-10,0,0)}},
-  ]
-});
-
-scene("egypt_schemed",{
-  title:"第二幕 · 內廷的線", art:"pyramid", ref:"虛構支線 · 非聖經記載", fiction:true,
-  text:`賭對了。你結識了內廷總管的書記,幾句得體的話、幾次恰到好處的效勞,你的名字開始在高牆之內流傳。
-
-只是你心裡清楚:這條線是用什麼換來的。某些晚上,你不太敢想父親教過你的那些話。`,
-  choices:[
-    {text:"收起心思,回到波提乏的家。", next:"temptation", eff:e(0,0,10)},
-  ]
-});
-
-scene("egypt_burned",{
-  title:"第二幕 · 反咬一口", art:"bad", ref:"虛構支線 · 非聖經記載", fiction:true,
-  text:`賭輸了。你搭上的那條線,轉頭就把你賣了——他收下你的殷勤,再把你「不安分」的傳聞,原封不動餵回波提乏耳裡。
-
-主人的眼神冷了好幾天,你腰上的鑰匙差點被收回。攀附的代價,你提前嚐到了一口。`,
-  choices:[
-    {text:"咬牙吞下,重新開始。", next:"temptation", eff:e(0,10,0)},
+    {text:"押上人脈,暗中攀一條通往內廷的線。", next:"temptation", eff:e(-10,0,20)},
   ]
 });
 
@@ -407,30 +387,18 @@ scene("temptation",{
   verse:"沒人看見的時候,你是誰?",
   choices:[
     {text:"「我怎能做這大惡,得罪神?」甩開她,奪門而出。", next:"prison", eff:e(10,0,0), bible:true},
-    {text:"不撕破臉,巧妙周旋,反而替自己保住地位。", next:"outwit1", eff:e(0,10,0), req:{stat:"wisdom", val:40}},
+    {text:"不撕破臉,巧妙周旋,反而替自己保住地位。", next:"outwit", eff:e(0,10,0), req:{stat:"wisdom", val:40}},
     {text:"反正沒人看見……你動搖了。", next:"end_fallen", eff:e(0,0,0)},
   ]
 });
 
-scene("outwit1",{
-  title:"第二幕 · 智取（上）", art:"house", ref:"虛構支線 · 非聖經記載", fiction:true,
+scene("outwit",{
+  title:"第二幕 · 智取主母", art:"house", ref:"虛構支線 · 非聖經記載", fiction:true,
   text:`你沒逃,也沒答應。你冷靜地搬出主人的恩情、家族的名聲、埃及嚴酷的律法——一句句替她算後果。她的手,鬆開了。
 
-接下來幾個月,你更小心,絕不和她單獨相處,反而把家業打理得更出色。
+接下來幾個月,你更小心,絕不和她單獨相處,反而把家業打理得更出色。但被拒絕的那把火沒有熄——它只是在等。
 
-但被拒絕的那把火沒有熄。它只是在等。`,
-  choices:[
-    {text:"你心裡清楚,這一天遲早會來。", next:"outwit2", eff:e(0,10,0)},
-  ]
-});
-
-scene("outwit2",{
-  title:"第二幕 · 智取（下）", art:"house", ref:"虛構支線 · 非聖經記載", fiction:true,
-  text:`那天還是來了。她當著眾人誣賴你,還亮出鐵證——一件你「留下」的外衣。
-
-你百口莫辯。但你沒有像個慌張的奴隸,你站得很直。
-
-連把你押進牢裡的典獄長,都忍不住多看了你兩眼。`,
+那天終於來了。她當著眾人誣賴你,還亮出鐵證:一件你「留下」的外衣。你百口莫辯,但你站得很直——連把你押進牢裡的典獄長,都忍不住多看了你兩眼。`,
   choices:[
     {text:"戴上鐐銬,走進監牢。", next:"prison", eff:e(0,10,0)},
   ]
@@ -835,16 +803,19 @@ function doChoice(sc, c){
 function renderChoices(sc){
   const choicesEl=$("choices");
   choicesEl.innerHTML="";
-  const visible=(sc.choices||[]);
-  const multi = visible.length>1;
-  let num=0;
-  visible.forEach(c=>{
+  const rows=[];
+  (sc.choices||[]).forEach(c=>{
     const locked = c.req && stats[c.req.stat] < c.req.val;
-    num++;
-    if(locked){
+    if(locked && !c.lockedNote) return; // 純功能性門檻:不夠就隱藏,夠了才出現(解鎖驚喜)
+    rows.push({c, locked});
+  });
+  const multi = rows.length>1;
+  rows.forEach(({c, locked}, i)=>{
+    const num = i+1;
+    if(locked){ // 有敘事意義的鎖(帶 lockedNote)才顯示
       const lb=document.createElement("button");
       lb.className="choice locked"; lb.disabled=true;
-      lb.innerHTML=`${multi?`<span class="cnum">${num}</span>`:""}🔒 ${c.text}<span class="lockhint">（需要${STAT_LABEL[c.req.stat]} ${c.req.val},目前 ${stats[c.req.stat]}${c.lockedNote||""}）</span>`;
+      lb.innerHTML=`${multi?`<span class="cnum">${num}</span>`:""}🔒 ${c.text}<span class="lockhint">（需要${STAT_LABEL[c.req.stat]} ${c.req.val},目前 ${stats[c.req.stat]}${c.lockedNote}）</span>`;
       choicesEl.append(lb);
       return;
     }
