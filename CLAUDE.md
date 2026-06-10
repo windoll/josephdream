@@ -11,9 +11,12 @@
 
 ### 檔案結構
 - `index.html` — 整個遊戲(樣式、插畫、引擎、劇情全在這)
-- `README.md` — 給玩家/訪客看的公開說明
+- `og.png` / `apple-touch-icon.png` — 社群預覽圖與 iOS 圖示(用 PowerShell System.Drawing 產生,改文案時需重產)
+- `README.md` — 給玩家/訪客看的公開說明(頂部有 GitHub Pages 遊玩連結)
 - `CLAUDE.md` — 本檔
 - `.gitignore` — 排除 `.claude/`(本地設定、launch.json 等不進倉庫)
+
+線上版:https://windoll.github.io/josephdream/ (GitHub Pages 已開通,push main 後約 1–2 分鐘自動更新)
 
 ## 核心設計理念(最重要,別破壞)
 
@@ -33,14 +36,18 @@
 - `ENDINGS` — 7 個結局物件,各有 `name / type(「型」標籤) / kind(good|neutral|bad) / reflect`;善果結局有 `epilogue`;`reconcile` 有 `canonical:true`;`egypt_lord` 有 `overrideText`(見下)。
 
 ### 一個 scene 物件可有的欄位
-- `title, art(artSVG 的鍵), ref(經文出處), fiction(true 則 ref 標紅淡色), text, verse`
+- `title, art(artSVG 的鍵), ref(經文出處), fiction(true 則 ref 顯示「✦ 虛構」樣式), text, verse`
 - `ending:"<id>"` — 直接結局場景
 - `dynamic:true` — 由 `pickDynamicEnding()` 依當下屬性決定結局(目前只有 `resolve`)
 - `choices: [...]`,每個 choice 可有:
   - `text, next, eff`(可含負值 = 取捨)
   - `bible:true` — 顯示「📖 聖經」標籤(代表符合聖經記載)
-  - `cond: s=>bool` + `lockedHint:"..."` — **屬性門檻**。不符時:有 lockedHint 就顯示 🔒 鎖定按鈕(disabled),否則整個選項隱藏。
-  - `risk: {stat, bonus, success, fail, successEff, failEff}` + `tag` — **風險賭注**。`doChoice` 用機率 `p = clamp(stats[stat]+bonus, 10, 90)`,`Math.random()*100 < p` 決定成敗,各走 success/fail 場景、套各自 eff。⚠️ 改 risk 結構時記得同步改 `doChoice`(曾因只改資料沒改 handler 而出 bug)。
+  - `req: {stat, val}`(+選配 `lockedNote`) — **屬性門檻**。不符時顯示 🔒 鎖定按鈕(disabled),提示文字自動生成「需要野心 40,目前 30」+lockedNote。(舊版用 cond+lockedHint,已全面改為 req。)
+  - `risk: {stat, bonus, success, fail, successEff, failEff}` + `tag` — **風險賭注**。`doChoice` 用機率 `p = clamp(stats[stat]+bonus, 10, 90)`,`Math.random()*100 < p` 決定成敗,各走 success/fail 場景、套各自 eff。⚠️ 改 risk 結構時記得同步改 `doChoice`(曾因只改資料沒改 handler 而出 bug)。目前 3 個賭點:dothan(賭智慧)、egypt(賭野心)、pharaoh(賭信心,且該選項同時是 📖)。
+  - `flag:"name"` — 點選後設 `flags[name]=true`(隨存檔保存),供 callback 使用。
+
+### Callback(讓遊戲記得早期選擇)
+`CALLBACKS` 表(scene id → fn 回傳 `{pre,post}`),在 `go()` 渲染時把 pre/post 段落接到 `sc.text` 前後。目前:`grudge`(多坍記恨)→brothers 加一段;`forgave_direct`/`fled`→resolve 加開場句。**結局有 overrideText 時不套 callback。**新增 callback 時用 flags,別解析 journey 文字。
 
 ### 結局判定 `pickDynamicEnding()`(寬恕路線終局)
 順序很重要,別隨意調:
@@ -53,15 +60,28 @@
 > **設計重點**:`reconcile` 要求信心+智慧雙高,所以「砍信心換野心」的取捨**會讓你失去最圓滿的結局**——這是取捨「有代價」的關鍵機制,別改回單純比大小。
 
 ### 主要場景流向
-`start → dothan →`(風險:`flee_wild` 成功 / `the_pit` 失敗,或直接 `the_pit`)`→ egypt → temptation →`(逃離→`prison` / 智取→`outwit1→outwit2→prison` / 屈服→`end_fallen`)`→ prison → pharaoh →`(`vizier` / 婉拒→`end_shepherd`)`→ vizier → brothers →`(寬恕[信≥50]→`resolve` / 試探→`test_brothers` / 報復→`revenge1`)。`test_brothers →`(相認→`resolve` / 報復→`revenge1`)。`resolve` 為 dynamic 終局。
+`start → dothan →`(賭智慧:`flee_wild` / `the_pit`,或直接 `the_pit`)`→ egypt →`(賭野心:`egypt_schemed` / `egypt_burned`,或直接)`→ temptation →`(逃離→`prison` / 智取[智≥40]→`outwit1→outwit2→prison` / 屈服→`end_fallen`)`→ prison → pharaoh →`(賭信心📖:成功→`vizier` / 失敗→`pharaoh_doubt→vizier`;或直接 `vizier` / 婉拒→`end_shepherd`)`→ vizier → brothers →`(直接寬恕[信≥50]→`resolve` / 試探→`test_brothers` / 報復→`revenge1`)。`test_brothers →`(相認→`resolve` / 報復→`revenge1`)。`resolve` 為 dynamic 終局。共 20 場景。
+
+### 標題畫面與啟動流程
+啟動一律呼叫 `showTitle()`(不在 `S` 裡,DFS 驗證不用管它):標題卡+玩法說明(📖/🎲/🔒),偵測到存檔顯示「繼續上次/從頭開始」。footer 有 ⌂ 封面鈕;「重新開始」走自製 confirm modal(`#confirmBg`),不用原生 confirm()。
+
+### 結局頁區塊(順序固定)
+結局標頭(name/type「你是【X型】的約瑟」/kind/canonical)→ 正文(`E.overrideText||text+callback`)→ `epilogue` → verse(有 overrideText 時抑制)→ `nearMissHTML`(差一點解鎖提示,取 gap 最小一條)→ `bibleLineHTML`(📖 X/Y 統計)→ reflect → `discHTML`(摺疊式小組討論題+列印鈕,列印走 `@media print`)→ journey 回顧(含 ✦ 虛構標記與「本局行經」經文清單)。按鈕:分享(navigator.share→clipboard fallback)/再玩/圖鑑。
+
+### ENDINGS 額外欄位
+`hint`(圖鑑未解鎖時的謎語線索)、`disc[]`(4 題小組討論題)、`whatif:true`(圖鑑標 ✦ What-if;fallen/shepherd/revenge)。圖鑑集滿 7 結局顯示「🏆 完整的人」橫幅。
 
 ### egypt_lord 的 overrideText
 高野心玩家會經由「淚崩相認」的 `resolve` 場景觸發 `egypt_lord`,但寬恕團圓的正文與「質疑野心」的尾聲會人格矛盾。解法:結局渲染時 `paraHTML(E.overrideText || sc.text)`,並在有 overrideText 時抑制 `sc.verse`。若日後新增「主導屬性與 resolve 語氣衝突」的結局,沿用此模式。
 
 ### 其他引擎重點
-- `journey[]` 記錄每步選擇(結局畫面的「你的旅程」回顧)。風險選擇會在 choice 後標「(成功)/(失敗)」。
-- 存檔:`localStorage['joseph_save']`(curId/stats/history/journey);已解鎖結局:`localStorage['joseph_endings']`。`init()` 續玩時 `history.pop()` 再讓 `go()` push,避免重複。
+- `journey[]` 每步記錄 `{title, choice, eff, bible, hadB(該幕有無📖選項), icon(分享用 emoji), fic(虛構場景)}`。風險選擇 choice 後標「(成功)/(失敗)」、icon 為 🎲/💥。
+- 存檔:`localStorage['joseph_save']`(curId/stats/history/journey/**flags**);已解鎖結局:`localStorage['joseph_endings']`。續玩時 `history.pop()` 再讓 `go()` push,避免重複。
+- 屬性列顯示數字(`#n_faith` 等),`renderStats` 同步更新 bar 寬、數字與 aria-label。
+- 選項多於 1 個時自動加編號(`.cnum`,給團契喊「選 2 的舉手」用);單一選項渲染成置中「▸ 繼續」樣式(`.single`)。
+- `go()` 每次換場景 `window.scrollTo(0,0)`;header 為 sticky(因此 `#app` **不可**設 overflow:hidden,圓角由 header/footer 自己的 border-radius 處理)。
 - 插畫:`artSVG(key)` 回傳內嵌 SVG 字串。鍵:`coat/desert/pit/pyramid/house/prison/pharaoh/grain/reunion/good/bad/neutral`。⚠️ 各 SVG 共用 `id="sky"` 漸層——同畫面只顯示一張所以沒問題,但若要同時顯示多張(如做畫廊)須改成唯一 id。
+- `<head>` 有 OG/Twitter meta 與 og:image(指向 Pages 網址的 og.png);遊戲網址常數 `GAME_URL`。
 
 ## 中文與排版慣例
 - **繁體中文**。內文標點用**半形**逗號 `,`、冒號 `:`、問號 `?`、驚嘆號 `!`;對話用全形「」;破折號用 `——`。(全篇一致,別混入全形逗號。)
@@ -73,9 +93,9 @@
 
 1. **語法 + 載入 + 圖譜檢查**:抽出 `<script>`,用 DOM/localStorage/window stub `eval` 它,再附加 probe 檢查:
    - 所有 `next` / `risk.success` / `risk.fail` 都存在於 `S`(無斷鏈)
-   - 所有 eff 數值整十
+   - 所有 eff(含 successEff/failEff)數值整十
    - 無殘留字樣(早期版本有打字機/音效/`hate`,已全移除,別讓它回來)
-2. **DFS 全路徑可達性**:從 `start` 枚舉每個選擇(含 risk 兩分支、cond 依當下 stats),確認**7 個結局全部可達**。改動 `pickDynamicEnding`、門檻、或場景連結後**一定要重跑**。
+2. **DFS 全路徑可達性**:從 `start` 枚舉每個選擇(risk 兩分支都走;`req` 門檻依當下 stats 判斷是否可選),確認**7 個結局全部可達、無「全選項被鎖」的卡死場景**。改動 `pickDynamicEnding`、門檻、或場景連結後**一定要重跑**。
 3. **預覽**:本機 `python -m http.server 8765`(專案根目錄),瀏覽器開 `http://localhost:8765/index.html`。
    - `.claude/launch.json` 已設好名為 `static` 的設定可用 preview 工具啟動。
    - ⚠️ Claude_in_Chrome 的 `navigate` 會把 `file://` 錯改成 `https://`,所以**用 http server 而非 file://**。注意可能有多個瀏覽器連線,需先選對本機那台。
@@ -85,7 +105,8 @@
 ## 已知、刻意未改的可選微調
 - **門檻偏鬆**:玩家走某路線時常在用到門檻前就已超過。想要更強的「省點數」張力可調高門檻或降低每步給點,但小心別讓早期門檻變不可達。
 - **墜落 / 平凡牧人是一鍵直達**:作為「隨時可放棄」的敘事出口,刻意保留。
-- **brothers 的「直接原諒」(信≥50)門檻偏裝飾**:與無門檻的「試探」殊途同歸到 resolve;要讓它有後果可給兩條路不同尾聲傾向。
+- **brothers 的「直接原諒」(信≥50)**:已透過 `forgave_direct` callback 給 resolve 不同開場句,但與「試探」仍殊途同歸到同一動態結局判定。
+- **復仇結局觸發點(2 處)多於墜落(1 處)**:結局分佈傾斜是已知狀態,悲劇結局「容易踩到」視為凸顯抉擇重量的設計。
 
 ## Git 慣例
 - commit 訊息用繁體中文,結尾加 `Co-Authored-By: Claude ...`。
