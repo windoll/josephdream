@@ -25,7 +25,7 @@
 **主題層(2026-06 定案)**:遊戲同時承載三個牧養目標——①了解每個人都有原生家庭,影響我們對關係的想法(「父親的故事」場景:偏心與欺騙的三代傳承);②以溫和安全的方式讓青少年看見自己的家庭模式(固定討論題的「三段安全橋」:約瑟家→觀察到的模式→自己[可保留不說]);③從聖經觀點明白最終身份根源在神(「兩個名字」瑪拿西/以法蓮場景 + 各結局的「🌱 身份的根」)。改文案時別破壞這三條線。
 
 1. **三屬性必須是「槓桿」而非「鏡子」** — 屬性不能只是默默累積、最後分類結局而已。它們要**在過程中實際影響可選項與走向**(門檻、取捨、風險)。任何改動都要維持這點。
-   - **機制文法(2026-06 簡化定案,別再堆機制)**:①每幕最多一種特殊機制;②🎲 只放在兩個劇情高峰(dothan 逃跑賭智慧、pharaoh 宣告賭信心),別再加第三個;③🔒 只有「有敘事意義的鎖」(帶 `lockedNote`,目前僅 brothers 直接原諒)會顯示為鎖定按鈕,**純功能性門檻(無 lockedNote)不夠時直接隱藏**、夠了才出現(解鎖驚喜)。曾因機制太密被玩家反映「故事很亂」,簡化後才定此文法。
+   - **機制文法(2026-06 簡化定案,別再堆機制)**:①每幕最多一種特殊機制;②**全遊戲無隨機性**——「賭一把」機制已整個移除(使用者決定):隨機性與「每個選擇都有後果」的口號及牧養定位衝突(信靠神的 📖 選項擲骰失敗在神學上難圓、團體投影不可控)。原 dothan 逃跑賭注改為智慧≥30 的隱藏門檻直達 `flee_wild`,緊張感換成發現感;③🔒 只有「有敘事意義的鎖」(帶 `lockedNote`,目前僅 brothers 直接原諒)會顯示為鎖定按鈕,**純功能性門檻(無 lockedNote)不夠時直接隱藏**、夠了才出現(解鎖驚喜)。曾因機制太密被玩家反映「故事很亂」,簡化後才定此文法。
 2. **語氣 = 中間偏文學** — 青少年聽得懂、不老氣、但仍有質感與意象。別寫成太文言,也別太幼稚或太網路梗。
 3. **聖經淡化為背景** — 保留 📖 標記、章節出處、結局反思,但**故事優先、降低說教感**。經文出處(`ref`)刻意做得小而淡。
 4. **What-if 自由想像** — 允許「如果約瑟做了別的選擇」的分支;虛構場景與非聖經結局要**誠實標註**為「虛構支線 / What-if」,不掛真實章節。
@@ -46,7 +46,7 @@
   - `text, next, eff`(可含負值 = 取捨)
   - `bible:true` — 顯示「📖 聖經」標籤(代表符合聖經記載)
   - `req: {stat, val}` — **屬性門檻**。顯示規則見「機制文法」:有 `lockedNote` 才顯示 🔒 鎖定按鈕(提示自動生成「需要信心 50,目前 30」+lockedNote);無 lockedNote 則不夠時整個隱藏。(舊版用 cond+lockedHint,已全面改為 req。)
-  - `risk: {stat, bonus, success, fail, successEff, failEff}` + `tag` — **風險賭注**。`doChoice` 用機率 `p = clamp(stats[stat]+bonus, 10, 90)`,`Math.random()*100 < p` 決定成敗,各走 success/fail 場景、套各自 eff。⚠️ 改 risk 結構時記得同步改 `doChoice`(曾因只改資料沒改 handler 而出 bug)。目前僅 2 個賭點(機制文法上限):dothan(賭智慧)、pharaoh(賭信心,該選項同時是 📖)。
+  - ~~`risk`~~ — **風險賭注機制已於 2026-06 整個移除**(理由見機制文法②)。引擎裡已無 risk 處理;若日後想恢復,記得 doChoice/renderChoices/journey icon/標題說明四處都要加回,且先重讀機制文法的反對理由。
   - `flag:"name"` — 點選後設 `flags[name]=true`(隨存檔保存),供 callback 使用。
 
 ### Callback(讓遊戲記得早期選擇)
@@ -63,7 +63,7 @@
 > **設計重點**:`reconcile` 要求信心+智慧雙高,所以「砍信心換野心」的取捨**會讓你失去最圓滿的結局**——這是取捨「有代價」的關鍵機制,別改回單純比大小。
 
 ### 主要場景流向
-`start → dothan →`(賭智慧:`flee_wild` / `the_pit`,或直接 `the_pit`)`→ memory(父親的故事,主題①,雙路皆經過) → egypt → temptation →`(逃離→`prison` / 智取[智≥40,隱藏式門檻]→`outwit→prison` / 屈服→`end_fallen`)`→ prison → pharaoh →`(賭信心📖:成功→`sons` / 失敗→`pharaoh_doubt→sons`;或直接 `sons` / 婉拒→`end_shepherd`)`→ sons(兩個名字,主題③,創41:50–52) → vizier → brothers →`(直接寬恕[信≥50,顯示式鎖]→`resolve` / 試探→`test_brothers` / 報復→`revenge1`)。`test_brothers →`(相認→`resolve` / 報復→`revenge1`)。`resolve` 為 dynamic 終局。共 19 場景。
+`start → dothan →`(逃跑[智≥30,隱藏門檻]→`flee_wild`,或 `the_pit`)`→ memory(父親的故事,主題①,雙路皆經過) → egypt → temptation →`(逃離→`prison` / 智取[智≥40,隱藏門檻]→`outwit→prison` / 屈服→`end_fallen`)`→ prison → pharaoh →`(宣告📖 / 獻策 / 開條件[野≥50,隱藏門檻]→`sons`;婉拒→`end_shepherd`)`→ sons(兩個名字,主題③,創41:50–52) → vizier → brothers →`(直接寬恕[信≥50,顯示式鎖]→`resolve` / 試探→`test_brothers` / 報復→`revenge1`)。`test_brothers →`(相認→`resolve` / 報復→`revenge1`)。`resolve` 為 dynamic 終局。共 18 場景,全程無隨機。
 
 ### 標題畫面與啟動流程
 啟動一律呼叫 `showTitle()`(不在 `S` 裡,DFS 驗證不用管它):標題卡+玩法說明(📖/🎲/🔒),偵測到存檔顯示「繼續上次/從頭開始」。footer 有 ⌂ 封面鈕;「重新開始」走自製 confirm modal(`#confirmBg`),不用原生 confirm()。
@@ -103,10 +103,10 @@
 **沒有測試框架**,但有一套穩定的 node 驗證手法,改完務必跑:
 
 1. **語法 + 載入 + 圖譜檢查**:抽出 `<script>`,用 DOM/localStorage/window stub `eval` 它,再附加 probe 檢查:
-   - 所有 `next` / `risk.success` / `risk.fail` 都存在於 `S`(無斷鏈)
-   - 所有 eff(含 successEff/failEff)數值整十
-   - 無殘留字樣(早期版本有打字機/音效/`hate`,已全移除,別讓它回來)
-2. **DFS 全路徑可達性**:從 `start` 枚舉每個選擇(risk 兩分支都走;`req` 門檻依當下 stats 判斷是否可選),確認**7 個結局全部可達、無「全選項被鎖」的卡死場景**。改動 `pickDynamicEnding`、門檻、或場景連結後**一定要重跑**。
+   - 所有 `next` 都存在於 `S`(無斷鏈)
+   - 所有 eff 數值整十
+   - 無殘留字樣(早期版本有打字機/音效/`hate`/`risk` 賭注,已全移除,別讓它回來)
+2. **DFS 全路徑可達性**:從 `start` 枚舉每個選擇(`req` 門檻依當下 stats 判斷是否可選),確認**7 個結局全部可達、無「全選項被鎖」的卡死場景**。改動 `pickDynamicEnding`、門檻、或場景連結後**一定要重跑**。
 3. **預覽**:本機 `python -m http.server 8765`(專案根目錄),瀏覽器開 `http://localhost:8765/index.html`。
    - `.claude/launch.json` 已設好名為 `static` 的設定可用 preview 工具啟動。
    - ⚠️ Claude_in_Chrome 的 `navigate` 會把 `file://` 錯改成 `https://`,所以**用 http server 而非 file://**。注意可能有多個瀏覽器連線,需先選對本機那台。

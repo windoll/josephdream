@@ -79,7 +79,6 @@
   button.choice.single{text-align:center; max-width:340px; margin:0 auto; width:100%; color:var(--gold-soft); letter-spacing:.1em}
   button.choice .tag{display:inline-block; font-size:11px; letter-spacing:.08em; color:var(--bg); background:var(--gold-soft); padding:1px 8px; border-radius:20px; margin-right:8px; vertical-align:middle;}
   button.choice .tag.bible{background:#3a5a8c; color:#eaf2ff}
-  button.choice .tag.risk{background:#8a5a2a; color:#ffe6c2}
   .cnum{color:#8a7a5c; font-size:12.5px; margin-right:8px; font-weight:700}
   .lockhint{font-size:11.5px; color:#9a8868; margin-left:4px}
   .effs{display:flex; gap:7px; margin-top:8px; flex-wrap:wrap}
@@ -218,7 +217,7 @@
 /* ============================================================
    約瑟的夢 — 十七歲的抉擇 (青少年版)
    數值: faith 信心 / wisdom 智慧 / ambition 野心 (0–100，整十)
-   機制: 取捨(負值) / 門檻(req) / 風險(risk) / callback(flags)
+   機制: 取捨(負值) / 門檻(req,隱藏或顯示鎖) / callback(flags) — 全程無隨機
    ============================================================ */
 const GAME_URL = "https://windoll.github.io/josephdream/";
 
@@ -313,7 +312,7 @@ scene("dothan",{
 
 他們是認真的。你的親哥哥。心臟擂鼓——`,
   choices:[
-    {text:"賭一把:趁他們還在猶豫,拔腿就跑。", tag:"🎲 賭一把（智慧越高越可能成功）", risk:{stat:"wisdom", bonus:20, success:"flee_wild", fail:"the_pit", successEff:e(0,10,0), failEff:e(-10,0,0)}},
+    {text:"趁他們還在猶豫——拔腿就跑。", next:"flee_wild", eff:e(0,10,0), req:{stat:"wisdom", val:30}},
     {text:"站住,不跑。把命交在神手裡。", next:"the_pit", eff:e(10,0,0)},
     {text:"把他們每一張臉刻進心裡。總有一天。", next:"the_pit", eff:e(0,0,10), flag:"grudge"},
   ]
@@ -434,22 +433,10 @@ scene("pharaoh",{
 
 這個夢,你看得懂。問題是,你要怎麼說?`,
   choices:[
-    {text:"「這不在乎我——神必將平安的話回答法老。」當眾宣告七年豐荒,並請法老速設糧官、積糧防荒。", tag:"🎲 賭信心", risk:{stat:"faith", bonus:20, success:"sons", fail:"pharaoh_doubt", successEff:e(20,0,0), failEff:e(-10,0,0)}, bible:true},
+    {text:"「這不在乎我——神必將平安的話回答法老。」當眾宣告七年豐荒,並請法老速設糧官、積糧防荒。", next:"sons", eff:e(10,0,0), bible:true},
     {text:"穩紮穩打:解夢,並獻上一套完整的治國方案。", next:"sons", eff:e(0,10,0)},
     {text:"趁機開條件,把權力一次抓到滿。", next:"sons", eff:e(-10,0,20), req:{stat:"ambition", val:50}},
     {text:"你累了,只想回家,當個普通人。", next:"end_shepherd", eff:e(0,0,0)},
-  ]
-});
-
-scene("pharaoh_doubt",{
-  title:"第四幕 · 狂言?", art:"pharaoh", ref:"虛構支線 · 非聖經記載", fiction:true,
-  text:`「大膽!」術士們抓住你話裡的破綻,圍攻而上。法老皺起眉,你被帶了下去。
-
-七天。整整七天,沒有任何消息。
-
-第八天,殿門忽然打開——七天裡,沒有任何人能提出第二種解釋,而法老的夢,每夜都回來。他再次召你上殿。這一次,沒有人敢出聲。`,
-  choices:[
-    {text:"你站回原處,把同樣的話,再說一次。", next:"sons", eff:e(10,0,0)},
   ]
 });
 
@@ -777,16 +764,6 @@ function go(id){
 
 function doChoice(sc, c){
   if(c.flag) flags[c.flag]=true;
-  if(c.risk){
-    const p = Math.min(90, Math.max(10, stats[c.risk.stat] + (c.risk.bonus||0)));
-    const ok = Math.random()*100 < p;
-    const eff = ok ? c.risk.successEff : c.risk.failEff;
-    applyEff(eff); floatStat(eff); renderStats();
-    journey.push({title:sceneShort(sc), choice:c.text+(ok?"（成功）":"（失敗）"), eff, bible:!!c.bible,
-      hadB:(sc.choices||[]).some(x=>x.bible), icon: ok?"🎲":"💥", fic:isFiction(sc)});
-    go(ok ? c.risk.success : c.risk.fail);
-    return;
-  }
   applyEff(c.eff); floatStat(c.eff); renderStats();
   let icon="▪️";
   if(c.bible) icon="📖";
@@ -820,14 +797,12 @@ function renderChoices(sc){
       return;
     }
     const btn=mkChoice("",()=>doChoice(sc,c));
-    let tags="";
-    if(c.bible) tags+=`<span class="tag bible">📖 聖經</span>`;
-    if(c.risk)  tags+=`<span class="tag risk">${c.tag||"🎲 賭一把"}</span>`;
+    const tags = c.bible?`<span class="tag bible">📖 聖經</span>`:"";
     if(!multi){
       btn.classList.add("single");
-      btn.innerHTML = `▸ ${c.text}` + (c.risk?"":effChips(c.eff));
+      btn.innerHTML = `▸ ${c.text}` + effChips(c.eff);
     }else{
-      btn.innerHTML = `<span class="cnum">${num}</span>` + tags + c.text + (c.risk?"":effChips(c.eff));
+      btn.innerHTML = `<span class="cnum">${num}</span>` + tags + c.text + effChips(c.eff);
     }
     choicesEl.append(btn);
   });
@@ -856,8 +831,7 @@ function showTitle(){
     <div class="legend">
       <div class="lead">✦ 每個選擇都有後果 · 7 種結局 · 一輪約 5 分鐘</div>
       <div><span class="tag bible" style="margin-right:6px">📖 聖經</span>聖經記載中約瑟實際的選擇——但不一定是「標準答案」</div>
-      <div><span class="tag risk" style="margin-right:6px">🎲 賭一把</span>風險選項:相關屬性越高越容易成功,但永遠可能失敗</div>
-      <div>🔒 屬性不夠的選項會上鎖——用你的選擇,養成「信心 / 智慧 / 野心」</div>
+      <div>🌱 你的選擇會養成「信心 / 智慧 / 野心」——有些路,要長成那樣的人才走得進去</div>
     </div>
   </div>`;
   const choicesEl=$("choices");
