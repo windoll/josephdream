@@ -25,9 +25,9 @@
 **主題層(2026-06 定案)**:遊戲同時承載三個牧養目標——①了解每個人都有原生家庭,影響我們對關係的想法(「父親的故事」場景:偏心與欺騙的三代傳承);②以溫和安全的方式讓青少年看見自己的家庭模式(固定討論題的「三段安全橋」:約瑟家→觀察到的模式→自己[可保留不說]);③從聖經觀點明白最終身份根源在神(「兩個名字」瑪拿西/以法蓮場景 + 各結局的「🌱 身份的根」)。改文案時別破壞這三條線。
 
 1. **三屬性必須是「槓桿」而非「鏡子」** — 屬性不能只是默默累積、最後分類結局而已。它們要**在過程中實際影響可選項與走向**(門檻、取捨、風險)。任何改動都要維持這點。
-   - **機制文法(2026-06 定案,別再堆機制)**:①**主場景固定恰好 3 個選項**,軸序固定「信心→智慧→野心」、**離開主線的出口永遠最後**;**小故事場景(id 以 `v_` 開頭)固定單鈕「▸ 繼續」**(eff 全 0、不記入旅程回顧)——這是「每幕三選一」唯一的例外;②**全遊戲無隨機性**——「賭一把」已移除(隨機性與「每個選擇都有後果」及牧養定位衝突);③🔒 **所有門檻一律顯示為鎖定按鈕(不可點)**,提示「需要X N,目前 M」+**每個鎖必帶 `lockedNote` 敘事短語**;④結局標籤分兩種:通往 `resolve`(dynamic,聖經主線終幕)的選項自動加金色「📖🏁 聖經結局」,通往 What-if 出口(fallen/shepherd/revenge)的加暗紅「🏁 結局」;⑤**微回應(echo)**:choice 可帶 `echo:"一句話"`,會以 `.echoline` 樣式接在下一幕開頭,讓收斂回主幹的選擇「被看見」(結局場景不顯示 echo)。曾因機制太密被玩家反映「故事很亂」,簡化後才定此文法。
+   - **機制文法(2026-06 定案,別再堆機制)**:①**主場景固定恰好 3 個選項**,軸序固定「信心→智慧→認同」、**離開主線的出口永遠最後**;**小故事場景(id 以 `v_` 開頭)固定單鈕「▸ 繼續」**(eff 全 0、不記入旅程回顧)——這是「每幕三選一」唯一的例外;②**全遊戲無隨機性**——「賭一把」已移除(隨機性與「每個選擇都有後果」及牧養定位衝突);③🔒 **所有門檻一律顯示為鎖定按鈕(不可點)**,提示「需要X N,目前 M」+**每個鎖必帶 `lockedNote` 敘事短語**;④結局標籤分兩種:通往 `resolve`(dynamic,聖經主線終幕)的選項自動加金色「📖🏁 聖經結局」,通往 What-if 出口(fallen/shepherd/revenge)的加暗紅「🏁 結局」;⑤**微回應(echo)**:choice 可帶 `echo:"一句話"`,會以 `.echoline` 樣式接在下一幕開頭,讓收斂回主幹的選擇「被看見」(結局場景不顯示 echo)。曾因機制太密被玩家反映「故事很亂」,簡化後才定此文法。
    - **菱形分支結構(2026-06 重構)**:5 個分岔點(start/the_pit/egypt/prison/vizier)各岔出 3 條屬性小故事(`v_<幕>_faith/wis/amb`,共 15 個)再合回主幹;內省幕(memory/sons)刻意不岔,用 echo 承接。小故事的屬性效果掛在**父選擇**上,小故事本身 0 eff——所以屬性經濟與門檻平衡不受場景數影響。
-   - **三屬性框架 = 三種倚靠**:信心=交託、智慧=解題(把事情解決)、野心=證明(把自己抬高)。寫新選項時守住智慧/野心的分界:智慧問「怎麼解?」,野心問「我能從中爬到哪?」。
+   - **三屬性框架 = 三種倚靠(2026-06 換軸定案)**:信心=交託(靠神)、智慧=解題(靠自己把事情解決)、認同=被看見(靠別人的眼光)。前身「野心」因與智慧同屬「靠自己」而被使用者換掉。寫作分界:智慧只寫「看懂/學會/解決」;「人脈、攀附、被記得、讓人欠你、掌聲」一律屬認同;智慧選項禁用「人脈」一詞。
 2. **語氣 = 中間偏文學** — 青少年聽得懂、不老氣、但仍有質感與意象。別寫成太文言,也別太幼稚或太網路梗。
 3. **聖經淡化為背景** — 保留 📖 標記、章節出處、結局反思,但**故事優先、降低說教感**。經文出處(`ref`)刻意做得小而淡。
 4. **What-if 自由想像** — 允許「如果約瑟做了別的選擇」的分支;虛構場景與非聖經結局要**誠實標註**為「虛構支線 / What-if」,不掛真實章節。
@@ -35,7 +35,7 @@
 ## 遊戲引擎架構(都在 `index.html` 的 `<script>`)
 
 ### 資料模型
-- `stats = {faith, wisdom, ambition}` — 三屬性,起始皆 `20`。內部鍵用英文,UI 顯示「信心/智慧/野心」。
+- `stats = {faith, wisdom, ambition}` — 三屬性,起始皆 `20`。內部鍵用英文,UI 顯示「信心/智慧/認同」(⚠️ 第三軸內部鍵仍是 `ambition`,為存檔相容刻意不改;顯示一律走 `STAT_LABEL`)。屬性列副標:交託/解題/被看見。
   - **數值一律整十**(`+10` / `+20` / `−10`)。這是使用者明確要求,務必維持。
 - `S` — 場景物件表。用 `scene(id, def)` 註冊。`e(faith,wisdom,ambition)` 是 eff 的簡寫。
 - `ENDINGS` — 7 個結局物件,各有 `name / type(「型」標籤) / kind(good|neutral|bad) / reflect`;善果結局有 `epilogue`;`reconcile` 有 `canonical:true`;`egypt_lord` 有 `overrideText`(見下)。
@@ -47,7 +47,7 @@
 - `choices: [...]`,每個 choice 可有:
   - `text, next, eff`(可含負值 = 取捨)
   - `bible:true` — 顯示「📖 聖經」標籤(代表符合聖經記載)
-  - `req: {stat, val}` + `lockedNote:"——敘事短語"` — **屬性門檻**。不夠時一律顯示 🔒 鎖定按鈕(不可點),提示自動生成「需要信心 50,目前 30」+lockedNote。**每個門檻都必須帶 lockedNote**。目前 5 個鎖:dothan 逃跑(智30)、the_pit 誇口(野40)、temptation 智取(智40)、prison 鋪路(野40)、brothers 直接原諒(信50)。
+  - `req: {stat, val}` + `lockedNote:"——敘事短語"` — **屬性門檻**。不夠時一律顯示 🔒 鎖定按鈕(不可點),提示自動生成「需要信心 50,目前 30」+lockedNote。**每個門檻都必須帶 lockedNote**。目前 4 個鎖:dothan 逃跑(智30)、the_pit 誇口(認40)、temptation 智取(智40)、brothers 直接原諒(信50)。(prison 第三選項「求記念」是聖經記載[創40:14],刻意**不**上鎖。)
   - ~~`risk`~~ — **風險賭注機制已於 2026-06 整個移除**(理由見機制文法②)。引擎裡已無 risk 處理;若日後想恢復,記得 doChoice/renderChoices/journey icon/標題說明四處都要加回,且先重讀機制文法的反對理由。
   - `flag:"name"` — 點選後設 `flags[name]=true`(隨存檔保存),供 callback 使用。
 
@@ -56,20 +56,20 @@
 
 ### 結局判定 `pickDynamicEnding()`(寬恕路線終局)
 順序很重要,別隨意調:
-1. `ambition>=60 && 野心嚴格最大` → `egypt_lord`(埃及的權臣)
+1. `ambition>=60 && 認同嚴格最大` → `egypt_lord`(萬人的掌聲;id 沿用 egypt_lord 以保圖鑑存檔相容)
 2. `faith>=50 && wisdom>=50` → `reconcile`(飽足之地,canonical,**最圓滿**)
 3. `faith>=60 && 信心嚴格最大` → `faith_crown`
 4. `wisdom>=60 && 智慧嚴格最大` → `wise_savior`
 5. 其餘 → `reconcile`
 
-> **設計重點**:`reconcile` 要求信心+智慧雙高,所以「砍信心換野心」的取捨**會讓你失去最圓滿的結局**——這是取捨「有代價」的關鍵機制,別改回單純比大小。
+> **設計重點**:`reconcile` 要求信心+智慧雙高,所以「砍信心換認同」的取捨**會讓你失去最圓滿的結局**——這是取捨「有代價」的關鍵機制,別改回單純比大小。
 
 ### 主要場景流向(菱形:岔出 3 條小故事再合回)
 `start →[v_start_faith/wis/amb]→ dothan →`(站住 / 逃跑[智≥30]→`flee_wild` / 記恨)`→ the_pit →[v_pit_faith/wis/amb]→ memory(父親的故事,主題①;flee_wild 也匯入此) → egypt →[v_egy_faith/wis/amb]→ temptation →`(逃離📖→`prison` / 智取[智≥40]→`outwit→prison` / 屈服🏁→`end_fallen`)`→ prison →[v_pri_faith/wis/amb,被遺忘的兩年]→ pharaoh →`(宣告📖 / 獻策 →`sons`;婉拒🏁→`end_shepherd`)`→ sons(兩個名字,主題③) → vizier →[v_viz_faith/wis/amb,饑荒治理]→ brothers →`(直接寬恕[信≥50]📖🏁→`resolve` / 試探📖→`test_brothers` / 報復🏁→`revenge1`)。`test_brothers →`(相認📖🏁 / 冷靜確認🏁→`resolve` / 報復🏁→`revenge1`)。`resolve` 為 dynamic 終局。共 33 場景(主場景+15 小故事),一輪約 17 幕/7 分鐘,全程無隨機。
-小故事中有真實經文可掛的:v_start_amb(創37:9–11)、v_egy_faith(創39:3–6)、v_pri_faith(創40:23–41:1)、v_viz_faith(創41:53–57)、v_viz_amb(創47:13–26,時序略前移並已標註);其餘標「虛構場景」。
+小故事中有真實經文可掛的:v_start_amb(創37:9–11)、v_egy_faith(創39:3–6)、v_pri_faith(創40:20–23;41:1)、v_pri_amb 求你記念我(創40:14–23;41:1,verse 詩146:3——「靠人=被忘記」是認同軸的招牌場景)、v_viz_faith(創41:53–57)、v_viz_amb 全地的恩人(創47:13–26,時序略前移並已標註);其餘標「虛構場景」。
 
 ### 標題畫面與啟動流程
-啟動一律呼叫 `showTitle()`(不在 `S` 裡,DFS 驗證不用管它):標題卡+玩法說明(📖/🎲/🔒),偵測到存檔顯示「繼續上次/從頭開始」。footer 有 ⌂ 封面鈕;「重新開始」走自製 confirm modal(`#confirmBg`),不用原生 confirm()。
+啟動一律呼叫 `showTitle()`(不在 `S` 裡,DFS 驗證不用管它):標題卡+玩法說明(三種倚靠/📖/🔒/🏁),偵測到存檔顯示「繼續上次/從頭開始」。footer 有 ⌂ 封面鈕;「重新開始」走自製 confirm modal(`#confirmBg`),不用原生 confirm()。
 
 ### 結局頁區塊(順序固定)
 結局標頭(name/type「你是【X型】的約瑟」/kind/canonical)→ 正文(`E.overrideText||text+callback`)→ `epilogue` → verse(有 overrideText 時抑制)→ `nearMissHTML`(差一點解鎖提示,取 gap 最小一條)→ `bibleLineHTML`(📖 X/Y 統計)→ reflect → `identity`(🌱 身份的根,主題③)→ `discHTML()`(摺疊式討論題+列印鈕)→ journey 回顧(含 ✦ 虛構標記;「本局行經」經文清單已依使用者要求移除)。按鈕:分享(navigator.share→clipboard fallback)/再玩/圖鑑。
@@ -86,10 +86,10 @@
 `hint`(圖鑑未解鎖時的謎語線索)、`identity`(「身份的根」一句解讀:這個約瑟把身份建在哪)、`whatif:true`(圖鑑標 ✦ What-if;fallen/shepherd/revenge)。圖鑑集滿 7 結局顯示「🏆 完整的人」橫幅。
 
 ### egypt_lord 的 overrideText
-高野心玩家會經由「淚崩相認」的 `resolve` 場景觸發 `egypt_lord`,但寬恕團圓的正文與「質疑野心」的尾聲會人格矛盾。解法:結局渲染時 `paraHTML(E.overrideText || sc.text)`,並在有 overrideText 時抑制 `sc.verse`。若日後新增「主導屬性與 resolve 語氣衝突」的結局,沿用此模式。
+高認同玩家會經由「淚崩相認」的 `resolve` 場景觸發 `egypt_lord`(萬人的掌聲),但寬恕團圓的正文與「質疑掌聲」的尾聲會人格矛盾。解法:結局渲染時 `paraHTML(E.overrideText || sc.text)`,並在有 overrideText 時抑制 `sc.verse`。若日後新增「主導屬性與 resolve 語氣衝突」的結局,沿用此模式。
 
 ### 其他引擎重點
-- `journey[]` 每步記錄 `{title, choice, eff, bible, hadB(該幕有無📖選項), icon(分享用 emoji), fic(虛構場景)}`。風險選擇 choice 後標「(成功)/(失敗)」、icon 為 🎲/💥。
+- `journey[]` 每步記錄 `{title, choice, eff, bible, hadB(該幕有無📖選項), icon(分享用 emoji:📖/✨/💡/🌟/▪️), fic(虛構場景)}`。小故事的單鈕「繼續」(無 eff、無 bible)不記錄。
 - 存檔:`localStorage['joseph_save']`(curId/stats/history/journey/**flags**);已解鎖結局:`localStorage['joseph_endings']`。續玩時 `history.pop()` 再讓 `go()` push,避免重複。
 - 屬性列顯示數字(`#n_faith` 等),`renderStats` 同步更新 bar 寬、數字與 aria-label。
 - 選項多於 1 個時自動加編號(`.cnum`,給團契喊「選 2 的舉手」用);單一選項渲染成置中「▸ 繼續」樣式(`.single`)。

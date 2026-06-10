@@ -175,9 +175,9 @@
     <h1>約 瑟 的 夢</h1>
     <div class="sub">創世記 · 一個十七歲少年的抉擇</div>
     <div class="stats" id="stats">
-      <div class="stat statRow" data-k="faith" style="color:var(--faith)">信心 <span class="bar faith"><i></i></span><b class="num" id="n_faith">20</b></div>
-      <div class="stat statRow" data-k="wisdom" style="color:var(--wisdom)">智慧 <span class="bar wisdom"><i></i></span><b class="num" id="n_wisdom">20</b></div>
-      <div class="stat statRow" data-k="ambition" style="color:var(--ambition)">野心 <span class="bar ambition"><i></i></span><b class="num" id="n_ambition">20</b></div>
+      <div class="stat statRow" data-k="faith" style="color:var(--faith)">信心·交託 <span class="bar faith"><i></i></span><b class="num" id="n_faith">20</b></div>
+      <div class="stat statRow" data-k="wisdom" style="color:var(--wisdom)">智慧·解題 <span class="bar wisdom"><i></i></span><b class="num" id="n_wisdom">20</b></div>
+      <div class="stat statRow" data-k="ambition" style="color:var(--ambition)">認同·被看見 <span class="bar ambition"><i></i></span><b class="num" id="n_ambition">20</b></div>
     </div>
   </header>
   <main>
@@ -218,7 +218,7 @@
 <script>
 /* ============================================================
    約瑟的夢 — 十七歲的抉擇 (青少年版)
-   數值: faith 信心 / wisdom 智慧 / ambition 野心 (0–100，整十)
+   數值: faith 信心 / wisdom 智慧 / ambition 認同(內部鍵保留 ambition) (0–100，整十)
    機制: 取捨(負值) / 門檻(req,隱藏或顯示鎖) / callback(flags) — 全程無隨機
    ============================================================ */
 const GAME_URL = "https://windoll.github.io/josephdream/";
@@ -247,8 +247,8 @@ function artSVG(key){
 /* ---------- 結局 (7 種) ---------- */
 const ENDINGS = {
   reconcile:  {name:"飽足之地", type:"和好型", kind:"good", canonical:true,
-    hint:"讓信心與智慧並肩走到最後,別讓野心吞掉任何一邊。",
-    epilogue:"你沒有讓任何一種東西吞掉你——不是信心,不是聰明,也不是野心。你只是,長成了一個完整的人。荒年裡,你餵飽了埃及,也餵飽了當年丟下你的家。彩衣少年的夢應驗了:不是要人下拜,是要人活下去。",
+    hint:"讓信心與智慧並肩走到最後,別把自己交給掌聲。",
+    epilogue:"你沒有讓任何一種東西吞掉你——不是恐懼,不是聰明,也不是別人的眼光。你只是,長成了一個完整的人。荒年裡,你餵飽了埃及,也餵飽了當年丟下你的家。彩衣少年的夢應驗了:不是要人下拜,是要人活下去。",
     reflect:"傷害你的人,有一天落在你手裡——你會怎麼做?",
     identity:"他不再是「被偏愛的兒子」,也不只是「被出賣的弟弟」——他把身份放回神手裡,所以有力氣,把家的故事改寫。"},
   faith_crown:{name:"夢的應驗", type:"堅信型", kind:"good",
@@ -261,12 +261,12 @@ const ENDINGS = {
     epilogue:"你用一顆冷靜的腦袋,接住了整個時代。糧政、賑濟、調度——千萬人因為你的計算而活了下來。原來聰明可以這樣用:不是為了贏過誰,是為了救誰。",
     reflect:"你最擅長的那個能力,現在用在哪裡?",
     identity:"他知道才幹是誰給的——所以聰明沒有變成驕傲,反而成了千萬人的活路。"},
-  egypt_lord: {name:"埃及的權臣", type:"雄心型", kind:"neutral",
-    hint:"當野心壓過其他一切……你會得到全世界,然後呢?",
-    overrideText:"你表明了身分,與哥哥相認。淚水是真的,團圓也是真的——你把全家接到歌珊,給他們最好的地,一切做得無可挑剔。\n\n只是當塵埃落定,你回去的地方不是那座帳棚,而是法老朝堂上那個位子。你和哥哥之間,始終隔著一段你沒能跨過去的距離——那段距離的名字,叫做你這些年拼命爭來的一切。",
-    epilogue:"你站上了權力的最高處,連法老都倚重你。夢,以另一種方式應驗了。只是夜深的時候,你偶爾會問自己:這一路拼命往上爬,到頭來我真正握住的,是那個夢,還是只是我自己的名字?",
-    reflect:"你拼命在追的那個東西,真的是你要的嗎?",
-    identity:"他把身份建在成就上:爬得越高,離家越遠。位子坐穩了,心卻一直沒有回家。"},
+  egypt_lord: {name:"萬人的掌聲", type:"人望型", kind:"neutral",
+    hint:"當所有人的眼光,成了你的氧氣……",
+    overrideText:"你表明了身分,與哥哥相認。淚水是真的,團圓也是真的——你把全家接到歌珊,給他們最好的地,排場大到全埃及都在傳頌。\n\n只是擁抱的那一刻,你發現自己仍偷偷在意:他們看你的眼神,夠不夠仰望。連跟家人和好,你都需要做給別人看。",
+    epilogue:"你擁有全埃及的掌聲:人們在街上向你下拜,孩子以你的名字命名。夢,以另一種方式應驗了。只是夜深人靜,掌聲散場,大殿空下來——你問自己:如果沒有人看著,我還剩下什麼?",
+    reflect:"如果沒有人按讚、沒有人看著——你還是你嗎?",
+    identity:"他把身份放在別人的眼睛裡——所以,他永遠需要下一陣掌聲,才能確定自己存在。"},
   shepherd:   {name:"平凡的牧人", type:"安穩型", kind:"neutral", whatif:true,
     hint:"在命運之門打開的那一刻,轉身回家。",
     epilogue:"你選了安穩,守著羊群終老。你是個好人,一個好牧人。只是每個星夜抬頭,你總覺得有什麼很大的東西,從指縫間靜靜溜走了。",
@@ -348,7 +348,7 @@ scene("dothan",{
   choices:[
     {text:"站住,不跑。把命交在神手裡。", next:"the_pit", eff:e(10,0,0), echo:"你站在原地的那一刻,曠野安靜得出奇。"},
     {text:"趁他們還在猶豫——拔腿就跑。", next:"flee_wild", eff:e(0,10,0), req:{stat:"wisdom", val:30}, lockedNote:"——現在的你,還看不出哪裡有空隙"},
-    {text:"把他們每一張臉刻進心裡。總有一天。", next:"the_pit", eff:e(0,0,10), flag:"grudge", echo:"恨意在胸口,燒成一塊冷鐵。"},
+    {text:"記住今天。總有一天,他們會親眼看見你是誰。", next:"the_pit", eff:e(0,0,10), flag:"grudge", echo:"「總有一天。」這三個字,在心口燒著。"},
   ]
 });
 
@@ -362,7 +362,7 @@ scene("flee_wild",{
   choices:[
     {text:"「也許,這條路上仍有一雙看不見的手,在帶路。」", next:"memory", eff:e(10,0,0), flag:"fled", echo:"鎖鏈在響,你心裡卻有一隻手,始終沒鬆開。"},
     {text:"「活下來。記住每一條路、每一個名字。」", next:"memory", eff:e(0,10,0), flag:"fled", echo:"你把沿路每一個地名,都收進了心裡。"},
-    {text:"「等著吧。總有一天,我要爬得比所有人都高。」", next:"memory", eff:e(0,0,10), flag:"fled", echo:"「爬得比所有人都高」——這句話,跟著駝鈴一路響。"},
+    {text:"「等著吧。總有一天,所有人都會知道我的名字。」", next:"memory", eff:e(0,0,10), flag:"fled", echo:"「所有人都會知道我的名字。」——這句話,跟著駝鈴一路響。"},
   ]
 });
 
@@ -376,7 +376,7 @@ scene("the_pit",{
   choices:[
     {text:"在井底,你選擇相信:這條路上有人帶著你走。", next:"v_pit_faith", eff:e(10,0,0)},
     {text:"你冷靜記下商隊的路線、買賣的行話。", next:"v_pit_wis", eff:e(0,10,0)},
-    {text:"你對商隊頭目誇口本事,讓自己被高價賣進權貴之家。", next:"v_pit_amb", eff:e(0,0,10), req:{stat:"ambition", val:40}, lockedNote:"——你還沒學會替自己開價"},
+    {text:"你對商隊頭目誇口本事,讓自己被高價賣進權貴之家。", next:"v_pit_amb", eff:e(0,0,10), req:{stat:"ambition", val:40}, lockedNote:"——你還不懂得,怎麼讓人看上你"},
   ]
 });
 
@@ -437,8 +437,8 @@ scene("egypt",{
 你要怎麼站穩這個位子?`,
   choices:[
     {text:"誠實、可靠,讓主人完全放心。", next:"v_egy_faith", eff:e(10,0,0), bible:true},
-    {text:"把埃及的語言、人脈、規矩,摸得透透的。", next:"v_egy_wis", eff:e(0,10,0)},
-    {text:"押上人脈,暗中攀一條通往內廷的線。", next:"v_egy_amb", eff:e(-10,0,20)},
+    {text:"把埃及的語言、文書、規矩,摸得透透的。", next:"v_egy_wis", eff:e(0,10,0)},
+    {text:"想辦法,讓更大的人物看見你的名字。", next:"v_egy_amb", eff:e(-10,0,20)},
   ]
 });
 
@@ -501,7 +501,7 @@ scene("outwit",{
   choices:[
     {text:"「神知道真相——這就夠了。」", next:"prison", eff:e(10,0,0), echo:"「神知道。」這三個字,讓鐐銬輕了一點。"},
     {text:"進了牢,也要把牢裡的規矩摸清楚。", next:"prison", eff:e(0,10,0), echo:"第一夜,你已經數清了這層牢房有幾個看守。"},
-    {text:"你記下每一個落井下石的名字。", next:"prison", eff:e(0,0,10), echo:"名單在心裡,一筆,一筆。"},
+    {text:"總有一天,他們都得改口,恭敬地叫你一聲大人。", next:"prison", eff:e(0,0,10), echo:"你在心裡,把那一天的場面,先排練了一遍。"},
   ]
 });
 
@@ -523,15 +523,15 @@ scene("prison",{
   choices:[
     {text:"「解夢的事,不是在於神嗎?」你謙卑替他們解。", next:"v_pri_faith", eff:e(10,0,0), bible:true},
     {text:"你冷靜分析夢的徵兆,秀了一手。", next:"v_pri_wis", eff:e(0,10,0)},
-    {text:"你盤算著,怎麼用這次機會替自己鋪一條出路。", next:"v_pri_amb", eff:e(0,0,10), req:{stat:"ambition", val:40}, lockedNote:"——你的眼裡,還沒有那種算計"},
+    {text:"解完夢,你懇求酒政:「你得意的時候,求你記念我,救我出這監牢。」", next:"v_pri_amb", eff:e(0,0,10), bible:true},
   ]
 });
 
 scene("v_pri_faith",{
-  title:"第三幕 · 被遺忘的兩年", art:"prison", ref:"創世記 40:23–41:1",
-  text:`你解的夢,三天內全部應驗:酒政官復原職,膳長被掛了起來。你只求酒政一件事:在法老面前,記得我。
+  title:"第三幕 · 被遺忘的兩年", art:"prison", ref:"創世記 40:20–23;41:1",
+  text:`你解的夢,三天內全部應驗:酒政官復原職,膳長被掛了起來。
 
-他忘了。一忘,就是兩整年。
+然後,日子回到牢裡的節奏。出不出去、什麼時候出去——你把這件事,也交了出去。
 
 牆上的刻痕一道一道增加。但每天早晨,你仍照常起來,做好當天的事——心,沒有跟著牆一起發霉。`,
   choices:[
@@ -552,14 +552,15 @@ scene("v_pri_wis",{
 });
 
 scene("v_pri_amb",{
-  title:"第三幕 · 獄中的人脈", art:"prison", ref:"虛構場景", fiction:true,
-  text:`這座王室監牢,關的不是小偷——是失勢的官、捲入宮鬥的貴族。你慢慢看懂了:這裡是全埃及離權力最近的牢房。
+  title:"第三幕 · 求你記念我", art:"prison", ref:"創世記 40:14–23;41:1",
+  text:`酒政連連點頭,千恩萬謝:「一出去,就在法老面前提你!」
 
-兩年裡,你記住每個落難貴囚的名字、案情,和他們欠你的每一個人情。
+你開始數日子。七天。一個月。三個月。——宮裡,沒有任何消息。
 
-這座監牢,成了你的第一張網。`,
+酒政得意的時候,把你忘得一乾二淨。你把出獄的盼望,押在一個人的記性上;而那個人,忘了你。這一忘,就是兩年。`,
+  verse:"「不要倚靠君王,不要倚靠世人,他一點不能幫助。」——詩篇 146:3",
   choices:[
-    {text:"網,越織越大。", next:"pharaoh", eff:e(0,0,0)},
+    {text:"第七百個日子,你不再數了。", next:"pharaoh", eff:e(0,0,0)},
   ]
 });
 
@@ -590,7 +591,7 @@ scene("sons",{
   choices:[
     {text:"你把過去,輕輕放回神的手裡。", next:"vizier", eff:e(10,0,0), bible:true, echo:"放手的那一夜,你睡了多年來最沉的一覺。"},
     {text:"你在心裡記下:這個家的故事,從這兩個名字開始改寫。", next:"vizier", eff:e(0,10,0), echo:"改寫,就從這兩個名字開始。"},
-    {text:"你發誓,要給他們你沒得到過的一切。", next:"vizier", eff:e(0,0,10), echo:"你看著搖籃,悄悄握緊了拳頭。"},
+    {text:"你發誓:你的孩子,永遠不會嚐到「沒人看見」的滋味。", next:"vizier", eff:e(0,0,10), echo:"你看著搖籃,悄悄握緊了拳頭。"},
   ]
 });
 
@@ -612,7 +613,7 @@ scene("vizier",{
   choices:[
     {text:"按公義賣糧,先救最弱的人。", next:"v_viz_faith", eff:e(10,0,0), bible:true},
     {text:"設計最聰明的糧政,把效率拉到最滿。", next:"v_viz_wis", eff:e(0,10,0)},
-    {text:"趁饑荒收光土地與人民,讓權勢登頂。", next:"v_viz_amb", eff:e(-10,0,20)},
+    {text:"趁饑荒,讓全埃及的人,都欠你一份救命的恩情。", next:"v_viz_amb", eff:e(-10,0,20)},
   ]
 });
 
@@ -639,14 +640,14 @@ scene("v_viz_wis",{
 });
 
 scene("v_viz_amb",{
-  title:"第四幕 · 全地歸法老", art:"grain", ref:"創世記 47:13–26（時序略前移）",
-  text:`糧食,是荒年裡最硬的貨幣。你用它換走百姓的銀子;銀子用盡,換牲畜;牲畜用盡,換土地——最後,換他們自己。
+  title:"第四幕 · 全地的恩人", art:"grain", ref:"創世記 47:13–26（時序略前移）",
+  text:`糧食,是荒年裡最硬的貨幣。你用它換來銀子、牲畜、土地——也換來一句又一句「你救了我們的性命」。
 
-全埃及的地,如今都姓法老。經手的人,是你。
+全埃及都欠你。你走到哪裡,人們在哪裡下拜;有人開始用你的名字,給孩子命名。
 
-百姓謝你救了他們的命。只是他們看你的眼神裡,多了一層說不出的東西。`,
+只是夜裡你偶爾會想:他們愛的,是糧倉,還是你?`,
   choices:[
-    {text:"全埃及,如今盡歸法老——經手的人,是你。", next:"brothers", eff:e(0,0,0)},
+    {text:"全埃及,都記得你的名字。", next:"brothers", eff:e(0,0,0)},
   ]
 });
 
@@ -704,7 +705,7 @@ scene("resolve",{
 
 /* ---------- callback：讓遊戲記得你的選擇 ---------- */
 const CALLBACKS = {
-  brothers: ()=> flags.grudge ? {post:"那天曠野的風裡,你刻下的那些臉——如今,一張一張,就跪在你的腳前。"} : null,
+  brothers: ()=> flags.grudge ? {post:"那天曠野的風裡,你說過:總有一天,他們會親眼看見你是誰。——如今,那一天到了,他們就跪在你的腳前。"} : null,
   resolve: ()=>{
     const parts=[];
     if(flags.forgave_direct) parts.push("你不需要設局,也不需要證據。在他們開口求饒以前,你就已經放下了。你只吩咐一件事:先把父親和小弟便雅憫接來——你想看著全家人的臉,說出那個名字。");
@@ -723,7 +724,7 @@ let history = [];
 let journey = [];
 let pendingEcho = ""; // 微回應:上一個選擇在下一幕開頭被「看見」的一句話
 const $ = id=>document.getElementById(id);
-const STAT_LABEL={faith:"信心", wisdom:"智慧", ambition:"野心"};
+const STAT_LABEL={faith:"信心", wisdom:"智慧", ambition:"認同"}; // 內部鍵 ambition 保留(存檔相容),顯示一律「認同」
 function clamp(v){return Math.max(0,Math.min(100,v));}
 function applyEff(eff){ if(!eff)return;
   stats.faith=clamp(stats.faith+(eff.faith||0));
@@ -752,7 +753,7 @@ function floatStat(eff){
 }
 function effChips(eff){
   if(!eff) return "";
-  const map=[["faith","信心","#e8c46a"],["wisdom","智慧","#8fc1e0"],["ambition","野心","#b58be0"]];
+  const map=[["faith","信心","#e8c46a"],["wisdom","智慧","#8fc1e0"],["ambition","認同","#b58be0"]];
   let out="";
   for(const [k,label,color] of map){
     const v=eff[k]||0; if(v===0) continue;
@@ -783,7 +784,7 @@ function nearMissHTML(endingId){
   const {faith,wisdom,ambition}=stats;
   const cands=[];
   if(endingId!=="egypt_lord" && !unlocked.includes("egypt_lord") && ambition>=40 && ambition<60)
-    cands.push({gap:60-ambition, text:`你的野心停在 ${ambition}——若再往上,你會看見另一個約瑟。`});
+    cands.push({gap:60-ambition, text:`你的認同停在 ${ambition}——再往掌聲走近一點,你會看見另一個約瑟。`});
   if(endingId!=="faith_crown" && !unlocked.includes("faith_crown") && faith>=40 && faith<60)
     cands.push({gap:60-faith, text:`你的信心停在 ${faith}——再多一點,夢會以另一種方式應驗。`});
   if(endingId!=="wise_savior" && !unlocked.includes("wise_savior") && wisdom>=40 && wisdom<60)
@@ -804,7 +805,7 @@ function bibleLineHTML(){
 
 function journeyHTML(){
   if(!journey.length) return "";
-  const ic={faith:["信","#e8c46a"],wisdom:["智","#8fc1e0"],ambition:["野","#b58be0"]};
+  const ic={faith:["信","#e8c46a"],wisdom:["智","#8fc1e0"],ambition:["認","#b58be0"]};
   const rows=journey.map(j=>{
     let chip="";
     for(const k of ["faith","wisdom","ambition"]){
@@ -848,7 +849,7 @@ function shareText(E){
   const took=journey.filter(j=>j.bible).length;
   const hadB=journey.filter(j=>j.hadB).length;
   const trail=journey.map(j=>j.icon).join("");
-  return `《約瑟的夢》我走出了結局【${E.name}・${E.type}】${star}\n信心${stats.faith} 智慧${stats.wisdom} 野心${stats.ambition}｜📖 ${took}/${hadB}｜圖鑑 ${unlocked.length}/${Object.keys(ENDINGS).length}\n${trail}\n換你選:${GAME_URL}`;
+  return `《約瑟的夢》我走出了結局【${E.name}・${E.type}】${star}\n信心${stats.faith} 智慧${stats.wisdom} 認同${stats.ambition}｜📖 ${took}/${hadB}｜圖鑑 ${unlocked.length}/${Object.keys(ENDINGS).length}\n${trail}\n換你選:${GAME_URL}`;
 }
 
 function go(id){
@@ -938,7 +939,7 @@ function doChoice(sc, c){
   let icon="▪️";
   if(c.bible) icon="📖";
   else if(c.eff){
-    if((c.eff.ambition||0)>0) icon="🔥";
+    if((c.eff.ambition||0)>0) icon="🌟";
     else if((c.eff.faith||0)>0) icon="✨";
     else if((c.eff.wisdom||0)>0) icon="💡";
   }
@@ -1000,7 +1001,7 @@ function showTitle(){
     <p class="hook">十七歲的約瑟,在一個偏了心的家裡長大——被親哥哥丟進井裡、賣到埃及。誘惑、冤獄、權力、報復——每一步,都由你決定。</p>
     <div class="legend">
       <div class="lead">✦ 每個選擇都有後果 · 7 種結局 · 一輪約 7 分鐘</div>
-      <div>🌱 每個難關,你都可以<b>交託</b>(信心)、自己<b>解題</b>(智慧),或抓住機會<b>證明自己</b>(野心)——三種倚靠,養成三種約瑟</div>
+      <div>🌱 每個難關,你都可以<b>交託給神</b>(信心)、<b>自己解題</b>(智慧),或<b>交給別人的眼光</b>(認同)——三種倚靠,養成三種約瑟</div>
       <div><span class="tag bible" style="margin-right:6px">📖 聖經</span>聖經記載中約瑟實際的選擇——但不一定是「標準答案」</div>
       <div>🔒 數值不夠的路會鎖住;看得到它,就代表有另一種走法</div>
       <div><span class="tag end" style="margin-right:6px">🏁 結局</span>離開主線的出口;<span class="tag bibleend" style="margin-right:6px">📖🏁 聖經結局</span>通往聖經記載的結局之路</div>
@@ -1036,7 +1037,7 @@ function openGallery(){
   if(unlocked.length===total){
     const ban=document.createElement("div");
     ban.className="complete";
-    ban.innerHTML="🏆 <b>完整的人</b><br>你走完了約瑟所有的可能——信心、智慧、野心、安穩、和好,也走過墜落與復仇。<br>現在,你想成為哪一個?";
+    ban.innerHTML="🏆 <b>完整的人</b><br>你走完了約瑟所有的可能——信心、智慧、掌聲、安穩、和好,也走過墜落與復仇。<br>現在,你想成為哪一個?";
     list.append(ban);
   }
   for(const [id,E] of Object.entries(ENDINGS)){
