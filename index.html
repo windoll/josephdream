@@ -77,8 +77,9 @@
   }
   button.choice.locked{opacity:.5; cursor:not-allowed; border-style:dashed;}
   button.choice.single{text-align:center; max-width:340px; margin:0 auto; width:100%; color:var(--gold-soft); letter-spacing:.1em}
-  button.choice .tag{display:inline-block; font-size:11px; letter-spacing:.08em; color:var(--bg); background:var(--gold-soft); padding:1px 8px; border-radius:20px; margin-right:8px; vertical-align:middle;}
-  button.choice .tag.bible{background:#3a5a8c; color:#eaf2ff}
+  .tag{display:inline-block; font-size:11px; letter-spacing:.08em; color:var(--bg); background:var(--gold-soft); padding:1px 8px; border-radius:20px; margin-right:8px; vertical-align:middle;}
+  .tag.bible{background:#3a5a8c; color:#eaf2ff}
+  .tag.end{background:#7a3b35; color:#ffddd6}
   .cnum{color:#8a7a5c; font-size:12.5px; margin-right:8px; font-weight:700}
   .lockhint{font-size:11.5px; color:#9a8868; margin-left:4px}
   .effs{display:flex; gap:7px; margin-top:8px; flex-wrap:wrap}
@@ -115,7 +116,6 @@
   .jrow .jt{color:var(--gold-soft); min-width:74px; font-size:12px}
   .jrow .jc{flex:1; color:var(--ink)}
   .jrow .je{font-size:11px; font-weight:700}
-  .refsline{margin-top:12px; font-size:12px; color:#8d8268; letter-spacing:.03em}
 
   footer{display:flex; justify-content:space-between; align-items:center; padding:10px 20px 12px; border-top:1px solid #3a2c1d; font-size:13px; color:var(--ink-dim); border-radius:0 0 16px 16px;}
   .links{display:flex; gap:8px}
@@ -312,8 +312,8 @@ scene("dothan",{
 
 他們是認真的。你的親哥哥。心臟擂鼓——`,
   choices:[
-    {text:"趁他們還在猶豫——拔腿就跑。", next:"flee_wild", eff:e(0,10,0), req:{stat:"wisdom", val:30}},
     {text:"站住,不跑。把命交在神手裡。", next:"the_pit", eff:e(10,0,0)},
+    {text:"趁他們還在猶豫——拔腿就跑。", next:"flee_wild", eff:e(0,10,0), req:{stat:"wisdom", val:30}, lockedNote:"——現在的你,還看不出哪裡有空隙"},
     {text:"把他們每一張臉刻進心裡。總有一天。", next:"the_pit", eff:e(0,0,10), flag:"grudge"},
   ]
 });
@@ -326,7 +326,9 @@ scene("flee_wild",{
 
 方向沒變:埃及。只是這一次,把你賣掉的不是哥哥,是這片不留情面的曠野。`,
   choices:[
-    {text:"戴上鎖鏈,走向尼羅河。", next:"memory", eff:e(0,10,0), flag:"fled"},
+    {text:"「也許,這條路上仍有一雙看不見的手,在帶路。」", next:"memory", eff:e(10,0,0), flag:"fled"},
+    {text:"「活下來。記住每一條路、每一個名字。」", next:"memory", eff:e(0,10,0), flag:"fled"},
+    {text:"「等著吧。總有一天,我要爬得比所有人都高。」", next:"memory", eff:e(0,0,10), flag:"fled"},
   ]
 });
 
@@ -340,7 +342,7 @@ scene("the_pit",{
   choices:[
     {text:"在井底,你選擇相信:這條路上有人帶著你走。", next:"memory", eff:e(10,0,0)},
     {text:"你冷靜記下商隊的路線、買賣的行話。", next:"memory", eff:e(0,10,0)},
-    {text:"你對商隊頭目誇口本事,讓自己被高價賣進權貴之家。", next:"memory", eff:e(0,0,10), req:{stat:"ambition", val:40}},
+    {text:"你對商隊頭目誇口本事,讓自己被高價賣進權貴之家。", next:"memory", eff:e(0,0,10), req:{stat:"ambition", val:40}, lockedNote:"——你還沒學會替自己開價"},
   ]
 });
 
@@ -386,7 +388,7 @@ scene("temptation",{
   verse:"沒人看見的時候,你是誰?",
   choices:[
     {text:"「我怎能做這大惡,得罪神?」甩開她,奪門而出。", next:"prison", eff:e(10,0,0), bible:true},
-    {text:"不撕破臉,巧妙周旋,反而替自己保住地位。", next:"outwit", eff:e(0,10,0), req:{stat:"wisdom", val:40}},
+    {text:"不撕破臉,巧妙周旋,反而替自己保住地位。", next:"outwit", eff:e(0,10,0), req:{stat:"wisdom", val:40}, lockedNote:"——你還想不出能全身而退的說法"},
     {text:"反正沒人看見……你動搖了。", next:"end_fallen", eff:e(0,0,0)},
   ]
 });
@@ -399,7 +401,9 @@ scene("outwit",{
 
 那天終於來了。她當著眾人誣賴你,還亮出鐵證:一件你「留下」的外衣。你百口莫辯,但你站得很直——連把你押進牢裡的典獄長,都忍不住多看了你兩眼。`,
   choices:[
-    {text:"戴上鐐銬,走進監牢。", next:"prison", eff:e(0,10,0)},
+    {text:"「神知道真相——這就夠了。」", next:"prison", eff:e(10,0,0)},
+    {text:"進了牢,也要把牢裡的規矩摸清楚。", next:"prison", eff:e(0,10,0)},
+    {text:"你記下每一個落井下石的名字。", next:"prison", eff:e(0,0,10)},
   ]
 });
 
@@ -421,7 +425,7 @@ scene("prison",{
   choices:[
     {text:"「解夢的事,不是在於神嗎?」你謙卑替他們解。", next:"pharaoh", eff:e(10,0,0), bible:true},
     {text:"你冷靜分析夢的徵兆,秀了一手。", next:"pharaoh", eff:e(0,10,0)},
-    {text:"你盤算著,怎麼用這次機會替自己鋪一條出路。", next:"pharaoh", eff:e(0,0,10), req:{stat:"ambition", val:40}},
+    {text:"你盤算著,怎麼用這次機會替自己鋪一條出路。", next:"pharaoh", eff:e(0,0,10), req:{stat:"ambition", val:40}, lockedNote:"——你的眼裡,還沒有那種算計"},
   ]
 });
 
@@ -435,7 +439,6 @@ scene("pharaoh",{
   choices:[
     {text:"「這不在乎我——神必將平安的話回答法老。」當眾宣告七年豐荒,並請法老速設糧官、積糧防荒。", next:"sons", eff:e(10,0,0), bible:true},
     {text:"穩紮穩打:解夢,並獻上一套完整的治國方案。", next:"sons", eff:e(0,10,0)},
-    {text:"趁機開條件,把權力一次抓到滿。", next:"sons", eff:e(-10,0,20), req:{stat:"ambition", val:50}},
     {text:"你累了,只想回家,當個普通人。", next:"end_shepherd", eff:e(0,0,0)},
   ]
 });
@@ -503,6 +506,7 @@ scene("test_brothers",{
 他願意拿自己,換弟弟。他們,真的變了。`,
   choices:[
     {text:"你再也忍不住,淚崩,表明身分。", next:"resolve", eff:e(0,0,0), bible:true},
+    {text:"你壓下淚水,最後一次冷靜確認——然後,才開口。", next:"resolve", eff:e(0,10,0)},
     {text:"即使如此,你還是放不下。報復。", next:"revenge1", eff:e(0,0,0)},
   ]
 });
@@ -641,14 +645,7 @@ function journeyHTML(){
     const fic=j.fic?'<span style="color:#c9a06a">✦</span> ':'';
     return `<div class="jrow"><div class="jt">${fic}${j.title}</div><div class="jc">${j.choice}${j.bible?' <span style="color:#9cc0ee">📖</span>':''}</div><div>${chip}</div></div>`;
   }).join("");
-  // 本局行經的真實經文
-  const refs=[]; const seen={};
-  for(const id of history){
-    const sc=S[id]; if(!sc||!sc.ref||isFiction(sc)) continue;
-    if(!seen[sc.ref]){ seen[sc.ref]=1; refs.push(sc.ref); }
-  }
-  const refsline = refs.length?`<div class="refsline">本局行經:${refs.join(" → ")}</div>`:"";
-  return `<div class="journey"><b>— 你 的 旅 程 —</b>${rows}${refsline}</div>`;
+  return `<div class="journey"><b>— 你 的 旅 程 —</b>${rows}</div>`;
 }
 
 /* 固定討論題:三段安全橋（約瑟家 → 觀察到的模式 → 自己,可保留 → 身份在神） */
@@ -780,24 +777,21 @@ function doChoice(sc, c){
 function renderChoices(sc){
   const choicesEl=$("choices");
   choicesEl.innerHTML="";
-  const rows=[];
-  (sc.choices||[]).forEach(c=>{
-    const locked = c.req && stats[c.req.stat] < c.req.val;
-    if(locked && !c.lockedNote) return; // 純功能性門檻:不夠就隱藏,夠了才出現(解鎖驚喜)
-    rows.push({c, locked});
-  });
+  const rows=(sc.choices||[]).map(c=>({c, locked: !!(c.req && stats[c.req.stat] < c.req.val)}));
   const multi = rows.length>1;
   rows.forEach(({c, locked}, i)=>{
     const num = i+1;
-    if(locked){ // 有敘事意義的鎖(帶 lockedNote)才顯示
+    if(locked){ // 門檻一律顯示為鎖定按鈕(不可點),帶敘事短語
       const lb=document.createElement("button");
       lb.className="choice locked"; lb.disabled=true;
-      lb.innerHTML=`${multi?`<span class="cnum">${num}</span>`:""}🔒 ${c.text}<span class="lockhint">（需要${STAT_LABEL[c.req.stat]} ${c.req.val},目前 ${stats[c.req.stat]}${c.lockedNote}）</span>`;
+      lb.innerHTML=`${multi?`<span class="cnum">${num}</span>`:""}🔒 ${c.text}<span class="lockhint">（需要${STAT_LABEL[c.req.stat]} ${c.req.val},目前 ${stats[c.req.stat]}${c.lockedNote||""}）</span>`;
       choicesEl.append(lb);
       return;
     }
     const btn=mkChoice("",()=>doChoice(sc,c));
-    const tags = c.bible?`<span class="tag bible">📖 聖經</span>`:"";
+    let tags = c.bible?`<span class="tag bible">📖 聖經</span>`:"";
+    const tgt = c.next && S[c.next];
+    if(tgt && (tgt.ending || tgt.dynamic)) tags += `<span class="tag end">🏁 結局</span>`;
     if(!multi){
       btn.classList.add("single");
       btn.innerHTML = `▸ ${c.text}` + effChips(c.eff);
@@ -831,7 +825,8 @@ function showTitle(){
     <div class="legend">
       <div class="lead">✦ 每個選擇都有後果 · 7 種結局 · 一輪約 5 分鐘</div>
       <div><span class="tag bible" style="margin-right:6px">📖 聖經</span>聖經記載中約瑟實際的選擇——但不一定是「標準答案」</div>
-      <div>🌱 你的選擇會養成「信心 / 智慧 / 野心」——有些路,要長成那樣的人才走得進去</div>
+      <div>🔒 你的選擇會養成「信心 / 智慧 / 野心」——數值不夠的路會鎖住;看得到它,就代表有另一種走法</div>
+      <div><span class="tag end" style="margin-right:6px">🏁 結局</span>帶著這個標籤的選項,會把這一輪走向終點</div>
     </div>
   </div>`;
   const choicesEl=$("choices");
