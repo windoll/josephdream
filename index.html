@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>約瑟的夢 — 十七歲的抉擇</title>
-<meta name="description" content="如果你是十七歲的約瑟,被哥哥丟進井裡——你會原諒,還是報復?互動聖經文字冒險,每個選擇都有後果,11 種結局,一輪約 7 分鐘。">
+<meta name="description" content="如果你是十七歲的約瑟,被哥哥丟進井裡——你會原諒,還是報復?互動聖經文字冒險,每個選擇都有後果,7 種結局,一輪約 7 分鐘。">
 <meta name="theme-color" content="#1a1410">
 <meta property="og:type" content="website">
 <meta property="og:title" content="約瑟的夢 — 十七歲的抉擇">
-<meta property="og:description" content="被親哥哥賣掉的那天,你會記仇還是放手?每個選擇都有後果 · 11 種結局 · 免安裝直接玩">
+<meta property="og:description" content="被親哥哥賣掉的那天,你會記仇還是放手?每個選擇都有後果 · 7 種結局 · 免安裝直接玩">
 <meta property="og:url" content="https://windoll.github.io/josephdream/">
 <meta property="og:image" content="https://windoll.github.io/josephdream/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -270,24 +270,11 @@ const ENDINGS = {
     hint:"逃出曠野之後,把家鄉的消息,也關在門外。",
     reflect:"逃開了那個坑,也逃開了坑後面的一切——你覺得他賺了,還是賠了?",
     identity:"他靠自己的腦子活了下來——很聰明,也很孤單。只是那個夢,和那位給夢的,還在原地等他。路,隨時可以折返。"},
-  homeward:   {name:"回家的長路", type:"折返型", kind:"neutral", whatif:true,
-    hint:"逃了那麼多年——聽見家鄉挨餓的那一夜,你會往哪個方向走?",
-    reflect:"他沒有救千萬人的糧倉,只有一個普通人扛得動的糧。回家,需要的是哪一種勇氣?",
-    identity:"他繞了最遠的路,才發現身份不在「逃得夠不夠遠」,而在「肯不肯回頭」。夢沒有應驗,但門開了——故事的下半,從飯桌上重新開始。"},
   egypt_lord: {name:"萬人的掌聲", type:"人望型", kind:"neutral", whatif:true,
     hint:"當所有人的眼光,成了你的氧氣……",
     epilogue:"你擁有全埃及的掌聲:人們在街上向你下拜,孩子以你的名字命名。夢,以另一種方式應驗了。只是夜深人靜,掌聲散場,大殿空下來——你問自己:如果沒有人看著,我還剩下什麼?",
     reflect:"如果沒有人按讚、沒有人看著——你還是你嗎?",
     identity:"他把身份放在別人的眼睛裡——所以,他永遠需要下一陣掌聲,才能確定自己存在。"},
-  grand_reunion:{name:"盛大的相認", type:"排場型", kind:"neutral", whatif:true,
-    hint:"在萬人面前摘下頭冠——連和好,都辦成一場大典。",
-    reflect:"擁抱是真的,觀眾也是真的。那一天如果沒有萬人在場,他還會走下高台嗎?",
-    identity:"連和好,他都需要觀眾——真心摻了表演,就分不清哪一半給家人、哪一半給掌聲。但擁抱畢竟發生了;接下來的日子,可以練習在沒有人看的地方,愛他們。"},
-  halfway:    {name:"半路上的和好", type:"修和型", kind:"neutral", whatif:true,
-    hint:"不設局,不等證據——在他們開口以前,先張開手。",
-    epilogue:"和好不是一個瞬間,是一條路。你們已經在路上了——這,就夠開始了。",
-    reflect:"原諒可以很快,信任卻要重新長。和好之後,還需要什麼,關係才會真的長回來?",
-    identity:"他把身份從傷口裡挪了出來,放回神手裡——只是手,還沒完全鬆開。沒關係,路還在走。"},
   nameless:   {name:"無名的恩人", type:"隱忍型", kind:"neutral", whatif:true,
     hint:"恩情給得出去,名字說不出口。",
     reflect:"他供應了他們所有的需要,只藏起一樣:自己。給,跟和好,差在哪裡?",
@@ -305,10 +292,6 @@ const ENDINGS = {
     hint:"讓恨,吃掉那個夢。",
     reflect:"報復讓你贏了,為什麼心裡還是空的?",
     identity:"他把身份留在傷口裡——傷口替他做了所有決定。可是,傷口說了算的故事,任何一頁,都還來得及換人執筆。"},
-  relent:     {name:"懸崖邊收手", type:"鬆手型", kind:"neutral", whatif:true,
-    hint:"劍出鞘一半的那個夜裡,牢裡傳來了禱告聲。",
-    reflect:"恨停在了半路,和好也是。鬆開劍的手,跟伸出去擁抱的手,中間還差幾步?",
-    identity:"在懸崖邊上,他聽見了恨以外的聲音——這不是結局,是中場。放下劍的手,將來也可以伸出去。"},
 };
 let unlocked = [];
 try{ const v = JSON.parse(localStorage.getItem("joseph_endings")||"[]"); if(Array.isArray(v)) unlocked = v.filter(k=>ENDINGS[k]); }catch(_){} // 過濾舊版已移除的結局 id
@@ -330,7 +313,7 @@ scene("start",{
   verse:"「看哪,那做夢的來了。」",
   choices:[
     {text:"別出聲,只在心裡把夢交給神。", next:"v_start_faith", eff:e(10,0,0)},
-    {text:"低調點。把夢吞回去,假裝沒事。", next:"v_start_wis", eff:e(0,10,0)},
+    {text:"先別說。你睜開眼睛觀察:這個家的裂縫在哪裡,哪句話會點火。", next:"v_start_wis", eff:e(0,10,0)},
     {text:"忍不住——當著哥哥的面,把夢說得神氣活現。", next:"v_start_amb", eff:e(-10,0,20), bible:true},
   ]
 });
@@ -375,44 +358,35 @@ scene("dothan",{
 
 他們是認真的。你的親哥哥。心臟擂鼓——`,
   choices:[
-    {text:"站住,不跑。把命交在神手裡。", next:"the_pit", eff:e(10,0,0), echo:"你站在原地的那一刻,曠野安靜得出奇。"},
+    {text:"站住,不跑。把命交在神手裡。", next:"the_pit", eff:e(10,0,0), bible:true, echo:"你站在原地的那一刻,曠野安靜得出奇。"},
     {text:"記住今天。總有一天,他們會親眼看見你是誰。", next:"the_pit", eff:e(0,0,10), flag:"grudge", echo:"「總有一天。」這三個字,在心口燒著。"},
     {text:"趁他們還在猶豫——拔腿就跑。", next:"wild_years", eff:e(0,0,0), req:{stat:"wisdom", val:30}, lockedNote:"——現在的你,還看不出哪裡有空隙"},
   ]
 });
 
 scene("wild_years",{
-  branch:true, // 一去不回的支線中繼站:入口選項要掛 🏁
-  title:"支線 · 曠野的歲月", art:"desert", ref:"虛構支線 · 非聖經記載", fiction:true,
-  text:`你跑了。彩衣在荊棘間扯破,你縮進乾涸的河床,聽著哥哥們的咒罵漸漸遠去。你靠著腦子一路向北,替人放羊、扛貨、記帳;你換了名字,學會在沒有人認識你的地方活著。
+  title:"支線 · 亡命曠野", art:"desert", ref:"虛構支線 · 非聖經記載", fiction:true,
+  text:`你跑了。彩衣在荊棘間扯破,你縮進乾涸的河床,聽著哥哥們的咒罵漸漸遠去。
 
-好些年過去。某個收成的季節,商隊帶來消息:南方大旱,迦南全地都在挨餓——你父親的家,也在其中。埃及沒有積糧的宰相,他們沒有買糧的去處。
+第三天,糧袋見了底。曠野不留人:遠處,一隊奴隸販子的駝隊正沿著商路南下——往埃及去。再往北,是沒有人認識你的地方。
 
-那夜,禾捆的夢忽然又靠近了一次。你醒來,坐在黑暗裡。`,
+你蹲在石頭後面,看著駝鈴搖過。`,
   choices:[
-    {text:"把消息關在門外。那個家賣過你一次,不會有第二次。", next:"end_runaway", eff:e(0,0,0)},
-    {text:"天亮以前,把積蓄換成糧食——往南,往家的方向走。", next:"end_homeward", eff:e(0,0,0)},
+    {text:"往北,走得越遠越好。從今天起,沒有人認識你。", next:"end_runaway", eff:e(0,0,0)},
+    {text:"不能一輩子躲。你走向商路——哪怕前面是網羅。", next:"memory", eff:e(0,0,0), flag:"fled", echo:"網收緊的那一刻,你忽然覺得:也許這條路,也有人在帶。方向——埃及。"},
   ]
 });
 
 scene("end_runaway",{
   title:"結局 · 逃走的人", art:"desert", ref:"What-if · 非聖經結局",
-  text:`你把行囊往北背,搬到連迦南口音都聽不見的地方。你活得不壞:有屋簷、有羊群、有安靜的夜。
+  text:`你一路向北,替人放羊、扛貨、記帳;你換了名字,活了下來。你活得不壞:有屋簷、有羊群、有安靜的夜。
+
+好些年後,饑荒席捲全地。埃及沒有積糧七年的宰相,迦南沒有買糧的去處——商隊捎來的消息裡,有一個你很久不敢念出口的姓氏。你把門關上了。
 
 只是每逢收割,看見別人家的禾捆立在田裡,你都會莫名停下來。你想不起自己在等什麼——你只記得,你決定過,不等了。
 
 那個夢,再也沒有來過。`,
   ending:"runaway"
-});
-
-scene("end_homeward",{
-  title:"結局 · 回家的長路", art:"desert", ref:"What-if · 非聖經結局",
-  text:`你趕著馱糧的駱駝走了四十天,走回那個賣過你的家。父親老得你幾乎認不出;哥哥們看見你,像看見鬼。
-
-沒有宰相的位子,沒有救活萬民的糧倉——你只是回來了,帶著一個普通人扛得動的糧。那一夜的飯桌很安靜,誰都沒提那口井。
-
-有些故事沒有應驗,只有回家。也許,先回來——其餘的,慢慢說。`,
-  ending:"homeward"
 });
 
 scene("the_pit",{
@@ -471,7 +445,7 @@ scene("memory",{
 
 駝鈴還在往前。這個故事,還沒有寫完——下一句,輪到你。`,
   choices:[
-    {text:"「在某一代,總得有人停下來。也許,就是我。」", next:"egypt", eff:e(10,0,0), echo:"「也許就是我。」這句話在沙漠的風裡,越來越清楚。"},
+    {text:"「在某一代,總得有人停下來。」你把這個願望,交在神手裡——也許,就是我。", next:"egypt", eff:e(10,0,0), echo:"「也許就是我。」這句話在沙漠的風裡,越來越清楚。"},
     {text:"「這不是命,是模式。看懂的人,就有機會走出去。」", next:"egypt", eff:e(0,10,0), echo:"看懂模式的那一刻,你忽然不那麼怕了。"},
     {text:"「我不要再當這個家的犧牲品。我要活給他們看。」", next:"egypt", eff:e(0,0,10), echo:"「活給他們看。」抵達埃及那天,你的眼睛比誰都亮。"},
   ]
@@ -535,28 +509,41 @@ scene("temptation",{
   verse:"沒人看見的時候,你是誰?",
   choices:[
     {text:"「我怎能做這大惡,得罪神?」甩開她,奪門而出。", next:"prison", eff:e(10,0,0), bible:true, echo:"外衣留在她手裡;清白,留在你身上。"},
-    {text:"不撕破臉,巧妙周旋,反而替自己保住地位。", next:"outwit", eff:e(0,10,0), req:{stat:"wisdom", val:40}, lockedNote:"——你還想不出能全身而退的說法", flag:"outwit"},
-    {text:"反正沒人看見……你動搖了。", next:"end_fallen", eff:e(0,0,0)},
+    {text:"不撕破臉——搬出主人、名聲與律法,一句句替她算後果。", next:"v_outwit", eff:e(0,10,0), req:{stat:"wisdom", val:40}, lockedNote:"——你還想不出不撕破臉的說法", flag:"outwit"},
+    {text:"反正沒人看見……你動搖了。", next:"affair_days", eff:e(0,0,0)},
   ]
 });
 
-scene("outwit",{
+scene("v_outwit",{
   title:"第二幕 · 智取主母", art:"house", ref:"虛構支線 · 非聖經記載", fiction:true,
   text:`你沒逃,也沒答應。你冷靜地搬出主人的恩情、家族的名聲、埃及嚴酷的律法——一句句替她算後果。她的手,鬆開了。
 
-接下來幾個月,你更小心,絕不和她單獨相處,反而把家業打理得更出色。但被拒絕的那把火沒有熄——它只是在等。
+接下來幾個月,你更小心:絕不與她同處一室,把家業打理得更出色。你以為這件事,就這樣過去了。但被拒絕的羞辱沒有熄——它只是在等。
 
-那天終於來了。她當著眾人誣賴你,還亮出鐵證:一件你「留下」的外衣。你百口莫辯,但你站得很直——連把你押進牢裡的典獄長,都忍不住多看了你兩眼。`,
+那天終於來了。她當著眾人哭訴,亮出「證據」:一件你的外衣——主母要從僕人房裡取一件衣服,太容易了。在埃及,主母的眼淚,比奴隸的舌頭重。你百口莫辯,但你站得很直——連押你進牢的獄卒,都忍不住多看了你兩眼。
+
+你贏了那個下午。你贏不了她的恨。`,
   choices:[
-    {text:"「神知道真相——這就夠了。」", next:"prison", eff:e(10,0,0), echo:"「神知道。」這三個字,讓鐐銬輕了一點。"},
-    {text:"進了牢,也要把牢裡的規矩摸清楚。", next:"prison", eff:e(0,10,0), echo:"第一夜,你已經數清了這層牢房有幾個看守。"},
-    {text:"總有一天,他們都得改口,恭敬地叫你一聲大人。", next:"prison", eff:e(0,0,10), echo:"你在心裡,把那一天的場面,先排練了一遍。"},
+    {text:"你站得很直,走進牢門。", next:"prison", eff:e(0,0,0)},
+  ]
+});
+
+scene("affair_days",{
+  title:"支線 · 沒人看見的日子", art:"house", ref:"虛構支線 · 非聖經記載", fiction:true,
+  text:`你越過了那條線。
+
+起初真的沒有人知道。只是你開始怕光:怕主人的腳步聲、怕同伴多看你一眼、怕她在人前那個若有似無的微笑。家業還在你手上,但夜裡帳本的數字,你常常算錯。
+
+僕人之間,開始有了耳語。這個家越來越小,小到快裝不下這個秘密。`,
+  choices:[
+    {text:"繼續瞞下去。只要沒人說破,就什麼都沒發生。", next:"end_fallen", eff:e(0,0,0)},
+    {text:"結束這一切。你去見主人,把一切坦白——代價,你來付。", next:"prison", eff:e(0,0,0), flag:"confessed", echo:"說出口的那一刻,你怕得發抖——卻也終於,敢看人的眼睛了。"},
   ]
 });
 
 scene("end_fallen",{
   title:"結局 · 墜落", art:"bad", ref:"What-if · 非聖經結局",
-  text:`你越過了那條線。一陣子的甜,換來流言四起。主人回來,真相藏不住——一個碰了主母的奴隸,只有一個下場。
+  text:`秘密的命運,就是被說破。流言傳到主人耳裡,真相藏不住——一個碰了主母的奴隸,只有一個下場。
 
 名聲、前途、性命,在同一個黃昏一起斷送。
 
@@ -566,13 +553,13 @@ scene("end_fallen",{
 
 scene("prison",{
   title:"第三幕 · 牢裡的兩個夢", art:"prison", ref:"創世記 39:20–40:8",
-  text:`你被冤枉下監。但你走到哪,信任就跟到哪——典獄長乾脆把獄務都交給你。
+  text:()=>`${flags.confessed?"你為自己付上了代價,進了監":"你被冤枉下監"}。但你走到哪,信任就跟到哪——典獄長乾脆把獄務都交給你。
 
 有一天,法老的酒政和膳長一起被關了進來。某個早上,兩人愁眉苦臉:他們各做了一個夢,沒人能解。`,
   choices:[
     {text:"「解夢的事,不是在於神嗎?」你謙卑替他們解。", next:"v_pri_faith", eff:e(10,0,0), bible:true},
-    {text:"你冷靜分析夢的徵兆,秀了一手。", next:"v_pri_wis", eff:e(0,10,0)},
-    {text:"解完夢,你懇求酒政:「你得意的時候,求你記念我,救我出這監牢。」", next:"v_pri_amb", eff:e(0,0,10)},
+    {text:"你冷靜分析兩個夢的徵兆,一條一條,把答案推了出來。", next:"v_pri_wis", eff:e(0,10,0)},
+    {text:"你替他們解夢——並讓這件事傳遍全獄:這個希伯來少年的名字,連看守都記得。", next:"v_pri_amb", eff:e(0,0,10)},
   ]
 });
 
@@ -601,12 +588,12 @@ scene("v_pri_wis",{
 });
 
 scene("v_pri_amb",{
-  title:"第三幕 · 求你記念我", art:"prison", ref:"創世記 40:14–23;41:1",
-  text:`酒政連連點頭,千恩萬謝:「一出去,就在法老面前提你!」
+  title:"第三幕 · 獄裡的名人", art:"prison", ref:"虛構場景 · 呼應創世記 40:23;41:1", fiction:true,
+  text:`你的名聲傳開了:走廊那頭的犯人隔著柵欄喊你的名字,新來的看守都聽過你的事。酒政出獄那天,你送他到門口;他攥著你的手連連點頭:「我不會忘了你!」
 
-你開始數日子。七天。一個月。三個月。——宮裡,沒有任何消息。
+七天。一個月。三個月。——宮牆裡,沒有任何消息。
 
-酒政得意的時候,把你忘得一乾二淨。你把出獄的盼望,押在一個人的記性上;而那個人,忘了你。這一忘,就是兩年。`,
+名聲,出不了監牢的牆;說不會忘的人,忘得最快。你把出獄的指望,放在人的眼睛和人的記性上——這一放,就是兩年。`,
   verse:"「不要倚靠君王,不要倚靠世人,他一點不能幫助。」——詩篇 146:3",
   choices:[
     {text:"第七百個日子,你不再數了。", next:"pharaoh", eff:e(0,0,0)},
@@ -648,9 +635,11 @@ scene("sons",{
 
 scene("end_shepherd",{
   title:"結局 · 回鄉", art:"neutral", ref:"What-if · 非聖經結局",
-  text:`你婉拒了那枚戒指,法老厚賞,讓你回鄉。
+  text:`你還是替法老解了夢:七個豐年、七個荒年,連同積糧防荒的對策,你都一併獻上。只是當法老要把這一切交在你手上時,你深深一拜:「求王另擇賢能——我只想回家。」
 
-饑荒來時,埃及換別人撐,死傷無數;你靠著法老的賞賜和變賣牲畜,勉強保住了自己一家——卻錯過了那個能救千萬人的位子。`,
+法老厚賞了你。回鄉那天,白髮的父親抱著你,哭得像個孩子;哥哥們遠遠站著,沒有人敢上前。那件舊事,你們一輩子沒有再提,也一輩子沒有解開。
+
+饑荒來時,埃及換了別人撐,死傷無數;你靠著法老的賞賜和變賣牲畜,勉強保住了自己一家。只是夜深人靜,你時常想起——那個你親手讓出去的位子。`,
   ending:"shepherd"
 });
 
@@ -689,7 +678,6 @@ scene("v_viz_wis",{
 });
 
 scene("crowd_kneel",{
-  branch:true, // 一去不回的支線中繼站:入口選項要掛 🏁
   title:"支線 · 哥哥跪在萬人中", art:"grain", ref:"虛構支線 · 非聖經記載（素材呼應創世記 47:13–26）", fiction:true,
   text:`糧食,是荒年裡最硬的貨幣。你用它換來銀子、牲畜、土地——更換來一句又一句「你救了我們的性命」。開倉的日子成了你的節日:號角、儀仗、萬人空巷。糧倉前,立起了你的雕像。
 
@@ -698,7 +686,7 @@ scene("crowd_kneel",{
 全埃及的眼睛,都在看著你。`,
   choices:[
     {text:"把臉藏回宰相的妝底下。讓他們領糧,讓他們走。", next:"end_egypt_lord", eff:e(0,0,0)},
-    {text:"就在這裡——當著萬人,摘下頭冠,說出你的名字。", next:"end_grand", eff:e(0,0,0)},
+    {text:"不在這裡,不是這樣。你吩咐侍從:把那十個人,單獨帶進內殿。", next:"brothers", eff:e(0,0,0), flag:"crowd", echo:"號角再響,你已經走下了高台。"},
   ]
 });
 
@@ -712,39 +700,39 @@ scene("end_egypt_lord",{
   ending:"egypt_lord"
 });
 
-scene("end_grand",{
-  title:"結局 · 盛大的相認", art:"reunion", ref:"What-if · 非聖經結局",
-  text:`號角停了。你當著萬人摘下頭冠,用希伯來話,喊出哥哥們的名字——全埃及看著宰相走下高台,抱住十個衣衫襤褸的牧人。
-
-那一幕被畫進壁畫、寫進頌歌。你給家人最好的地、最大的排場;迎接父親的儀仗,長得看不見尾。擁抱是真的,眼淚也是真的。
-
-只是夜深人靜,你偶爾會想:那一天,如果沒有萬人在場——你還會走下高台嗎?`,
-  ending:"grand_reunion"
-});
-
 scene("brothers",{
   title:"第五幕 · 他們跪在你腳前", art:"reunion", ref:"創世記 42:6–9",
-  text:`有一天,十個風塵僕僕的人跪在你的階前求糧。
+  text:()=>{
+    const who = flags.fled ? "當年在曠野追殺你、把你逼上這條路的哥哥" : "當年把你丟進井、賣掉你的哥哥";
+    if(flags.crowd) return `侍從把那十個希伯來人,單獨帶進內殿。隔著埃及的妝與宰相的冠,他們仍然認不出你——只是不明所以地,再一次跪下。
 
-你一眼認出他們——當年把你丟進井、賣掉你的哥哥。他們卻認不出,眼前這位埃及宰相,就是那個彩衣少年。
+他們是${who}。沒有萬人圍觀,沒有號角——只有你,和他們。
 
-夢,正在你眼前彎下腰。他們的命,現在握在你手裡。你可以做任何事。`,
+夢,正在你眼前彎下腰。他們的命,握在你手裡。你可以做任何事。`;
+    return `有一天,十個風塵僕僕的人跪在你的階前求糧。
+
+你一眼認出他們——${who}。他們卻認不出,眼前這位埃及宰相,就是那個彩衣少年。
+
+夢,正在你眼前彎下腰。他們的命,現在握在你手裡。你可以做任何事。`;
+  },
   verse:"報復,還是放手?",
   choices:[
-    {text:"不試探,不等證據——當場原諒,相認。", next:"end_halfway", eff:e(0,0,0), req:{stat:"faith", val:50}, lockedNote:"——你心裡還沒真正平靜下來"},
+    {text:"你不動聲色,先退了朝。當夜,把二十年的帳,攤在神面前——求祂帶你走接下來的每一步。", next:"v_bro_faith", eff:e(10,0,0), req:{stat:"faith", val:50}, lockedNote:"——心裡的浪太大,你壓不下去,也交不出去"},
     {text:"先設個局試探他們,看是不是真的變了。", next:"test_brothers", eff:e(0,10,0), bible:true, echo:"你把眼淚壓回去,換上宰相的臉。"},
-    {text:"報復。讓他們嚐嚐你嚐過的苦。", next:"revenge_cell", eff:e(0,0,0), req:{flag:"grudge", label:"多坍那天你埋下的恨"}, lockedNote:"——你在曠野放下過恨,這扇門對你是關的"},
+    {text:"報復。讓他們嚐嚐你嚐過的苦。", next:"revenge_cell", eff:e(0,0,0), req:{flag:"grudge", label:"多坍那天你埋下的恨"}, lockedNote:"——多坍那天,你沒有把恨埋進心裡;這扇門對你是關的"},
   ]
 });
 
-scene("end_halfway",{
-  title:"結局 · 半路上的和好", art:"reunion", ref:"What-if · 非聖經結局",
-  text:`你揮手屏退左右,當著十個還跪著的人,說出了那個名字。他們臉色發白,你卻張開了手。
+scene("v_bro_faith",{
+  title:"第五幕 · 頂樓的夜禱", art:"reunion", ref:"虛構場景", fiction:true,
+  text:`那一夜,你獨自登上糧倉的頂層。腳下是沉睡的埃及,頭上,是和多坍曠野同一片星空。
 
-擁抱是真的,眼淚也是真的。只是你始終不知道,他們變了沒有——你沒有問,也沒有等。宴席散去,各自回房的路上,誰都沒有再說話。有些傷,認了人,還沒認完;有些路,接上了,還要慢慢走。
+你把二十年,一樣一樣攤開在神面前:那口井、駝隊的鎖鏈、牢裡的刻痕——還有今天那十張,跪著的臉。「他們變了沒有,我看不準。求祢替我看;接下來的每一步,祢來帶。」
 
-你打發車輛回迦南,把父親、便雅憫,全家都接到歌珊。日子,先一起過下去——其餘的,交給時間,和那位看顧時間的。`,
-  ending:"halfway"
+下樓的時候,心,安靜了。明天,你可以用清明的眼睛,察驗他們。`,
+  choices:[
+    {text:"天亮了。你回到大殿。", next:"test_brothers", eff:e(0,0,0)},
+  ]
 });
 
 scene("test_brothers",{
@@ -773,44 +761,33 @@ scene("end_nameless",{
 });
 
 scene("revenge_cell",{
-  branch:true, // 一去不回的支線中繼站:入口選項要掛 🏁
-  title:"支線 · 牢裡的哥哥們", art:"prison", ref:"虛構支線 · 非聖經記載（牢中自責出自創世記 42:21–22）", fiction:true,
-  text:`你給他們安了個罪名——奸細,全部下進監裡。隔著柵欄,你看著當年的恐懼,重新爬回他們臉上。
+  title:"支線 · 牢裡的哥哥們", art:"prison", ref:"虛構支線 · 非聖經記載（下監與牢中認罪呼應創世記 42:17–24）", fiction:true,
+  text:()=>`你給他們安了個罪名——奸細,全部下進監裡。隔著柵欄,你看著當年的恐懼,重新爬回他們臉上。
 
-第三天夜裡,牢裡傳出低低的聲音。是哥哥們在用希伯來話彼此認罪:「我們在弟弟身上犯了罪……他哀求我們的時候,我們不肯聽——所以這場災,臨到我們了。」他們不知道,高牆外的你,每一個字都聽得懂。
+第三天夜裡,牢裡傳出低低的聲音。是哥哥們在用希伯來話彼此認罪:「${flags.fled?"我們對弟弟下了殺手——他逃進曠野,是死是活,我們連找都不敢找":"我們在弟弟身上犯了罪……他哀求我們的時候,我們不肯聽"}——所以這場災,臨到我們了。」他們不知道,高牆外的你,每一個字都聽得懂。
 
 劍,已經出鞘一半。`,
   choices:[
     {text:"讓報應走完。明天,定他們的罪。", next:"end_revenge", eff:e(0,0,0)},
-    {text:"你在黑暗裡聽完那段認罪,握劍的手,慢慢鬆開了。放他們走。", next:"end_relent", eff:e(0,0,0)},
+    {text:"你在黑暗裡聽完那段認罪,握劍的手,慢慢鬆開了——但放人之前,你要看見他們是不是真的變了。", next:"test_brothers", eff:e(0,0,0), echo:"劍收回鞘裡。你擦掉眼角的東西,換回宰相的臉。"},
   ]
 });
 
 scene("end_revenge",{
   title:"結局 · 復仇的筵席", art:"bad", ref:"What-if · 非聖經結局",
-  text:`你定了他們的罪。你擺了一桌筵席,卻一口都嚐不出味道。
+  text:()=>`你定了他們的罪。你擺了一桌筵席,卻一口都嚐不出味道。
 
 你扣下了西緬,把其餘的人趕回迦南;不久,老父親雅各撐不住再一次喪子的打擊,死訊傳來。
 
-你贏了。你讓他們嚐盡了你嚐過的苦。可是夜裡,枯井那圈天光,又出現在夢裡——這一次,你聽不見那個聲音了。或者,是你不敢聽。`,
+你贏了。你讓他們嚐盡了你嚐過的苦。可是夜裡,${flags.fled?"多坍曠野的那陣風,又灌進夢裡":"枯井那圈天光,又出現在夢裡"}——這一次,你聽不見那個聲音了。或者,是你不敢聽。`,
   ending:"revenge"
-});
-
-scene("end_relent",{
-  title:"結局 · 懸崖邊收手", art:"neutral", ref:"What-if · 非聖經結局",
-  text:`你放了他們,糧也給足——但你是誰,你沒有說。他們逃也似地離開埃及,一輩子不知道,那個差點殺了他們的宰相,是被他們賣掉的弟弟。
-
-恨,停在了出鞘一半的地方;和好,也是。你救回了自己的手,卻還沒救回這個家。
-
-只是那一夜之後,夢偶爾又回來了——遠遠的,像在等你,走完剩下的路。`,
-  ending:"relent"
 });
 
 scene("resolve",{
   title:"終幕 · 相認", art:"good", ref:"創世記 45:1–22;50:20",
-  text:`你屏退所有人,放聲大哭,哭到連門外的埃及人都聽見。
+  text:()=>`你屏退所有人,放聲大哭,哭到連門外的埃及人都聽見。
 
-「我是約瑟,你們賣掉的弟弟。別自責了——是神差我先一步來這裡,為了保住你們的命。」
+「我是約瑟,${flags.fled?"你們的弟弟":"你們賣掉的弟弟"}。別自責了——是神差我先一步來這裡,為了保住你們的命。」
 
 你抱著便雅憫的脖子哭,一個一個和哥哥相擁,又吩咐人送給便雅憫五套嶄新的衣裳——像當年那件彩衣一樣的新衣。法老聽說了,大為歡喜,把歌珊最好的地賜給你們。
 
@@ -821,8 +798,13 @@ scene("resolve",{
 
 /* ---------- callback：讓遊戲記得你的選擇 ---------- */
 const CALLBACKS = {
-  prison: ()=> flags.outwit ? {pre:"你的事,傳得比你的人還快:那個站得筆直走進牢門的希伯來人。獄裡的人,都想看看你長什麼樣子。"} : null,
+  prison: ()=>{
+    if(flags.outwit) return {pre:"你的事,傳得比你的人還快:那個站得筆直走進牢門的希伯來人。獄裡的人,都想看看你長什麼樣子。"};
+    if(flags.confessed) return {pre:"沒有人相信奴隸的坦白——主人的怒氣,只認一個說法。但你是自己走進這扇牢門的;夜裡,你睡得著。"};
+    return null;
+  },
   brothers: ()=> flags.grudge ? {post:"那天曠野的風裡,你說過:總有一天,他們會親眼看見你是誰。——如今,那一天到了,他們就跪在你的腳前。"} : null,
+  resolve: ()=> flags.fled ? {pre:"這一次,你沒有逃。"} : null,
 };
 
 /* ============================================================
@@ -891,8 +873,6 @@ function nearMissHTML(endingId){
   const cands=[];
   if(endingId!=="egypt_lord" && !unlocked.includes("egypt_lord") && ambition>=30 && ambition<60)
     cands.push({gap:60-ambition, text:`你的認同停在 ${ambition}——讓更多人把眼光放在你身上,荒年裡會有一扇門打開。`});
-  if(endingId!=="halfway" && !unlocked.includes("halfway") && faith>=30 && faith<50)
-    cands.push({gap:50-faith, text:`你的信心停在 ${faith}——再深一點,在哥哥們跪下的那一刻,有一條不必試探的路。`});
   if(endingId!=="reconcile" && !unlocked.includes("reconcile"))
     cands.push({gap:99, text:`聽說,一路跟著 📖 的腳蹤走到底的人,會抵達一個飽足之地……`});
   if(!cands.length) return "";
@@ -1079,7 +1059,7 @@ function renderChoices(sc){
     const canon = !!(tgt && tgt.ending && ENDINGS[tgt.ending] && ENDINGS[tgt.ending].canonical); // 全遊戲唯一金標:通往聖經結局的那一步
     let tags = (c.bible && !canon) ? `<span class="tag bible">📖 聖經</span>` : "";
     if(canon) tags += `<span class="tag bibleend">📖🏁 聖經結局</span>`;
-    else if(tgt && (tgt.ending || tgt.branch)) tags += `<span class="tag end">🏁 結局</span>`; // branch=一去不回的支線入口
+    else if(tgt && tgt.ending) tags += `<span class="tag end">🏁 結局</span>`;
     if(!multi){
       btn.classList.add("single");
       btn.innerHTML = `▸ ${c.text}` + effChips(c.eff);
@@ -1111,11 +1091,11 @@ function showTitle(){
   main.innerHTML = `<div class="titlecard">
     <p class="hook">十七歲的約瑟,在一個偏了心的家裡長大——被親哥哥丟進井裡、賣到埃及。誘惑、冤獄、權力、報復——每一步,都由你決定。</p>
     <div class="legend">
-      <div class="lead">✦ 每個選擇都有後果 · 11 種結局 · 一輪約 7 分鐘</div>
+      <div class="lead">✦ 每個選擇都有後果 · 7 種結局 · 一輪約 7 分鐘</div>
       <div>🌱 每個難關,你都可以<b>交託給神</b>(信心)、<b>自己解題</b>(智慧),或<b>交給別人的眼光</b>(認同)——三種倚靠,養成三種約瑟</div>
       <div><span class="tag bible" style="margin-right:6px">📖 聖經</span>聖經記載中約瑟實際的選擇——但不一定是「標準答案」</div>
       <div>🔒 數值不夠的路會鎖住;看得到它,就代表有另一種走法</div>
-      <div><span class="tag end" style="margin-right:6px">🏁 結局</span>離開聖經主線的出口——每一個出口,都是一個「如果約瑟當時……」;<span class="tag bibleend" style="margin-right:6px">📖🏁 聖經結局</span>全遊戲只有一條:跟著聖經走到底</div>
+      <div><span class="tag end" style="margin-right:6px">🏁 結局</span>走到這裡,故事就停在一個「如果約瑟當時……」的結局;支線裡,也藏著回主線的門;<span class="tag bibleend" style="margin-right:6px">📖🏁 聖經結局</span>全遊戲只有一條:跟著聖經走到底</div>
     </div>
   </div>`;
   const choicesEl=$("choices");
@@ -1148,7 +1128,7 @@ function openGallery(){
   if(unlocked.length===total){
     const ban=document.createElement("div");
     ban.className="complete";
-    ban.innerHTML="🏆 <b>完整的人</b><br>你走完了約瑟所有的可能——跟隨到底的那一條,也走過逃亡與折返、墜落、安穩、掌聲與盛大的排場、半路的和好、無名的恩情、收手與復仇。<br>現在,你想成為哪一個?";
+    ban.innerHTML="🏆 <b>完整的人</b><br>你走完了約瑟所有的可能——跟隨到底的那一條,也走過逃亡、墜落、安穩、掌聲、無名的恩情與復仇——還有那些,半路回頭的門。<br>現在,你想成為哪一個?";
     list.append(ban);
   }
   for(const [id,E] of Object.entries(ENDINGS)){
@@ -1169,31 +1149,27 @@ const MAP_MAIN=["start","dothan","the_pit","memory","egypt","temptation","prison
 const MAP_X=i=>60+i*92, SPINE_Y=250;
 const MAP_NODES=[
   {sc:"wild_years",   x:152,  y:345, mid:true, key:"智30"},
-  {sc:"outwit",       x:566,  y:170, mid:true, key:"智40"},
+  {sc:"affair_days",  x:520,  y:345, mid:true},
   {sc:"crowd_kneel",  x:888,  y:345, mid:true, key:"認60"},
   {sc:"revenge_cell", x:1034, y:345, mid:true, key:"🗝記恨"},
-  {sc:"end_runaway",  end:"runaway",      x:100,  y:445},
-  {sc:"end_homeward", end:"homeward",     x:206,  y:445},
-  {sc:"end_fallen",   end:"fallen",       x:520,  y:345},
+  {sc:"end_runaway",  end:"runaway",      x:152,  y:445},
+  {sc:"end_fallen",   end:"fallen",       x:520,  y:445},
   {sc:"end_shepherd", end:"shepherd",     x:704,  y:150},
-  {sc:"end_egypt_lord",end:"egypt_lord",  x:830,  y:445},
-  {sc:"end_grand",    end:"grand_reunion",x:924,  y:445},
-  {sc:"end_halfway",  end:"halfway",      x:980,  y:150, key:"信50"},
-  {sc:"end_revenge",  end:"revenge",      x:1018, y:445},
-  {sc:"end_relent",   end:"relent",       x:1112, y:445},
+  {sc:"end_egypt_lord",end:"egypt_lord",  x:888,  y:445},
+  {sc:"end_revenge",  end:"revenge",      x:1034, y:445},
   {sc:"end_nameless", end:"nameless",     x:1148, y:345},
   {sc:"resolve",      end:"reconcile",    x:1216, y:250, gold:true},
 ];
 const MAP_EDGES=[
-  ["dothan","wild_years"],["wild_years","end_runaway"],["wild_years","end_homeward"],
-  ["temptation","end_fallen"],["temptation","outwit"],["outwit","prison"],
+  ["dothan","wild_years"],["wild_years","end_runaway"],["wild_years","memory"],
+  ["temptation","affair_days"],["affair_days","end_fallen"],["affair_days","prison"],
   ["pharaoh","end_shepherd"],
-  ["vizier","crowd_kneel"],["crowd_kneel","end_egypt_lord"],["crowd_kneel","end_grand"],
-  ["brothers","end_halfway"],["brothers","revenge_cell"],["revenge_cell","end_revenge"],["revenge_cell","end_relent"],
+  ["vizier","crowd_kneel"],["crowd_kneel","end_egypt_lord"],["crowd_kneel","brothers"],
+  ["brothers","revenge_cell"],["revenge_cell","end_revenge"],["revenge_cell","test_brothers"],
   ["test_brothers","end_nameless"],["test_brothers","resolve"],
 ];
 const MAP_VIGNETTES={start:["v_start_faith","v_start_wis","v_start_amb"], the_pit:["v_pit_faith","v_pit_wis","v_pit_amb"],
-  egypt:["v_egy_faith","v_egy_wis","v_egy_amb"], prison:["v_pri_faith","v_pri_wis","v_pri_amb"], vizier:["v_viz_faith","v_viz_wis"]};
+  egypt:["v_egy_faith","v_egy_wis","v_egy_amb"], prison:["v_pri_faith","v_pri_wis","v_pri_amb"], vizier:["v_viz_faith","v_viz_wis"], temptation:["v_outwit"], brothers:["v_bro_faith"]};
 
 function openMap(){
   const LIT="#e8c46a", DIM="#4a3a28", INK="#d8c9b0", INKDIM="#7a6a54", RED="#b05a4a", NEU="#9a8a74";
