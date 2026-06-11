@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>約瑟的夢 — 十七歲的抉擇</title>
+<link rel="manifest" href="manifest.json">
 <meta name="description" content="如果你是十七歲的約瑟,被哥哥丟進井裡——你會原諒,還是報復?互動聖經文字冒險,每個選擇都有後果,7 種結局,一輪約 7 分鐘。">
 <meta name="theme-color" content="#1a1410">
 <meta property="og:type" content="website">
@@ -136,6 +137,8 @@
   .complete{border:1px solid var(--gold-soft); border-radius:10px; background:#2a2012; padding:13px 15px; margin-bottom:14px; font-size:13.5px; color:var(--gold); text-align:center}
   .modal .close{margin-top:18px; width:100%; padding:11px; border-radius:9px; cursor:pointer; background:var(--gold-soft); border:none; color:var(--bg); font-family:inherit; font-size:14px; letter-spacing:.2em;}
   .modal .ghost{margin-top:10px; width:100%; padding:11px; border-radius:9px; cursor:pointer; background:transparent; border:1px solid #4a3826; color:var(--ink-dim); font-family:inherit; font-size:14px; letter-spacing:.2em;}
+  .choice:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important} }
   .modal.wide{max-width:min(96vw,1100px)}
   .mapwrap{overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid #3a2c1d; border-radius:10px; background:#1d1610}
   .mapwrap svg{display:block}
@@ -282,7 +285,7 @@ const ENDINGS = {
   shepherd:   {name:"平凡的牧人", type:"安穩型", kind:"neutral", whatif:true,
     hint:"在命運之門打開的那一刻,轉身回家。",
     epilogue:"你選了安穩,守著羊群終老。你是個好人,一個好牧人。只是每個星夜抬頭,你總覺得有什麼很大的東西,從指縫間靜靜溜走了。",
-    reflect:"安穩,和不負自己的天賦之間,你會怎麼選?",
+    reflect:"安穩過日子,和把神放在你裡面的那個夢活出來——你會怎麼選?",
     identity:"他用「不去碰」回應了家給的傷——安穩沒有錯,只是連神放在他裡面的那個夢,也一起收進了櫃子。"},
   fallen:     {name:"墜落", type:"失足型", kind:"bad", whatif:true,
     hint:"在沒有人看見的時候,鬆開手。",
@@ -310,11 +313,10 @@ scene("start",{
 而你昨晚又夢見了:田裡的禾捆,他們的捆,全向你的捆彎下腰。
 
 這個夢在你舌尖上滾來滾去。說,還是不說?`,
-  verse:"「看哪,那做夢的來了。」",
   choices:[
     {text:"別出聲,只在心裡把夢交給神。", next:"v_start_faith", eff:e(10,0,0)},
     {text:"先別說。你睜開眼睛觀察:這個家的裂縫在哪裡,哪句話會點火。", next:"v_start_wis", eff:e(0,10,0)},
-    {text:"忍不住——當著哥哥的面,把夢說得神氣活現。", next:"v_start_amb", eff:e(-10,0,20), bible:true},
+    {text:"忍不住——當著哥哥們的面,把夢一五一十說了出來,一個字都沒藏。", next:"v_start_amb", eff:e(-10,0,20), bible:true},
   ]
 });
 
@@ -342,7 +344,7 @@ scene("v_start_amb",{
   title:"第一幕 · 全家的怒火", art:"coat", ref:"創世記 37:9–11",
   text:`你說了。不只說了,後來連第二個夢——太陽、月亮和十一顆星都向你下拜——也一併說了。
 
-哥哥們的嫉妒燒到了臉上。連父親都當眾責備你:「難道我和你母親、你弟兄,真要來俯伏在地,向你下拜嗎?」
+哥哥們的嫉妒燒到了臉上。連父親都當眾責備你:「難道我和你母親、你弟兄,果然要來俯伏在地,向你下拜嗎?」
 
 但你沒看見的是:罵完之後,父親把這話,悄悄存在了心裡。`,
   choices:[
@@ -352,6 +354,7 @@ scene("v_start_amb",{
 
 scene("dothan",{
   title:"第一幕 · 曠野的殺意", art:"desert", ref:"創世記 37:18–24",
+  verse:"「你看!那做夢的來了。」",
   text:`父親要你去看看哥哥們。你穿著那件彩衣,大老遠就被認出來。
 
 還沒走近,風裡飄來一句:「把他做掉,丟進坑裡,就說野獸吃了。」
@@ -373,7 +376,7 @@ scene("wild_years",{
 你蹲在石頭後面,看著駝鈴搖過。`,
   choices:[
     {text:"往北,走得越遠越好。從今天起,沒有人認識你。", next:"end_runaway", eff:e(0,0,0)},
-    {text:"不能一輩子躲。你走向商路——哪怕前面是網羅。", next:"memory", eff:e(0,0,0), flag:"fled", echo:"網收緊的那一刻,你忽然覺得:也許這條路,也有人在帶。方向——埃及。"},
+    {text:"不能一輩子躲。你朝商路走去——被奴隸販子的網套住,也好過爛在曠野。", next:"memory", eff:e(0,0,0), flag:"fled", echo:"鎖鏈在響。可是你忽然覺得:也許這條路,也有人在帶。"},
   ]
 });
 
@@ -399,7 +402,7 @@ scene("the_pit",{
   choices:[
     {text:"在井底,你選擇相信:這條路上有人帶著你走。", next:"v_pit_faith", eff:e(10,0,0)},
     {text:"你冷靜記下商隊的路線、買賣的行話。", next:"v_pit_wis", eff:e(0,10,0)},
-    {text:"你對商隊頭目誇口本事,讓自己被高價賣進大人物的家。", next:"v_pit_amb", eff:e(0,0,10), req:{stat:"ambition", val:40}, lockedNote:"——你還不懂得,怎麼讓人看上你"},
+    {text:"你對商隊頭目誇口本事,讓自己被高價賣進大人物的家。", next:"v_pit_amb", eff:e(0,0,10), req:{stat:"ambition", val:40}, lockedNote:"——你還不懂得,怎麼讓人看見你的價值"},
   ]
 });
 
@@ -508,8 +511,8 @@ scene("temptation",{
 沒人會知道。這句話在你腦子裡迴盪。`,
   verse:"沒人看見的時候,你是誰?",
   choices:[
-    {text:"「我怎能做這大惡,得罪神?」甩開她,奪門而出。", next:"prison", eff:e(10,0,0), bible:true, echo:"外衣留在她手裡;清白,留在你身上。"},
-    {text:"不撕破臉——搬出主人、名聲與律法,一句句替她算後果。", next:"v_outwit", eff:e(0,10,0), req:{stat:"wisdom", val:40}, lockedNote:"——你還想不出不撕破臉的說法", flag:"outwit"},
+    {text:"「我怎能作這大惡,得罪神呢?」甩開她,奪門而出。", next:"prison", eff:e(10,0,0), bible:true, echo:"外衣留在她手裡;清白,留在你身上。"},
+    {text:"不撕破臉——你替她,把後果一條一條算清楚。", next:"v_outwit", eff:e(0,10,0), req:{stat:"wisdom", val:40}, lockedNote:"——你還想不出不撕破臉的說法", flag:"outwit"},
     {text:"反正沒人看見……你動搖了。", next:"affair_days", eff:e(0,0,0)},
   ]
 });
@@ -557,7 +560,7 @@ scene("prison",{
 
 有一天,法老的酒政和膳長一起被關了進來。某個早上,兩人愁眉苦臉:他們各做了一個夢,沒人能解。`,
   choices:[
-    {text:"「解夢的事,不是在於神嗎?」你謙卑替他們解。", next:"v_pri_faith", eff:e(10,0,0), bible:true},
+    {text:"「解夢不是出於神嗎?」你謙卑替他們解。", next:"v_pri_faith", eff:e(10,0,0), bible:true},
     {text:"你冷靜分析兩個夢的徵兆,一條一條,把答案推了出來。", next:"v_pri_wis", eff:e(0,10,0)},
     {text:"你替他們解夢——並讓這件事傳遍全獄:這個希伯來少年的名字,連看守都記得。", next:"v_pri_amb", eff:e(0,0,10)},
   ]
@@ -594,7 +597,7 @@ scene("v_pri_amb",{
 七天。一個月。三個月。——宮牆裡,沒有任何消息。
 
 名聲,出不了監牢的牆;說不會忘的人,忘得最快。你把出獄的指望,放在人的眼睛和人的記性上——這一放,就是兩年。`,
-  verse:"「不要倚靠君王,不要倚靠世人,他一點不能幫助。」——詩篇 146:3",
+  verse:"「你們不要倚靠君王,不要倚靠世人,他一點不能幫助。」——詩篇 146:3",
   choices:[
     {text:"第七百個日子,你不再數了。", next:"pharaoh", eff:e(0,0,0)},
   ]
@@ -609,13 +612,13 @@ scene("pharaoh",{
 這個夢,你看得懂。問題是,你要怎麼說?`,
   choices:[
     {text:"「這不在乎我——神必將平安的話回答法老。」當眾宣告七年豐荒,並請法老速設糧官、積糧防荒。", next:"sons", eff:e(10,0,0), bible:true, echo:"「這不在乎我。」滿朝寂靜之後,是法老起身的聲音。"},
-    {text:"穩紮穩打:解夢,並獻上一套完整的治國方案。", next:"sons", eff:e(0,10,0), echo:"你的方案攤在法老面前,像一張已經贏了的棋譜。"},
+    {text:"穩紮穩打:解夢,並獻上一套完整的治國方案。", next:"sons", eff:e(0,10,0), echo:"你的方案攤在法老面前,像一盤已經贏了的棋。"},
     {text:"你累了,只想回家,當個普通人。", next:"end_shepherd", eff:e(0,0,0)},
   ]
 });
 
 scene("sons",{
-  title:"第四幕 · 兩個名字", art:"good", ref:"創世記 41:50–52",
+  title:"第四幕 · 兩個名字", art:"good", ref:"創世記 41:41–52",
   text:`那年你三十歲。法老的戒指戴在你手上,全埃及交給你治理;豐年裡,你成了家,兩個兒子接連出生。
 
 抱著長子,你給他取名「瑪拿西」——意思是:神使我忘了一切的困苦,和我父的全家。
@@ -632,34 +635,34 @@ scene("sons",{
 });
 
 scene("end_shepherd",{
-  title:"結局 · 回鄉", art:"neutral", ref:"What-if · 非聖經結局",
+  title:"結局 · 平凡的牧人", art:"neutral", ref:"What-if · 非聖經結局",
   text:`你還是替法老解了夢:七個豐年、七個荒年,連同積糧防荒的對策,你都一併獻上。只是當法老要把這一切交在你手上時,你深深一拜:「求王另擇賢能——我只想回家。」
 
 法老厚賞了你。回鄉那天,白髮的父親抱著你,哭得像個孩子;哥哥們遠遠站著,沒有人敢上前。那件舊事,你們一輩子沒有再提,也一輩子沒有解開。
 
-饑荒來時,埃及換了別人撐,死傷無數;你靠著法老的賞賜和變賣牲畜,勉強保住了自己一家。只是夜深人靜,你時常想起——那個你親手讓出去的位子。`,
+饑荒來時,埃及換了別人撐,撐得跌跌撞撞;你靠著法老的賞賜和變賣牲畜,勉強保住了自己一家。只是夜深人靜,你時常想起——那個你親手讓出去的位子。`,
   ending:"shepherd"
 });
 
 scene("vizier",{
   title:"第四幕 · 生殺大權", art:"grain", ref:"創世記 41:41–57",
-  text:`七個豐年過去,糧倉堆得像海沙。然後,饑荒照著夢來了——連你的家鄉迦南,都餓殍遍野。各地的人潮,湧向埃及買糧。
+  text:`七個豐年過去,糧倉堆得像海沙。然後,饑荒照著夢來了——連你的家鄉迦南,都餓得有人倒在路邊。各地的人潮,湧向埃及買糧。
 
 無數人的生死,握在你手裡。這份權力,你怎麼用?`,
   choices:[
-    {text:"按公義賣糧,先救最弱的人。", next:"v_viz_faith", eff:e(10,0,0), bible:true},
+    {text:"照神藉夢所指示的:開倉賣糧,讓眾民活下去。", next:"v_viz_faith", eff:e(10,0,0), bible:true},
     {text:"設計最聰明的糧政,把效率拉到最滿。", next:"v_viz_wis", eff:e(0,10,0)},
     {text:"把賑災辦成你的造神運動——讓全埃及,只記得一個名字。", next:"crowd_kneel", eff:e(0,0,0), req:{stat:"ambition", val:60}, lockedNote:"——還不夠多人,把眼光放在你身上"},
   ]
 });
 
 scene("v_viz_faith",{
-  title:"第四幕 · 存活的眾民", art:"grain", ref:"創世記 41:53–57",
-  text:`七個荒年,像夢說的一樣來了。你打開積糧的倉,按著公義配售——先是埃及,然後是從各地湧來的飢民。
+  title:"第四幕 · 存活的眾民", art:"grain", ref:"創世記 41:45,53–57",
+  text:`七個荒年,像夢說的一樣來了。你打開積糧的倉,賣糧給埃及人;各地的人,也都往埃及來,到你這裡買糧。
 
-老人、寡婦、抱著孩子的母親,在你的糧倉前活了下來。
+糧倉前的隊伍,排到看不見尾——但隊伍裡的人,活了下來。
 
-埃及人開始用一個新名字叫你,意思是:世界的拯救者。`,
+法老早就賜了你一個埃及名字。有人說,那名字的意思是:世界的拯救者。`,
   choices:[
     {text:"糧倉開了,人,活了下來。", next:"brothers", eff:e(0,0,0)},
   ]
@@ -667,7 +670,7 @@ scene("v_viz_faith",{
 
 scene("v_viz_wis",{
   title:"第四幕 · 制度的勝利", art:"grain", ref:"虛構場景", fiction:true,
-  text:`你設計的糧政像一座精密的水車:豐年抽存兩成,荒年分級配售;憑證、糧價、運道,環環相扣。
+  text:`你設計的糧政像一座精密的水車:豐年抽存兩成,荒年分級配售;憑證、糧價、糧道,環環相扣。
 
 饑荒在你的算盤底下,低了頭。各國的駱駝隊在城外排成長龍——他們不是來朝貢的,是來活命的。`,
   choices:[
@@ -683,7 +686,7 @@ scene("crowd_kneel",{
 
 全埃及的眼睛,都在看著你。`,
   choices:[
-    {text:"把臉藏回宰相的妝底下。讓他們領糧,讓他們走。", next:"end_egypt_lord", eff:e(0,0,0)},
+    {text:"把臉藏回宰相的面具底下。讓他們領糧,讓他們走。", next:"end_egypt_lord", eff:e(0,0,0)},
     {text:"不在這裡,不是這樣。你吩咐侍從:把那十個人,單獨帶進內殿。", next:"brothers", eff:e(0,0,0), flag:"crowd", echo:"號角再響,你已經走下了高台。"},
   ]
 });
@@ -702,7 +705,7 @@ scene("brothers",{
   title:"第五幕 · 他們跪在你腳前", art:"reunion", ref:"創世記 42:6–9",
   text:()=>{
     const who = flags.fled ? "當年在曠野追殺你、把你逼上這條路的哥哥" : "當年把你丟進井、賣掉你的哥哥";
-    if(flags.crowd) return `侍從把那十個希伯來人,單獨帶進內殿。隔著埃及的妝與宰相的冠,他們仍然認不出你——只是不明所以地,再一次跪下。
+    if(flags.crowd) return `侍從把那十個希伯來人,單獨帶進內殿。隔著埃及的妝容與宰相的冠,他們仍然認不出你——只是不明所以地,再一次跪下。
 
 他們是${who}。沒有萬人圍觀,沒有號角——只有你,和他們。
 
@@ -715,7 +718,7 @@ scene("brothers",{
   },
   verse:"報復,還是放手?",
   choices:[
-    {text:"你不動聲色,先退了朝。當夜,把二十年的帳,攤在神面前——求祂帶你走接下來的每一步。", next:"v_bro_faith", eff:e(10,0,0), req:{stat:"faith", val:50}, lockedNote:"——心裡的浪太大,你壓不下去,也交不出去"},
+    {text:"你不動聲色,先退了朝。當夜,把二十年的帳,攤在神面前——求祂帶你走接下來的每一步。", next:"v_bro_faith", eff:e(10,0,0), req:{stat:"faith", val:50}, lockedNote:"——心裡的浪太大,你壓不下去,也交不出去", flag:"vigil"},
     {text:"先設個局試探他們,看是不是真的變了。", next:"test_brothers", eff:e(0,10,0), bible:true, echo:"你把眼淚壓回去,換上宰相的臉。"},
     {text:"報復。讓他們嚐嚐你嚐過的苦。", next:"revenge_cell", eff:e(0,0,0), req:{flag:"grudge", label:"多坍那天你埋下的恨"}, lockedNote:"——多坍那天,你沒有把恨埋進心裡;這扇門對你是關的"},
   ]
@@ -734,7 +737,7 @@ scene("v_bro_faith",{
 });
 
 scene("test_brothers",{
-  title:"第五幕 · 猶大站了出來", art:"reunion", ref:"創世記 44:14–34",
+  title:"第五幕 · 猶大站了出來", art:"reunion", ref:"創世記 42:24;44:1–34",
   text:`你扣下西緬作保,要他們把家裡最小的弟弟帶來。第二次來糧時,你把銀杯偷偷塞進小弟便雅憫的袋子,誣賴他們偷竊,要扣下他。
 
 這時,當年提議賣掉你的猶大站了出來:「讓我替這孩子當奴僕吧——我不能看著父親再失去一個兒子。」
@@ -802,7 +805,12 @@ const CALLBACKS = {
     return null;
   },
   brothers: ()=> flags.grudge ? {post:"那天曠野的風裡,你說過:總有一天,他們會親眼看見你是誰。——如今,那一天到了,他們就跪在你的腳前。"} : null,
-  resolve: ()=> flags.fled ? {pre:"這一次,你沒有逃。"} : null,
+  resolve: ()=>{
+    const parts=[];
+    if(flags.vigil) parts.push("那一夜你在頂樓攤開的帳,如今,神親手替你結清了。");
+    if(flags.fled) parts.push("這一次,你沒有逃。");
+    return parts.length ? {pre:parts.join("\n\n")} : null;
+  },
 };
 
 /* ============================================================
@@ -852,11 +860,12 @@ function effChips(eff){
   }
   return out?`<div class="effs">${out}</div>`:"";
 }
+function esc(x){return String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");} // 存檔字串/SVG 文字插入前必經
 function paraHTML(txt){ return (txt||"").split("\n\n").map(p=>`<p>${p.replace(/\n/g,"<br>")}</p>`).join(""); }
 function sceneShort(sc){ return (sc.title||"").replace(/^第.+· /,"").replace(/^(結局|終幕|支線) · /,""); }
 function isFiction(sc){ return !!(sc.fiction || /虛構|What-if/.test(sc.ref||"")); }
 
-function save(curId){ try{ localStorage.setItem("joseph_save", JSON.stringify({curId, stats, history, journey, flags})); }catch(_){} }
+function save(curId){ try{ localStorage.setItem("joseph_save", JSON.stringify({v:2, curId, stats, history, journey, flags})); }catch(_){} } // v: 存檔格式版本(未來改結構時做遷移判斷用)
 function loadSave(){ try{return JSON.parse(localStorage.getItem("joseph_save"));}catch(_){return null;} }
 function unlock(endId){ if(!unlocked.includes(endId)){ unlocked.push(endId); try{ localStorage.setItem("joseph_endings", JSON.stringify(unlocked)); }catch(_){} } }
 
@@ -871,6 +880,10 @@ function nearMissHTML(endingId){
   const cands=[];
   if(endingId!=="egypt_lord" && !unlocked.includes("egypt_lord") && ambition>=30 && ambition<60)
     cands.push({gap:60-ambition, text:`你的認同停在 ${ambition}——讓更多人把眼光放在你身上,荒年裡會有一扇門打開。`});
+  if(endingId!=="revenge" && !unlocked.includes("revenge") && !flags.grudge)
+    cands.push({gap:60, text:`多坍那天,還有一句你沒說出口的話——有些門,只認那天埋下的鑰匙。`});
+  if(endingId!=="runaway" && !unlocked.includes("runaway"))
+    cands.push({gap:70, text:`曠野那天,其實有一條縫——眼睛夠利的人,才看得見。`});
   if(endingId!=="reconcile" && !unlocked.includes("reconcile"))
     cands.push({gap:99, text:`聽說,一路跟著 📖 的腳蹤走到底的人,會抵達一個飽足之地……`});
   if(!cands.length) return "";
@@ -895,7 +908,7 @@ function journeyHTML(){
       chip+=`<span class="je" style="color:${ic[k][1]}">${v>0?"+":"−"}${Math.abs(v)}${ic[k][0]}</span> `;
     }
     const fic=j.fic?'<span style="color:#c9a06a">✦</span> ':'';
-    return `<div class="jrow"><div class="jt">${fic}${j.title}</div><div class="jc">${j.choice}${j.bible?' <span style="color:#9cc0ee">📖</span>':''}</div><div>${chip}</div></div>`;
+    return `<div class="jrow"><div class="jt">${fic}${esc(j.title)}</div><div class="jc">${esc(j.choice)}${j.bible?' <span style="color:#9cc0ee">📖</span>':''}</div><div>${chip}</div></div>`;
   }).join("");
   return `<div class="journey"><b>— 你 的 旅 程 —</b>${rows}</div>`;
 }
@@ -930,7 +943,7 @@ function shareText(E){
   const star=E.kind==="good"?"★":E.kind==="bad"?"☠":"◇";
   const took=journey.filter(j=>j.bible).length;
   const hadB=journey.filter(j=>j.hadB).length;
-  const trail=journey.map(j=>j.icon).join("");
+  const trail=journey.map(j=>j.icon||"▪️").join("");
   return `《約瑟的夢》我走出了結局【${E.name}・${E.type}】${star}\n信心${stats.faith} 智慧${stats.wisdom} 認同${stats.ambition}｜📖 ${took}/${hadB}｜圖鑑 ${unlocked.length}/${Object.keys(ENDINGS).length}\n${trail}\n換你選:${GAME_URL}`;
 }
 
@@ -1004,6 +1017,7 @@ function go(id){
     if(pl) pl.onclick=()=>{ document.querySelectorAll("details").forEach(d=>d.open=true); window.print(); };
     $("progress").textContent="已抵達結局";
     try{ localStorage.removeItem("joseph_save"); }catch(_){}
+    try{ if(!localStorage.getItem("joseph_mapintro")){ localStorage.setItem("joseph_mapintro","1"); setTimeout(openMap, 1200); } }catch(_){} // 首輪結局後自動攤開一次路線圖
     renderStats(); window.scrollTo(0,0); return;
   }
 
@@ -1016,6 +1030,7 @@ function go(id){
 }
 
 function doChoice(sc, c){
+  if(c.next && !S[c.next]){ console.error("missing next",c.next); return; } // 驗證提前到副作用之前,避免重複點擊重複加屬性
   if(c.flag) flags[c.flag]=true;
   pendingEcho = c.echo || "";
   applyEff(c.eff); floatStat(c.eff); renderStats();
@@ -1102,9 +1117,11 @@ function showTitle(){
   if(sv && sv.curId && S[sv.curId]){
     choicesEl.append(
       mkChoice("▶ 繼續上次的旅程",()=>{
-        Object.assign(stats, sv.stats||{});
-        flags = sv.flags||{};
-        history = sv.history||[]; journey = sv.journey||[];
+        // 損壞/竄改存檔防禦:逐欄驗形狀、數值清洗(NaN 會讓所有屬性鎖誤判全開)
+        ["faith","wisdom","ambition"].forEach(k=>{ const v=Number(sv.stats&&sv.stats[k]); stats[k]=isFinite(v)?clamp(v):START[k]; });
+        flags = (sv.flags && typeof sv.flags==="object" && !Array.isArray(sv.flags)) ? sv.flags : {};
+        history = Array.isArray(sv.history)? sv.history : [];
+        journey = Array.isArray(sv.journey)? sv.journey : [];
         history.pop();
         renderStats(); go(sv.curId);
       }),
@@ -1202,7 +1219,7 @@ function openMap(){
   MAP_MAIN.forEach((id,i)=>{
     const p=pos[id], on=seen(id);
     s+=`<circle cx="${p.x}" cy="${p.y}" r="8" fill="${on?LIT:"#241b13"}" stroke="${on?LIT:INKDIM}" stroke-width="1.5"/>`;
-    s+=`<text x="${p.x}" y="${p.y+24}" text-anchor="middle" font-size="9.5" fill="${on?INK:INKDIM}">${on?sceneShort(S[id]):"???"}</text>`;
+    s+=`<text x="${p.x}" y="${p.y+24}" text-anchor="middle" font-size="9.5" fill="${on?INK:INKDIM}">${on?esc(sceneShort(S[id])):"???"}</text>`;
   });
   // 中繼站與結局格
   for(const n of MAP_NODES){
@@ -1210,14 +1227,14 @@ function openMap(){
     if(n.mid){
       const on=seen(n.sc);
       s+=`<rect x="${p.x-7}" y="${p.y-7}" width="14" height="14" rx="3" fill="${on?LIT:"#241b13"}" stroke="${on?LIT:INKDIM}" stroke-width="1.5"/>`;
-      s+=`<text x="${p.x}" y="${p.y+24}" text-anchor="middle" font-size="9" fill="${on?INK:INKDIM}">${on?sceneShort(S[n.sc]):"???"}</text>`;
+      s+=`<text x="${p.x}" y="${p.y+24}" text-anchor="middle" font-size="9" fill="${on?INK:INKDIM}">${on?esc(sceneShort(S[n.sc])):"???"}</text>`;
       if(n.key) s+=`<text x="${p.x}" y="${p.y-14}" text-anchor="middle" font-size="9" fill="${LIT}">🔒${n.key}</text>`;
     }else{
       const E=ENDINGS[n.end], got=unlocked.includes(n.end);
       const col=n.gold?LIT:(E.kind==="bad"?RED:NEU);
       const w=n.gold?100:88, h=n.gold?30:26;
       s+=`<rect x="${p.x-w/2}" y="${p.y-h/2}" width="${w}" height="${h}" rx="6" fill="${got?(n.gold?"#3a2c14":"#2a2018"):"#1d1610"}" stroke="${got?col:DIM}" stroke-width="${n.gold?2:1.4}"/>`;
-      s+=`<text x="${p.x}" y="${p.y+3.5}" text-anchor="middle" font-size="${n.gold?10.5:10}" fill="${got?(n.gold?LIT:INK):INKDIM}">${got?(n.gold?"📖 "+E.name:E.name):"???"}</text>`;
+      s+=`<text x="${p.x}" y="${p.y+3.5}" text-anchor="middle" font-size="${n.gold?10.5:10}" fill="${got?(n.gold?LIT:INK):INKDIM}">${got?esc(n.gold?"📖 "+E.name:E.name):"???"}</text>`;
       if(n.key && !got) s+=`<text x="${p.x}" y="${p.y-h/2-5}" text-anchor="middle" font-size="9" fill="${LIT}">🔒${n.key}</text>`;
     }
   }
@@ -1244,6 +1261,9 @@ document.addEventListener("keydown",ev=>{
 
 /* ---------- 啟動：一律先到標題畫面 ---------- */
 showTitle();
+
+/* PWA:離線快取與可安裝(sw.js 對 index.html 採網路優先,push 更新不會被舊快取卡住) */
+if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("sw.js"); }catch(_){} }
 </script>
 </body>
 </html>

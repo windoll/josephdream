@@ -1,0 +1,15 @@
+{
+  "name": "約瑟的夢 — 十七歲的抉擇",
+  "short_name": "約瑟的夢",
+  "description": "互動聖經文字冒險:每個選擇都有後果,7 種結局。",
+  "lang": "zh-TW",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#1e160e",
+  "theme_color": "#1e160e",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

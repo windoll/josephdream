@@ -13,6 +13,9 @@
 - `index.html` — 整個遊戲(樣式、插畫、引擎、劇情全在這)
 - `og.png` / `apple-touch-icon.png` — 社群預覽圖與 iOS 圖示(用 PowerShell System.Drawing 產生,改文案時需重產)
 - `README.md` — 給玩家/訪客看的公開說明(頂部有 GitHub Pages 遊玩連結)
+- `帶領指南.md` — 給團契帶領者的一頁指南(流程/關鍵時刻/安全守則/觀察清單),README 有連結
+- `tools/validate.js` — 不變式驗證器,改完劇情/門檻/地圖必跑 `node tools/validate.js`
+- `manifest.json` / `sw.js` / `icon-192.png` / `icon-512.png` — PWA(可安裝+離線)。⚠️ sw.js 對 index.html 採**網路優先**,push 更新不會被舊快取卡住,所以改版**不需要**動 sw.js 的 CACHE 版本號;除非改了快取策略本身
 - `CLAUDE.md` — 本檔
 - `.gitignore` — 排除 `.claude/`(本地設定、launch.json 等不進倉庫)
 
@@ -92,6 +95,9 @@
 底特律式流程圖,footer「🗺 路線圖」+ 結局頁按鈕開啟,`openMap()` 純 SVG 手排版(寬 1300,手機橫向捲動 `.mapwrap`)。資料三件套:`MAP_MAIN`(主幹 12 節點)/`MAP_NODES`(中繼站+結局格,**座標手排,改場景記得同步**,並跑 probe 的 map 完整性檢查)/`MAP_EDGES`(含**回主線的邊**:wild_years→memory、affair_days→prison、crowd_kneel→brothers、revenge_cell→test_brothers)+`MAP_VIGNETTES`(小故事顯示為分岔點上方的小圓點)。走過的場景記在 `localStorage['joseph_seen']`(`seenScenes`/`markSeen`,跨輪保留,如同圖鑑),點亮節點與路徑;未解鎖結局格顯示 `???`,**鎖門的鑰匙(智30/認60/信50/🗝記恨)在地圖上永遠可見**——「看得到開不了」就是重玩鉤子。改版面後用 getBBox 重疊檢查(text-text / rect-rect 不可相交)。
 
 ### 其他引擎重點
+- 存檔含 `v:2` 版本欄(未來改結構時做遷移判斷);續玩載入時逐欄驗形狀+數值清洗(NaN 會讓屬性鎖全開,已防)。
+- 首次抵達任一結局後自動攤開一次路線圖(`joseph_mapintro`,只觸發一次——重玩鉤子)。
+- `esc()`:存檔字串(journey)與地圖 SVG 文字插入前必經跳脫。
 - `journey[]` 每步記錄 `{title, choice, eff, bible, hadB(該幕有無📖選項), icon(分享用 emoji:📖/✨/💡/🌟/▪️), fic(虛構場景)}`。小故事的單鈕「繼續」(無 eff、無 bible)不記錄。
 - 存檔:`localStorage['joseph_save']`(curId/stats/history/journey/**flags**);已解鎖結局:`localStorage['joseph_endings']`;路線圖足跡:`localStorage['joseph_seen']`。續玩時 `history.pop()` 再讓 `go()` push,避免重複。
 - 屬性列顯示數字(`#n_faith` 等),`renderStats` 同步更新 bar 寬、數字與 aria-label。
@@ -108,6 +114,7 @@
 
 **沒有測試框架**,但有一套穩定的 node 驗證手法,改完務必跑:
 
+0. **一鍵驗證**:`node tools/validate.js`(已涵蓋下列 1–2 的全部檢查+條件文全旗標渲染+路線圖一致性)。以下兩段是它做的事:
 1. **語法 + 載入 + 圖譜檢查**:抽出 `<script>`,用 DOM/localStorage/window stub `eval` 它,再附加 probe 檢查:
    - 所有 `next` 都存在於 `S`(無斷鏈)
    - 所有 eff 數值整十
@@ -120,7 +127,7 @@
 > 過往多代理審查(語氣/平衡/聖經/程式)對提升品質很有效;大改後值得再跑一次。
 
 ## 已知、刻意未改的可選微調
-- **門檻偏鬆**:玩家走某路線時常在用到門檻前就已超過(認60 的造神門例外,需要刻意經營)。想調張力可調高門檻或降低每步給點,但小心別讓門檻變不可達,改完必跑 DFS。
+- **門檻偏鬆**:玩家走某路線時常在用到門檻前就已超過(認60 的造神門例外,需要刻意經營——2026-06 平衡審查確認它是三軸中張力最好的;智 30 逃跑門「start 選智剛好壓線」手感最佳;智 40 智取門對智慧流溢出 20,屬已知偏鬆)。信心軸的機械回饋最薄(只開夜禱一扇風味門),已用 vigil flag→resolve callback 補一層敘事 payoff;若仍嫌空轉,候選方案是低信時中段加一句陰影 callback,別加鎖。想調張力可調高門檻或降低每步給點,但小心別讓門檻變不可達,改完必跑 DFS。
 - **平凡牧人 / 不相認是無門檻一鍵直達**:作為「隨時可離開」的敘事出口,刻意保留。(報復需 🗝grudge 事件鑰匙;墜落自二修起也經過 affair_days 中繼站,不再一步直達。)
 - **聖經路線無任何門檻**:照著 📖 走必達 `reconcile`——刻意的牧養陳述(跟隨聖經的路不需要先變強),別給聖經選項上鎖。
 
