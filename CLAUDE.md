@@ -38,7 +38,7 @@
 - `stats = {faith, wisdom, ambition}` — 三屬性,起始皆 `20`。內部鍵用英文,UI 顯示「信心/智慧/認同」(⚠️ 第三軸內部鍵仍是 `ambition`,為存檔相容刻意不改;顯示一律走 `STAT_LABEL`)。屬性列副標:交託/解題/被看見。
   - **數值一律整十**(`+10` / `+20` / `−10`)。這是使用者明確要求,務必維持。
 - `S` — 場景物件表。用 `scene(id, def)` 註冊。`e(faith,wisdom,ambition)` 是 eff 的簡寫。
-- `ENDINGS` — 7 個結局物件,各有 `name / type(「型」標籤) / kind(good|neutral|bad) / reflect`;善果結局有 `epilogue`;`reconcile` 有 `canonical:true`;`egypt_lord` 有 `overrideText`(見下)。
+- `ENDINGS` — 8 個結局物件,各有 `name / type(「型」標籤) / kind(good|neutral|bad) / reflect`;善果結局有 `epilogue`;`reconcile` 有 `canonical:true`;`egypt_lord` 與 `halfway` 有 `overrideText`(見下)。
 
 ### 一個 scene 物件可有的欄位
 - `title, art(artSVG 的鍵), ref(經文出處), fiction(true 則 ref 顯示「✦ 虛構」樣式), text, verse`
@@ -52,7 +52,7 @@
   - `flag:"name"` — 點選後設 `flags[name]=true`(隨存檔保存),供 callback 使用。
 
 ### Callback(讓遊戲記得早期選擇)
-`CALLBACKS` 表(scene id → fn 回傳 `{pre,post}`),在 `go()` 渲染時把 pre/post 段落接到 `sc.text` 前後。目前:`grudge`(多坍記恨)→brothers 加一段;`forgave_direct`/`fled`→resolve 加開場句。**結局有 overrideText 時不套 callback。**新增 callback 時用 flags,別解析 journey 文字。
+`CALLBACKS` 表(scene id → fn 回傳 `{pre,post}`),在 `go()` 渲染時把 pre/post 段落接到場景文字前後。目前:`outwit`(智取主母)→prison 加開場句;`grudge`(多坍記恨)→brothers 加一段;`forgave_direct`/`fled`→resolve 加開場句。另外 `sc.text` **可以是函式**(依 flags 回傳路線版本):brothers/resolve/revenge1 用它做 `fled` 條件文(逃跑路線沒下過井、沒被賣,不能寫死「丟進井、賣掉」)。**結局有 overrideText 時不套 callback。**新增 callback 時用 flags,別解析 journey 文字。
 
 ### 結局判定 `pickDynamicEnding()`(寬恕路線終局)
 順序很重要,別隨意調:
@@ -60,7 +60,7 @@
 2. `faith>=50 && wisdom>=50` → `reconcile`(飽足之地,canonical,**最圓滿**)
 3. `faith>=60 && 信心嚴格最大` → `faith_crown`
 4. `wisdom>=60 && 智慧嚴格最大` → `wise_savior`
-5. 其餘 → `reconcile`
+5. 其餘 → `halfway`(半路上的和好,neutral)——**保底不再是 reconcile**:曾有「信0/智50/認50 也拿最圓滿結局」的漏洞(外部 AI 審稿發現),修為專屬的中庸結局,和好不被取消、含金量保住
 
 > **設計重點**:`reconcile` 要求信心+智慧雙高,所以「砍信心換認同」的取捨**會讓你失去最圓滿的結局**——這是取捨「有代價」的關鍵機制,別改回單純比大小。
 
@@ -83,7 +83,7 @@
 - 壞結局的 identity 必須「診斷+留門」,不可停在絕望或本質化定罪(fallen/revenge 已照此改寫);memory 場景正文結尾必須有反宿命句(「這個故事,還沒有寫完」)
 
 ### ENDINGS 額外欄位
-`hint`(圖鑑未解鎖時的謎語線索)、`identity`(「身份的根」一句解讀:這個約瑟把身份建在哪)、`whatif:true`(圖鑑標 ✦ What-if;fallen/shepherd/revenge)。圖鑑集滿 7 結局顯示「🏆 完整的人」橫幅。
+`hint`(圖鑑未解鎖時的謎語線索)、`identity`(「身份的根」一句解讀:這個約瑟把身份建在哪)、`whatif:true`(圖鑑標 ✦ What-if;fallen/shepherd/revenge)。圖鑑集滿 8 結局顯示「🏆 完整的人」橫幅。
 
 ### egypt_lord 的 overrideText
 高認同玩家會經由「淚崩相認」的 `resolve` 場景觸發 `egypt_lord`(萬人的掌聲),但寬恕團圓的正文與「質疑掌聲」的尾聲會人格矛盾。解法:結局渲染時 `paraHTML(E.overrideText || sc.text)`,並在有 overrideText 時抑制 `sc.verse`。若日後新增「主導屬性與 resolve 語氣衝突」的結局,沿用此模式。
@@ -109,7 +109,7 @@
    - 所有 `next` 都存在於 `S`(無斷鏈)
    - 所有 eff 數值整十
    - 無殘留字樣(早期版本有打字機/音效/`hate`/`risk` 賭注,已全移除,別讓它回來)
-2. **DFS 全路徑可達性**:從 `start` 枚舉每個選擇(`req` 門檻依當下 stats 判斷是否可選),確認**7 個結局全部可達、無「全選項被鎖」的卡死場景**。改動 `pickDynamicEnding`、門檻、或場景連結後**一定要重跑**。
+2. **DFS 全路徑可達性**:從 `start` 枚舉每個選擇(`req` 門檻依當下 stats 判斷是否可選),確認**8 個結局全部可達、無「全選項被鎖」的卡死場景**。改動 `pickDynamicEnding`、門檻、或場景連結後**一定要重跑**。
 3. **預覽**:本機 `python -m http.server 8765`(專案根目錄),瀏覽器開 `http://localhost:8765/index.html`。
    - `.claude/launch.json` 已設好名為 `static` 的設定可用 preview 工具啟動。
    - ⚠️ Claude_in_Chrome 的 `navigate` 會把 `file://` 錯改成 `https://`,所以**用 http server 而非 file://**。注意可能有多個瀏覽器連線,需先選對本機那台。

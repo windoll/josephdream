@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>約瑟的夢 — 十七歲的抉擇</title>
-<meta name="description" content="如果你是十七歲的約瑟,被哥哥丟進井裡——你會原諒,還是報復?互動聖經文字冒險,每個選擇都有後果,7 種結局,一輪約 5 分鐘。">
+<meta name="description" content="如果你是十七歲的約瑟,被哥哥丟進井裡——你會原諒,還是報復?互動聖經文字冒險,每個選擇都有後果,8 種結局,一輪約 7 分鐘。">
 <meta name="theme-color" content="#1a1410">
 <meta property="og:type" content="website">
 <meta property="og:title" content="約瑟的夢 — 十七歲的抉擇">
-<meta property="og:description" content="被親哥哥賣掉的那天,你會記仇還是放手?每個選擇都有後果 · 7 種結局 · 免安裝直接玩">
+<meta property="og:description" content="被親哥哥賣掉的那天,你會記仇還是放手?每個選擇都有後果 · 8 種結局 · 免安裝直接玩">
 <meta property="og:url" content="https://windoll.github.io/josephdream/">
 <meta property="og:image" content="https://windoll.github.io/josephdream/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -248,7 +248,7 @@ function artSVG(key){
 const ENDINGS = {
   reconcile:  {name:"飽足之地", type:"和好型", kind:"good", canonical:true,
     hint:"讓信心與智慧並肩走到最後,別把自己交給掌聲。",
-    epilogue:"你沒有讓任何一種東西吞掉你——不是恐懼,不是聰明,也不是別人的眼光。你只是,長成了一個完整的人。荒年裡,你餵飽了埃及,也餵飽了當年丟下你的家。彩衣少年的夢應驗了:不是要人下拜,是要人活下去。",
+    epilogue:"你沒有讓任何一種東西吞掉你——不是聰明,不是掌聲,也不是傷口。你只是,長成了一個完整的人。荒年裡,你餵飽了埃及,也餵飽了當年丟下你的家。彩衣少年的夢應驗了:不是要人下拜,是要人活下去。",
     reflect:"傷害你的人,有一天落在你手裡——你會怎麼做?",
     identity:"他不再是「被偏愛的兒子」,也不只是「被出賣的弟弟」——他把身份放回神手裡,所以有力氣,把家的故事改寫。"},
   faith_crown:{name:"夢的應驗", type:"堅信型", kind:"good",
@@ -267,6 +267,12 @@ const ENDINGS = {
     epilogue:"你擁有全埃及的掌聲:人們在街上向你下拜,孩子以你的名字命名。夢,以另一種方式應驗了。只是夜深人靜,掌聲散場,大殿空下來——你問自己:如果沒有人看著,我還剩下什麼?",
     reflect:"如果沒有人按讚、沒有人看著——你還是你嗎?",
     identity:"他把身份放在別人的眼睛裡——所以,他永遠需要下一陣掌聲,才能確定自己存在。"},
+  halfway:    {name:"半路上的和好", type:"修和型", kind:"neutral",
+    hint:"相認了,擁抱了——然後呢?和好是一條路,不是一個瞬間。",
+    overrideText:"你表明了身分,與哥哥相認。擁抱是真的,眼淚也是真的。\n\n只是宴席散去,各自回房的路上,誰都沒有再說話。有些傷,認了人,還沒認完;有些路,接上了,還要慢慢走。\n\n你把全家接到歌珊。日子,先一起過下去——其餘的,交給時間,和那位看顧時間的。",
+    epilogue:"和好不是一個瞬間,是一條路。你們已經在路上了——這,就夠開始了。",
+    reflect:"和好之後,還需要什麼,關係才會真的長回來?",
+    identity:"他把身份從傷口裡挪了出來,放回神手裡——只是手,還沒完全鬆開。沒關係,路還在走。"},
   shepherd:   {name:"平凡的牧人", type:"安穩型", kind:"neutral", whatif:true,
     hint:"在命運之門打開的那一刻,轉身回家。",
     epilogue:"你選了安穩,守著羊群終老。你是個好人,一個好牧人。只是每個星夜抬頭,你總覺得有什麼很大的東西,從指縫間靜靜溜走了。",
@@ -376,7 +382,7 @@ scene("the_pit",{
   choices:[
     {text:"在井底,你選擇相信:這條路上有人帶著你走。", next:"v_pit_faith", eff:e(10,0,0)},
     {text:"你冷靜記下商隊的路線、買賣的行話。", next:"v_pit_wis", eff:e(0,10,0)},
-    {text:"你對商隊頭目誇口本事,讓自己被高價賣進權貴之家。", next:"v_pit_amb", eff:e(0,0,10), req:{stat:"ambition", val:40}, lockedNote:"——你還不懂得,怎麼讓人看上你"},
+    {text:"你對商隊頭目誇口本事,讓自己被高價賣進大人物的家。", next:"v_pit_amb", eff:e(0,0,10), req:{stat:"ambition", val:40}, lockedNote:"——你還不懂得,怎麼讓人看上你"},
   ]
 });
 
@@ -430,11 +436,11 @@ scene("memory",{
 
 scene("egypt",{
   title:"第二幕 · 波提乏的家", art:"house", ref:"創世記 39:1–6",
-  text:`埃及。護衛長波提乏買下了你。語言不通,你就把每件交辦的事做到滴水不漏。
+  text:`埃及。護衛長波提乏買下了你。言語還不通順,你就把每件交辦的事做到滴水不漏。
 
-不到幾年,全家的鑰匙都掛在你腰上。一個外族奴隸,爬到了這裡。
+不到幾年,全家的鑰匙都掛上了你的腰。一個被賣掉的外族少年,走到了這裡。
 
-你要怎麼站穩這個位子?`,
+接下來,你要怎麼在這個家站穩腳跟?`,
   choices:[
     {text:"誠實、可靠,讓主人完全放心。", next:"v_egy_faith", eff:e(10,0,0), bible:true},
     {text:"把埃及的語言、文書、規矩,摸得透透的。", next:"v_egy_wis", eff:e(0,10,0)},
@@ -486,7 +492,7 @@ scene("temptation",{
   verse:"沒人看見的時候,你是誰?",
   choices:[
     {text:"「我怎能做這大惡,得罪神?」甩開她,奪門而出。", next:"prison", eff:e(10,0,0), bible:true, echo:"外衣留在她手裡;清白,留在你身上。"},
-    {text:"不撕破臉,巧妙周旋,反而替自己保住地位。", next:"outwit", eff:e(0,10,0), req:{stat:"wisdom", val:40}, lockedNote:"——你還想不出能全身而退的說法"},
+    {text:"不撕破臉,巧妙周旋,反而替自己保住地位。", next:"outwit", eff:e(0,10,0), req:{stat:"wisdom", val:40}, lockedNote:"——你還想不出能全身而退的說法", flag:"outwit"},
     {text:"反正沒人看見……你動搖了。", next:"end_fallen", eff:e(0,0,0)},
   ]
 });
@@ -580,7 +586,9 @@ scene("pharaoh",{
 
 scene("sons",{
   title:"第四幕 · 兩個名字", art:"good", ref:"創世記 41:50–52",
-  text:`豐年裡,你成了家,兩個兒子接連出生。
+  text:`那年你三十歲。法老摘下手上的戒指,戴在你的手上——全埃及,交在你手裡治理。
+
+豐年裡,你成了家,兩個兒子接連出生。
 
 抱著長子,你給他取名「瑪拿西」——意思是:神使我忘了一切的困苦,和我父的全家。
 
@@ -599,15 +607,13 @@ scene("end_shepherd",{
   title:"結局 · 回鄉", art:"neutral", ref:"What-if · 非聖經結局",
   text:`你婉拒了那枚戒指,法老厚賞,讓你回鄉。
 
-饑荒來時,埃及換別人撐,死傷無數;你保住了自己一家,卻錯過了那個能救千萬人的位子。`,
+饑荒來時,埃及換別人撐,死傷無數;你靠著法老的賞賜和變賣牲畜,勉強保住了自己一家——卻錯過了那個能救千萬人的位子。`,
   ending:"shepherd"
 });
 
 scene("vizier",{
   title:"第四幕 · 生殺大權", art:"grain", ref:"創世記 41:41–57",
-  text:`三十歲,你戴上法老的戒指,一人之下。七個豐年,你把糧食堆得像海沙。
-
-然後饑荒照著夢來了,連你的家鄉迦南都餓殍遍野。各地的人湧來買糧。
+  text:`七個豐年過去,糧倉堆得像海沙。然後,饑荒照著夢來了——連你的家鄉迦南,都餓殍遍野。各地的人潮,湧向埃及買糧。
 
 無數人的生死,握在你手裡。這份權力,你怎麼用?`,
   choices:[
@@ -653,9 +659,9 @@ scene("v_viz_amb",{
 
 scene("brothers",{
   title:"第五幕 · 他們跪在你腳前", art:"reunion", ref:"創世記 42:6–9",
-  text:`有一天,十個風塵僕僕的人跪在你的階前求糧。
+  text:()=>`有一天,十個風塵僕僕的人跪在你的階前求糧。
 
-你一眼認出他們——當年把你丟進井、賣掉你的哥哥。他們卻認不出,眼前這位埃及宰相,就是那個彩衣少年。
+你一眼認出他們——${flags.fled?"當年在曠野追殺你、把你逼上這條路的哥哥":"當年把你丟進井、賣掉你的哥哥"}。他們卻認不出,眼前這位埃及宰相,就是那個彩衣少年。
 
 夢,正在你眼前彎下腰。他們的命,現在握在你手裡。你可以做任何事。`,
   verse:"報復,還是放手?",
@@ -682,19 +688,19 @@ scene("test_brothers",{
 
 scene("revenge1",{
   title:"結局 · 復仇的筵席", art:"bad", ref:"What-if · 非聖經結局",
-  text:`你把他們關進大牢,看著當年的恐懼,重新爬回他們臉上。你擺了一桌筵席,卻一口都嚐不出味道。
+  text:()=>`你把他們關進大牢,看著當年的恐懼,重新爬回他們臉上。你擺了一桌筵席,卻一口都嚐不出味道。
 
 你扣下了便雅憫;不久,老父親雅各撐不住再一次喪子的打擊,死訊傳來。
 
-你贏了。你讓他們嚐盡了你嚐過的苦。可是夜裡,枯井那圈天光又出現在夢裡——這一次,你聽不見那個聲音了。或者,是你不敢聽。`,
+你贏了。你讓他們嚐盡了你嚐過的苦。可是夜裡,${flags.fled?"多坍曠野的那陣風,又灌進夢裡":"枯井那圈天光,又出現在夢裡"}——這一次,你聽不見那個聲音了。或者,是你不敢聽。`,
   ending:"revenge"
 });
 
 scene("resolve",{
-  title:"終幕 · 相認", art:"good", ref:"創世記 45:1–15, 22;50:20",
-  text:`你屏退所有人,放聲大哭,哭到連門外的埃及人都聽見。
+  title:"終幕 · 相認", art:"good", ref:"創世記 45:1–22;50:20",
+  text:()=>`你屏退所有人,放聲大哭,哭到連門外的埃及人都聽見。
 
-「我是約瑟,你們賣掉的弟弟。別自責了——是神差我先一步來這裡,為了保住你們的命。」
+「我是約瑟,${flags.fled?"你們的弟弟":"你們賣掉的弟弟"}。別自責了——是神差我先一步來這裡,為了保住你們的命。」
 
 你抱著便雅憫的脖子哭,一個一個和哥哥相擁,又吩咐人送給便雅憫五套嶄新的衣裳——像當年那件彩衣一樣的新衣。法老聽說了,大為歡喜,把歌珊最好的地賜給你們。
 
@@ -705,6 +711,7 @@ scene("resolve",{
 
 /* ---------- callback：讓遊戲記得你的選擇 ---------- */
 const CALLBACKS = {
+  prison: ()=> flags.outwit ? {pre:"你的事,傳得比你的人還快:那個站得筆直走進牢門的希伯來人。獄裡的人,都想看看你長什麼樣子。"} : null,
   brothers: ()=> flags.grudge ? {post:"那天曠野的風裡,你說過:總有一天,他們會親眼看見你是誰。——如今,那一天到了,他們就跪在你的腳前。"} : null,
   resolve: ()=>{
     const parts=[];
@@ -769,14 +776,15 @@ function save(curId){ try{ localStorage.setItem("joseph_save", JSON.stringify({c
 function loadSave(){ try{return JSON.parse(localStorage.getItem("joseph_save"));}catch(_){return null;} }
 function unlock(endId){ if(!unlocked.includes(endId)){ unlocked.push(endId); try{ localStorage.setItem("joseph_endings", JSON.stringify(unlocked)); }catch(_){} } }
 
-/* 寬恕路線：判定順序固定（見 CLAUDE.md） */
+/* 寬恕路線：判定順序固定（見 CLAUDE.md）。
+   全部門檻未達 → halfway（半路上的和好）：和好不被取消,但「最圓滿」要靠信智雙高換 */
 function pickDynamicEnding(){
   const {faith,wisdom,ambition}=stats;
   if(ambition>=60 && ambition>faith && ambition>wisdom) return "egypt_lord";
   if(faith>=50 && wisdom>=50) return "reconcile";
   if(faith>=60 && faith>wisdom && faith>ambition) return "faith_crown";
   if(wisdom>=60 && wisdom>faith && wisdom>ambition) return "wise_savior";
-  return "reconcile";
+  return "halfway";
 }
 
 /* 結局頁：差一點就解鎖的提示（只取最接近的一條） */
@@ -874,8 +882,8 @@ function go(id){
   const choicesEl = $("choices");
   choicesEl.innerHTML="";
 
-  // callback 文字
-  let bodyText = sc.text;
+  // callback 文字(text 可為函式:依 flags 回傳路線版本)
+  let bodyText = (typeof sc.text==="function") ? sc.text() : sc.text;
   const cb = CALLBACKS[id] && CALLBACKS[id]();
   if(cb){ bodyText = (cb.pre? cb.pre+"\n\n":"") + bodyText + (cb.post? "\n\n"+cb.post:""); }
 
@@ -1000,7 +1008,7 @@ function showTitle(){
   main.innerHTML = `<div class="titlecard">
     <p class="hook">十七歲的約瑟,在一個偏了心的家裡長大——被親哥哥丟進井裡、賣到埃及。誘惑、冤獄、權力、報復——每一步,都由你決定。</p>
     <div class="legend">
-      <div class="lead">✦ 每個選擇都有後果 · 7 種結局 · 一輪約 7 分鐘</div>
+      <div class="lead">✦ 每個選擇都有後果 · 8 種結局 · 一輪約 7 分鐘</div>
       <div>🌱 每個難關,你都可以<b>交託給神</b>(信心)、<b>自己解題</b>(智慧),或<b>交給別人的眼光</b>(認同)——三種倚靠,養成三種約瑟</div>
       <div><span class="tag bible" style="margin-right:6px">📖 聖經</span>聖經記載中約瑟實際的選擇——但不一定是「標準答案」</div>
       <div>🔒 數值不夠的路會鎖住;看得到它,就代表有另一種走法</div>
@@ -1037,7 +1045,7 @@ function openGallery(){
   if(unlocked.length===total){
     const ban=document.createElement("div");
     ban.className="complete";
-    ban.innerHTML="🏆 <b>完整的人</b><br>你走完了約瑟所有的可能——信心、智慧、掌聲、安穩、和好,也走過墜落與復仇。<br>現在,你想成為哪一個?";
+    ban.innerHTML="🏆 <b>完整的人</b><br>你走完了約瑟所有的可能——信心、智慧、掌聲、安穩,完滿與半路的和好,也走過墜落與復仇。<br>現在,你想成為哪一個?";
     list.append(ban);
   }
   for(const [id,E] of Object.entries(ENDINGS)){
